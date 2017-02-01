@@ -1,0 +1,190 @@
+/*.root{*/
+    /*-fx-background-color: #383838;*/
+/*}*/
+/*.label{*/
+    /*-fx-text-fill: #e8e8e8;*/
+/*}*/
+
+
+#border-pane{
+    -fx-background-image: url("design_resources/numbers.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: stretch;
+}
+
+#scroll{
+    -fx-background-color:#E9967A;
+}
+
+.button{
+    -fx-background-color: #AB4642;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 4;
+}
+
+#screen{
+    -fx-background-image: url("design_resources/numbers.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: stretch;
+}
+
+
+
+/*.button{*/
+    /*-fx-padding: 8 15 15 15;*/
+    /*-fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;*/
+    /*-fx-background-radius: 8;*/
+    /*-fx-background-color:*/
+            /*linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),*/
+            /*#9d4024,*/
+            /*#d86e3a,*/
+            /*radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);*/
+    /*-fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );*/
+    /*-fx-font-weight: bold;*/
+    /*-fx-font-size: 0.7em;*/
+/*}*/
+
+
+#filer-button{
+    -fx-padding: 8 15 15 15;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color:
+    linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+    #9d4024,
+    #d86e3a,
+    radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+    -fx-font-weight: bold;
+    -fx-font-size: 0.7em;
+}
+
+.button-blue{
+    -fx-background-color: #7cafc2;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 4;
+}
+
+#button-red{
+    -fx-background-color:#AB4642;
+    -fx-text-fill: black;
+}
+
+#button-blue{
+
+    -fx-background-color:#67aeff;
+    -fx-text-fill: black;
+}
+#button-green{
+    -fx-background-color:#00bb5e;
+    -fx-text-fill: black;
+}
+
+#button-yellow{
+    -fx-background-color:#ffda0a;
+    -fx-text-fill: black;
+}
+
+#button-purple{
+    -fx-background-color:#9d3b9c;
+    -fx-text-fill: black;
+}
+#button-gray{
+    -fx-background-color:#b8a3a3;
+    -fx-text-fill: black;
+}
+#button-pink{
+    -fx-background-color:#f8609f;
+    -fx-text-fill: black;
+}
+
+#button-marker
+{
+    /*-fx-background-color:*/
+            /*linear-gradient(#f0ff35, #a9ff00),*/
+            /*radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);*/
+    /*-fx-background-radius: 6, 5;*/
+    /*-fx-background-insets: 0, 1;*/
+    /*-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );*/
+    /*-fx-text-fill: #395306;*/
+    -fx-background-color:linear-gradient(#f0ff35, #a9ff00),
+                         radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: #0407ce;
+    -fx-font-weight: bold;
+}
+
+#button-move{
+    -fx-background-color:
+            linear-gradient(#ffd65b, #e68400),
+            linear-gradient(#ffef84, #f2ba44),
+            linear-gradient(#ffea6a, #efaa22),
+            linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),
+            linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 30;
+    -fx-background-insets: 0,1,2,3,0;
+    -fx-text-fill: #654b00;
+    -fx-font-weight: bold;
+    -fx-font-size: 10px;
+    -fx-padding: 10 20 10 20;
+
+}
+
+.button-pup{
+    -fx-background-color: #8A2BE2;
+    -fx-text-fill: #FFFFFF;
+
+}
+#bold-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #AB4642;
+}
+
+#label-name{
+    -fx-font-weight: bold;
+    -fx-text-fill: #0407ce;
+
+}
+
+#label-score{
+    -fx-font-weight: bold;
+    -fx-text-fill: #02021a;
+
+}
+
+#player-score-label
+{
+   -fx-font-weight: bold;
+   -fx-text-fill: #0407ce;
+}
+
+#score-label{
+    -fx-font-weight: bold;
+    -fx-text-fill: #02021a;
+}
+
+#player-gridPane{
+    -fx-font-weight: bold;
+    -fx-text-fill: #AB4642;
+}
+
+.grid {
+    -fx-background-color: greenyellow;
+}
+
+#record-sales {
+    -fx-padding: 8 15 15 15;
+    -fx-background-insets: 0,0 0 5 0, 0 0 6 0, 0 0 7 0;
+    -fx-background-radius: 8;
+    -fx-background-color:
+            linear-gradient(from 0% 93% to 0% 100%, #a34313 0%, #903b12 100%),
+            #9d4024,
+            #d86e3a,
+            radial-gradient(center 50% 50%, radius 100%, #d86e3a, #c54e2c);
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.75) , 4,0,0,1 );
+    -fx-font-weight: bold;
+    -fx-font-size: 0.7em;
+}
+

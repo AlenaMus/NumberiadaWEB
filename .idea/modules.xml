@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Numberiada.iml" filepath="$PROJECT_DIR$/Numberiada.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NumberiadaWebApp/NumberiadaWebApp.iml" filepath="$PROJECT_DIR$/NumberiadaWebApp/NumberiadaWebApp.iml" />
+    </modules>
+  </component>
+</project>
