@@ -31,9 +31,9 @@
                     <children>
                         <HBox layoutX="14.0" layoutY="-4.0" prefHeight="39.0" prefWidth="559.0">
                             <children>
-                                <Button fx:id="LoadXmlFileButton" mnemonicParsing="false" onAction="#LoadXmlFileButtonClicked" prefHeight="25.0" prefWidth="157.0" text="Load Game XML" />
-                                <Button fx:id="StartGameButton" mnemonicParsing="false" onAction="#StartGameButtonClicked" prefHeight="25.0" prefWidth="139.0" text="Start Game" />
-                                <Button fx:id="LeaveGameButton" mnemonicParsing="false" onAction="#RetireGameButtonClicked" prefHeight="25.0" prefWidth="154.0" text="Leave Game" />
+                                <Button fx:id="LoadXmlFileButton" mnemonicParsing="false" onAction="#LoadXmlFileButtonClicked" prefHeight="25.0" prefWidth="157.0" text="Load Game.HelloWorld XML" />
+                                <Button fx:id="StartGameButton" mnemonicParsing="false" onAction="#StartGameButtonClicked" prefHeight="25.0" prefWidth="139.0" text="Start Game.HelloWorld" />
+                                <Button fx:id="LeaveGameButton" mnemonicParsing="false" onAction="#RetireGameButtonClicked" prefHeight="25.0" prefWidth="154.0" text="Leave Game.HelloWorld" />
                                 <Button fx:id="ExitGameButton" mnemonicParsing="false" onAction="#ExitGameButtonClicked" prefHeight="25.0" prefWidth="98.0" text="Exit" />
                                 <Button id="button-move" fx:id="MakeAMoveButton" alignment="CENTER" contentDisplay="TOP" minWidth="77.0" mnemonicParsing="false" onAction="#MakeAMoveButtonClicked" prefHeight="35.0" prefWidth="143.0" stylesheets="@boardStyle.css" text="Make A Move" textAlignment="CENTER">
                                     <font>
@@ -168,7 +168,7 @@
                         <Glow level="0.72" />
                      </effect>
                         </Label>
-                        <Label layoutX="8.0" layoutY="165.0" text="Game Info" textFill="#e80a0a">
+                        <Label layoutX="8.0" layoutY="165.0" text="Game.HelloWorld Info" textFill="#e80a0a">
                             <font>
                                 <Font name="System Bold" size="13.0" />
                             </font>

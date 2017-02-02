@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact name="Numberiada:jar">
+  <artifact build-on-make="true" name="Numberiada:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Numberiada_jar</output-path>
     <root id="root">
       <element id="archive" name="Numberiada.jar">
