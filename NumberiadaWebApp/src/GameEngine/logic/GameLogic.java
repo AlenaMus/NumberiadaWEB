@@ -30,18 +30,18 @@ public abstract class GameLogic {
     protected List<Square> explicitSquares;
     protected List<GameMove> historyMoves;
     protected List<Player>  players;
-    protected List<GameEngine.gameObjects.Player> winners;
+    protected List<Player> winners;
     protected GameDescriptor loadedGame;
     protected  int numOfPlayers;
-    protected GameEngine.gameObjects.Board gameBoard;
-    protected GameEngine.gameObjects.Player currentPlayer = new Player();
+    protected Board gameBoard;
+    protected Player currentPlayer = new Player();
     private eGameType gameType;
     protected int currentPlayerIndex;
 
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
-    public void setCurrentPlayer(GameEngine.gameObjects.Player currentPlayer)
+    public void setCurrentPlayer(Player currentPlayer)
     {
         this.currentPlayer = currentPlayer;
     }
@@ -134,11 +134,11 @@ public abstract class GameLogic {
         setWinners();
         if(winners.size()> 1){
             winnerMessage = "It's a TIE!\nThe Winners are :\n";
-            for (GameEngine.gameObjects.Player player:winners) {
+            for (Player player:winners) {
                 winnerMessage+=String.format("%s id:%d -> score :%d\n",player.getName(),player.getId(),player.getScore());
             }
         }else{
-            for (GameEngine.gameObjects.Player player:winners) {
+            for (Player player:winners) {
                 if(player!=null){
                     winnerMessage = "The Winner is:\n" +
                             String.format("%s id : %d -> score : %d", player.getName(), player.getId(), player.getScore());
@@ -160,11 +160,11 @@ public abstract class GameLogic {
 
     public void setWinners(){
         int maxScore=-10000;
-        for (GameEngine.gameObjects.Player player:players) {
+        for (Player player:players) {
             maxScore = player.getScore();
             break;
         }
-        for (GameEngine.gameObjects.Player player:players) {
+        for (Player player:players) {
             if(player!=null)
             {
                 if(player.getScore()> maxScore){
@@ -172,7 +172,7 @@ public abstract class GameLogic {
                 }
             }
         }
-        for (GameEngine.gameObjects.Player player:players) {
+        for (Player player:players) {
             if(player!=null)
             {
                 if(player.getScore()== maxScore){
@@ -199,7 +199,7 @@ public abstract class GameLogic {
         eBoardType boardType;
         int size = board.getSize().intValue();
 
-        if((size >= GameEngine.gameObjects.Board.MIN_SIZE )&& (size <= GameEngine.gameObjects.Board.MAX_SIZE)) {
+        if((size >= Board.MIN_SIZE )&& (size <= Board.MAX_SIZE)) {
             boardType = eBoardType.valueOf(board.getStructure().getType());
 
             switch (boardType) {
@@ -236,7 +236,7 @@ public abstract class GameLogic {
 
         Point oldMarkerPoint = gameBoard.getMarker().getMarkerLocation();
         String squareStringValue = gameBoard.getGameBoard()[squareLocation.getRow()][squareLocation.getCol()].getValue();//get number
-        squareValue = GameEngine.gameObjects.Square.ConvertFromStringToIntValue(squareStringValue); //return number value
+        squareValue = Square.ConvertFromStringToIntValue(squareStringValue); //return number value
 
         gameBoard.getGameBoard()[oldMarkerPoint.getRow()-1][oldMarkerPoint.getCol()-1].setValue("");    //empty old marker location
         gameBoard.getGameBoard()[oldMarkerPoint.getRow()-1][oldMarkerPoint.getCol()-1].setColor(GameColor.GRAY);
@@ -249,7 +249,7 @@ public abstract class GameLogic {
 
     protected void checkExplicitBoard(List<GameEngine.jaxb.schema.generated.Square> squares, GameEngine.jaxb.schema.generated.Marker marker, int boardSize) throws XmlNotValidException
     {
-        GameEngine.gameObjects.Square newSquare;
+        Square newSquare;
         int row,col,val,color;
         explicitSquares.clear();
 
@@ -279,7 +279,7 @@ public abstract class GameLogic {
 
                 if (isInBoardRange(row, boardSize) && isInBoardRange(col, boardSize)) //location is ok
                 {
-                    newSquare = new GameEngine.gameObjects.Square(new Point(row, col), String.valueOf(val), color);
+                    newSquare = new Square(new Point(row, col), String.valueOf(val), color);
                     if (explicitSquares.contains(newSquare)) {
                         validationResult.add(String.format("Explicit Board validation error: square double location [%d,%d] existance!",
                                 square.getRow().intValue(), square.getColumn().intValue()));

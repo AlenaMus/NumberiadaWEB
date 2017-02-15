@@ -92,7 +92,7 @@ public class BasicGame extends GameLogic {
     @Override
     public String gameOver()
     {
-        GameEngine.gameObjects.Player player;
+        Player player;
         String winnerStatistics="";
         isEndOfGame = true;
         updateHistory(null);

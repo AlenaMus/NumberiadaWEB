@@ -251,7 +251,7 @@ public class AdvancedGame extends GameLogic{
         GameEngine.gameObjects.Player newPlayer;
 
 
-        for (GameEngine.jaxb.schema.generated.Player player : gamePlayers) {
+        for (Player player : gamePlayers) {
              newPlayer = new GameEngine.gameObjects.Player(ePlayerType.valueOf(player.getType()), player.getName(), player.getId().intValue(), player.getColor());
             if(getPlayers()!=null)
             {
@@ -282,7 +282,7 @@ public class AdvancedGame extends GameLogic{
         int color = players.get(0).getColor();
         int boardSize = gameBoard.GetBoardSize();
         BoardRange boardRange = gameBoard.getBoardRange();
-        GameEngine.gameObjects.Square[][] board = gameBoard.getGameBoard();
+        Square[][] board = gameBoard.getGameBoard();
         // filling our numbers in given range
         int rangeSize = boardRange.RangeSize();
         int printNumCount = (boardSize * boardSize -1) / (rangeSize*numOfPlayers);
@@ -291,7 +291,7 @@ public class AdvancedGame extends GameLogic{
             for (int k = 0; k <numOfPlayers ; k++) {
                 for(int m = 0;m < rangeSize ;m++) {
                     for(int n=0;n < printNumCount;n++){
-                        board[row][col].setValue(GameEngine.gameObjects.Square.ConvertFromIntToStringValue(rangeNumToPrint));
+                        board[row][col].setValue(Square.ConvertFromIntToStringValue(rangeNumToPrint));
                         board[row][col].setColor(color);
 
                         if(col == boardSize-1)
@@ -322,7 +322,7 @@ public class AdvancedGame extends GameLogic{
             }
         }
 
-        board[boardSize - 1][boardSize - 1].setValue(GameEngine.gameObjects.Marker.markerSign);
+        board[boardSize - 1][boardSize - 1].setValue(Marker.markerSign);
         board[boardSize - 1][boardSize - 1].setColor(GameColor.MARKER);
         gameBoard.shuffleArray(board);
 
