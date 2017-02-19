@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"  href="resources/css/GameRoom.css" type="text/css" >
+    <title>Game Room</title>
+</head>
+<body>
+<div class="toolBar">
+    <div class="toolbarContent">
+        <button class="leaveGame" >Leave Game</button>
+        <span class="userNameSpan">Hi, Ben</span>
+        <span class="gameStatus">Game status: Waiting for players...</span>
+        <span class="logoSpan">
+             <img src="resources/images/num3.jpg" class="image"/>
+        </span>
+    </div>
+</div>
+<div class="mainDiv">
+    <div class="winnerDialog">
+        <div class="closeEnd" onclick="removeDialog(event)">
+            <img class="closeEnd" src="close.JPG"/>
+        </div>
+        <div class="dialogContent">
+            <div class="endDetails">
+                <h2> Game Over !!</h2>
+                <div class="statusDiv">
+                    <span>Game finished status: </span>
+                    <span class="finishStatus"></span>
+                </div>
+                <div class="winnerDiv">
+                    <span>Winners : </span>
+                </div>
+                <div class="endScoreDiv">
+                    <span>Highest Score: </span>
+                    <span class="highestScore"></span>
+                </div>
+            </div>
+            <div class="completedBoard">
+                <div class="completedBoardBody">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="moveListDialog">
+        <div class="close" onclick="removeDialog(event)">
+            <img class="close" src="close.JPG"/>
+        </div>
+        <h2>Displaying Move List:</h2>
+        <div class="moveListBody">
+
+        </div>
+    </div>
+    <div class="replayDialog">
+        <div class="closeReplay" onclick="onReplayClose()">
+            <img class="closeEnd" src="close.JPG"/>
+        </div>
+        <div class="replayDialogContent">
+            <h2>Displaaying replay board: </h2>
+            <div class="replayBoard">
+                <div class="replayBoardBody">
+
+                </div>
+            </div>
+            <div class="replayButtons">
+                <div class="replayButton" onclick="onNextClick()">Next</div>
+                <div class="replayButton" onclick="onPrevClick()">Prev</div>
+                <span>Turn: </span>
+                <span class="currentTurnReplay"></span>
+                <span> / </span>
+                <span class="totalTurnReplay"></span>
+            </div>
+        </div>
+    </div>
+    <div class="mainDivBody">
+        <div>
+            <h2 class="CurrentPlayer">Current Player </h2>
+        </div>
+        <div class="leftDiv">
+            <div class="CurrentPlayerDetails">
+                <div class="currentPlayerName">Name:</div>
+                <div class="currentPlayerScore">Score:</div>
+                <div class="currentPlayerColor">Color:</div>
+            </div>
+            </div>
+        <div class="board">
+            <div class="boardBody">
+
+            </div>
+        </div>
+        <div class="players">
+            <div class="playersNames">
+                <a>Name</a>
+                <div class="playersNamesBody">  <a>moshe</a></div>
+            </div>
+            <div class="playersTypes">
+                <a>Type</a>
+                <div class="playersTypesBody"></div>
+            </div>
+            <div class="playerColors">
+                <a>Color</a>
+                <div class="playerColorsBody"></div>
+            </div>
+            <div class="playersScore">
+                <a>Score</a>
+                <div class="playersScoreBody"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bottomDiv">
+    <div class="specialButtons">
+    </div>
+</div>
+<!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>-->
+<script
+        src="https://code.jquery.com/jquery-3.1.1.js"
+        integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+        crossorigin="anonymous">
+</script>
+<script type="text/javascript" src="GameRoom.js"></script>
+</body>
+</html>
