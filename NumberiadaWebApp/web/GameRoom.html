@@ -2,17 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet"  href="resources/css/GameRoom.css" type="text/css" >
+    <script id="PageScript" type="text/javascript" src="JavaScript/login.js"></script>
+    <link rel="stylesheet" href="resources/css/GameRoom.css" type="text/css">
     <title>Game Room</title>
 </head>
 <body>
 <div class="toolBar">
     <div class="toolbarContent">
-        <button class="leaveGame" >Leave Game</button>
+        <span class="leaveGame" onclick="onLeaveGameClick()">Leave Game</span>
         <span class="userNameSpan">Hi, Ben</span>
         <span class="gameStatus">Game status: Waiting for players...</span>
         <span class="logoSpan">
-             <img src="resources/images/num3.jpg" class="image"/>
+            <img src="nonogramLogo.JPG" class="image"/>
         </span>
     </div>
 </div>
@@ -75,35 +76,73 @@
     </div>
     <div class="mainDivBody">
         <div>
-            <h2 class="CurrentPlayer">Current Player </h2>
+            <h2 class="PlayerTurn">Player Turn: </h2>
+            <h2 class="currentPlayerName"></h2>
         </div>
         <div class="leftDiv">
-            <div class="CurrentPlayerDetails">
-                <div class="currentPlayerName">Name:</div>
-                <div class="currentPlayerScore">Score:</div>
-                <div class="currentPlayerColor">Color:</div>
+            <div class="details">
+                <div class="gameName">gameName</div>
+                <div class="key">key</div>
+                <div class="creatorName">creatorName</div>
+                <div class="boardSize">boardSize</div>
+                <div class="moves">moves</div>
+                <div class="playerNumber">
+                    <span>Players: </span>
+                    <span class="registeredPlayers"></span>
+                    <span> / </span>
+                    <span class="requiredPlayers"></span>
+                </div>
             </div>
+            <div class="turnDetails">
+                <div class>
+                    <span>Move:</span>
+                    <span class="currentMove">1</span>
+                    <span> / </span>
+                    <span class="totalMoves"></span>
+                </div>
+                <div>
+                    <span>Turn: </span>
+                    <span class="turnSpan">0</span>
+                    <span> / 2</span>
+                </div>
+                <div class=>
+                    <span>Score:</span>
+                    <span class="scoreSpan">0</span>
+                </div>
+                <div>
+                    <span>Undo:</span>
+                    <span class="undoSpan">0</span>
+                </div>
+                <div></div>
             </div>
+            <div class="actions">
+                <div class="action" onclick="onEndMoveClick()">End Move</div>
+                <div class="action" onclick="onPlayTurnClick()">Play Turn</div>
+                <div class="action" onclick="onUndoClick()">Undo</div>
+                <div class="action moveList" onclick="onMoveListClick()">Watch move list</div>
+            </div>
+        </div>
         <div class="board">
             <div class="boardBody">
 
             </div>
         </div>
+        <div class="colorChooserDiv">
+            <div class="blackChooser" onclick="onColorChooserClick(event)"></div>
+            <div class="whiteChooser" onclick="onColorChooserClick(event)"></div>
+            <div class="undefinedChooser" onclick="onColorChooserClick(event)"></div>
+        </div>
         <div class="players">
             <div class="playersNames">
-                <a>Name</a>
-                <div class="playersNamesBody">  <a>moshe</a></div>
+                <a>Name:</a>
+                <div class="playersNamesBody"></div>
             </div>
             <div class="playersTypes">
-                <a>Type</a>
+                <a>Type:</a>
                 <div class="playersTypesBody"></div>
             </div>
-            <div class="playerColors">
-                <a>Color</a>
-                <div class="playerColorsBody"></div>
-            </div>
             <div class="playersScore">
-                <a>Score</a>
+                <a>Score:</a>
                 <div class="playersScoreBody"></div>
             </div>
         </div>
@@ -111,6 +150,11 @@
 </div>
 <div class="bottomDiv">
     <div class="specialButtons">
+        <div class="specialButton" onclick="onReplayClick()">Replay</div>
+    </div>
+    <div class="descriptionDiv">
+        <div class="descriptionText">Insert turn Description:</div>
+        <input class="textInput" type="text"/>
     </div>
 </div>
 <!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>-->

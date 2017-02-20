@@ -2,20 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" href="resources/css/LobbyPage.css" type="text/css">
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
-    <script type="text/javascript" src="JavaScript/lobby.js"></script>
+    <link rel="stylesheet" type="text/css" href="LobbyPage.css">
     <title>Game Lobby</title>
 </head>
 <body class="mainBody">
 <div class="toolBar">
     <div class="toolbarContent">
-        <button class="logoutSpan" id ="logoutButton">Logout</button>
-        <button class="gameroom" id ="gameRoomButton">gameroom</button>
+        <span class="logoutSpan" onclick="onLogoutClick()">Logout</span>
         <span class="userNameSpan"></span>
         <span class="emptySpan"></span>
         <span class="logoSpan">
-            <img src="resources/images/num3.jpg" class="image"/>
+            <img src="nonogramLogo.JPG" class="image"/>
         </span>
     </div>
 </div>
@@ -55,7 +52,7 @@
             <th>Creator's name</th>
             <th>Board size</th>
             <th>Player's number</th>
-            <th>Moves number</th>
+            <th>Moves numnber</th>
             </thead>
             <tbody class="tableBody">
             </tbody>
@@ -66,12 +63,12 @@
             <thead>
             <th>Users online:</th>
             </thead>
-            <tbody id="usersList">
+            <tbody>
             </tbody>
         </table>
     </div>
-<div id="Error">
 </div>
-</div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="LobbyPageControl.js"></script>
 </body>
 </html>

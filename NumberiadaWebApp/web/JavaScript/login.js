@@ -24,14 +24,14 @@ function initilazeLogin()
     var userNameInput = $("#usernameInput").val();
     var isComputer = $("#isComputer").val();
     $.ajax({
-        type: 'POST',
-        data: {username:userNameInput,isComputer:isComputer },
-        url: "login",
-        timeout: 6000,
-        success: function (data, textStatus, jqXHR) {
-            if (data.loginSuccess === true) {
-                window.location.href = "LobbyPage.html";
-            }
+                type: 'POST',
+                data: {username:userNameInput,isComputer:isComputer },
+                url: "login",
+                timeout: 6000,
+                success: function (data, textStatus, jqXHR) {
+                    if (data.loginSuccess === true) {
+                        window.location.href = "LobbyPage.html";
+                    }
             else {
                 if (data.usernameExists === true) {
                     $("#Error").text("Someone already has that username. Try another?").show();
