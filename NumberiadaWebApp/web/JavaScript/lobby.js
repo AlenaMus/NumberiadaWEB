@@ -68,3 +68,50 @@ function onGameRoomClick()
 {
     window.location.href = "GameRoom.html";
 }
+
+var fileForm = document.getElementById("LoadFileForm");
+var fileSelect = document.getElementById("LoadFileInput");
+var fileSpan = document.getElementById("uploadGame");
+
+
+fileForm.onSubmit = function(event) {
+    event.preventDefault();
+    fileSpan.InnerHTML = "Uploading File";
+    var file = fileSelect.files[0];
+    if (!file.type.match("application/xml")) {
+        $("#Error").text("Invalid file type , please upload only xml files").show();
+    }
+    var formData = new FormData();
+    formData.append('gameFile',file);
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'LoadGameXML', true);
+    xhr.onLoad = function () {
+        if (xhr.status === 200) {
+            // File(s) uploaded.
+           fileSpan.innerHTML = 'Uploaded';
+        } else {
+            alert('An error occurred while uploading!');
+        }
+    };
+    xhr.send(formData);
+}
+
+// $.ajax({
+//     type: 'POST',
+//     url: "LoadGameXML",
+//     data: formData,
+//     dataType: 'xml',
+//     timeout: 6000,
+//     success: function (data, textStatus, jqXHR) {
+//         fileSpan.innerHTML = 'Uploaded';
+//     },
+//     error: function (jqXHR, textStatus, errorThrown) {
+//         if (textStatus === "timeout") {
+//             $("#Error").text("Server Timeout setAction. Try again..").show();
+//         }
+//         else {
+//             $("#Error").text("An error occurred while uploading!").show();
+//         }
+//     }
+// });

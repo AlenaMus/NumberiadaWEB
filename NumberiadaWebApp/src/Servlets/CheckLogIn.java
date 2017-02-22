@@ -16,10 +16,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- *
- * @author User
- */
 @WebServlet(name = "CheckLogIn", urlPatterns = {"/CheckLogIn"})
 public class CheckLogIn extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

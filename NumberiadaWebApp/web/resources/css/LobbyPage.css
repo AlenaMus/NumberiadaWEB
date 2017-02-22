@@ -11,7 +11,7 @@ body{
 
 .toolBar{
     height: 50px;
-    background: gainsboro;
+    background: #2d66dc;
 }
 
 .toolbarContent {
@@ -20,8 +20,19 @@ body{
     transform: translateY(-50%);
 }
 
+.logoutButton{
+    position: relative;
+    background-color: #80c800;
+    color: #263e75;
+    font-size: medium;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 .logoutSpan{
     position: relative;
+    color: #263e75;
+    font-size: medium;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .userNameSpan {
@@ -29,7 +40,7 @@ body{
 }
 
 .emptySpan {
-
+    background-color: #5bc0de;
 }
 
 .logoSpan{
@@ -60,7 +71,7 @@ body{
 
 th {
     padding: 0% 5% 2% 1%;
-    background: #ff7761;
+    background: #4dd3ff;
 }
 
 .gamesDiv tr {
