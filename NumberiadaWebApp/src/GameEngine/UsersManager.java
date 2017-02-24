@@ -3,10 +3,7 @@ package GameEngine;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author Kinneret & Anton
- */
+
 public class UsersManager {
     
     private final List<String> players ;

@@ -68,7 +68,7 @@ function onGameRoomClick()
 {
     window.location.href = "GameRoom.html";
 }
-
+/*
 var fileForm = document.getElementById("LoadFileForm");
 var fileSelect = document.getElementById("LoadFileInput");
 var fileSpan = document.getElementById("uploadGame");
@@ -115,3 +115,4 @@ fileForm.onSubmit = function(event) {
 //         }
 //     }
 // });
+    */

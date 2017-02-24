@@ -1,16 +1,14 @@
 package Servlets;
 
 import GameEngine.UsersManager;
+import GameEngine.logic.GameLogic;
 import Servlets.Const.Constants;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author anton & kinneret
- */
+
 public class SessionUtils
 {
     private static final String USER_MANAGER_ATTRIBUTE_NAME = "usersManager";
@@ -31,15 +29,15 @@ public class SessionUtils
         return (UsersManager) servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME);
     }
 
-   /* public static GameManager getGameManager(ServletContext servletContext)
+    public static GameLogic getGameManager(ServletContext servletContext)
     {
-        return (GameManager) servletContext.getAttribute(Constants.GAME_MANAGER);
+        return (GameLogic) servletContext.getAttribute(Constants.GAME_MANAGER);
     }
 
-    public static void setGameManager(ServletContext servletContext, GameManager gameManager)
+    public static void setGameManager(ServletContext servletContext, GameLogic gameLogic)
     {
-        servletContext.setAttribute(Constants.GAME_MANAGER, gameManager);
-    }*/
+        servletContext.setAttribute(Constants.GAME_MANAGER, gameLogic);
+    }
 
     public static void clearGameManager(ServletContext servletContext)
     {

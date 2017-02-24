@@ -1,4 +1,4 @@
-package Servlets;
+/*package Servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -26,3 +26,4 @@ public class LoadGameXML extends HttpServlet  {
         }
 
 }
+*/

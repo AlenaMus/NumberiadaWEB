@@ -3,6 +3,11 @@
 <head>
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="resources/css/LobbyPage.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css">
+    <script type="text/javascript" src="JavaScript/bootstrap.js"></script>
+    <link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css">
+    <script id="PageScript" type="text/javascript" src="JavaScript/lobby.js"></script>
     <title>Game Lobby</title>
 </head>
 <body class="mainBody">
@@ -66,15 +71,13 @@
     </div>
     <div class="usersDiv">
         <table class="usersTable">
-            <thead>
-            <th>Users online:</th>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+    <thead>
+    <th>Users online:</th>
+    </thead>
+    <tbody id="usersList">
+    </tbody>
+</table>
 </div>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
-<script type="text/javascript" src="lobby.js"></script>
+</div>
 </body>
 </html>
