@@ -3,7 +3,7 @@
  */
 
 window.myPlayersVersion = 0;
-window.myGamesVersion = 0;
+window.myGamesVersion=0;
 $(function () {
     $("#Error").hide();
     $("#logoutButton").click(onLogoutClick);
@@ -18,11 +18,11 @@ $(window.intervalUpdates = setInterval(function ()
     }, 200)
 );
 
-// $(window.intervalUpdates = setInterval(function ()
-//     {
-//         updateGamesTable();
-//     }, 200)
-// );
+$(window.intervalUpdates = setInterval(function ()
+    {
+        updateGamesTable();
+    }, 200)
+);
 
 function updatePlayers() {
     $.ajax({
@@ -53,7 +53,6 @@ function updatePlayers() {
     });
 }
 
-
 function updateGamesTable() {
     $.ajax({
         type: 'POST',
@@ -63,10 +62,18 @@ function updateGamesTable() {
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
             if (data.latestGameVersion !== window.myGamesVersion) {
-                window.myGamesVersion = data.latestPlayersVersion;
-                // $("#gamesTable > tr").remove();
-                // $.each(data.games,
-                //     addNewGame(game.gameTitle,game.playerName,game.boardSize,game.playersNumber,game.gameNumber));
+                window.myGamesVersion = data.latestGameVersion;
+                $("#gamesTable > tr").remove();
+                $.each(data.games, function (index, game) {
+                    $("#gamesTable").append("<tr class=GameRow>" +
+                        "<td style=\"text-align: left;\">" + game.gameNumber + "</td>" +
+                        "<td style=\"text-align: left;\">" + game.gameTitle + "</td>" +
+                        "<td style=\"text-align: left;\">" + game.userName + "</td>" +
+                        "<td style=\"text-align: left;\">" + game.boardSize + "</td>" +
+                        "<td style=\"text-align: left;\">" + game.numOfPlayers + "</td>" +
+                        "<td style=\"text-align:left;\">" + "<button type='submit'  id='showBoardId'>Show Game Board</button></td>"+
+                        "</tr>" );
+                });
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -122,9 +129,11 @@ function initilazeLoadGameForm() {
             dataType: 'json',
             timeout: 6000,
             success: function (gameData, textStatus, jqXHR) {
-                if (!(gameData == null)) {
+                if (gameData !== null) {
                     console.log("success load !");
                     addNewGame(gameData.gameTitle,gameData.userName,gameData.boardSize,gameData.numOfPlayers,gameData.gameNumber);
+                    myGamesVersion++;
+                    updateGamesTable();
                 }
                 else
                     $("#Error").text("Loading Error.. " + gameData).show();
