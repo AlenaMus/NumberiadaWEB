@@ -1,6 +1,7 @@
 package GameEngine.logic;
 
 import GameEngine.gameObjects.*;
+import GameEngine.jaxb.schema.generated.DynamicPlayers;
 import GameEngine.validation.ValidationResult;
 import GameEngine.validation.XmlNotValidException;
 import GameEngine.jaxb.schema.generated.GameDescriptor;
@@ -18,7 +19,6 @@ public class AdvancedGame extends GameLogic{
     public static final int MAX_PLAYERS = 6;
 
 
-
   //  @Override
 //    public void initGame()
 //    {
@@ -32,7 +32,7 @@ public class AdvancedGame extends GameLogic{
     public String gameOver()
     {
         int i=0;
-        updateHistory(null);
+     //   updateHistory(null);
         GameEngine.gameObjects.Player player;
         String winnerStatistics="";
         Collections.sort(players);
@@ -198,25 +198,36 @@ public class AdvancedGame extends GameLogic{
     @Override
     public void checkXMLData(GameDescriptor loadedGame)throws XmlNotValidException
     {
+        //validationResult = new ValidationResult();
+      //  int numOfPlayers = loadedGame.getPlayers().getPlayer().size();
 
-        validationResult = new ValidationResult();
-        int numOfPlayers = loadedGame.getPlayers().getPlayer().size();
+//        if(numOfPlayers< MIN_PLAYERS || numOfPlayers> MAX_PLAYERS)
+//        {
+//            validationResult.add(String.format("XML Load error: %d is invalid number of players,must be minimum 3 - 6 players",getNumOfPlayers()));
+//            throw new XmlNotValidException(validationResult);
+//        }
+           // setNumOfPlayers(numOfPlayers);
+        // checkAndSetPlayersXML(loadedGame.getPlayers());
 
-        if(numOfPlayers< MIN_PLAYERS || numOfPlayers> MAX_PLAYERS)
-        {
-            validationResult.add(String.format("XML Load error: %d is invalid number of players,must be minimum 3 - 6 players",getNumOfPlayers()));
+            setDynamicPlayers(loadedGame.getDynamicPlayers());
+            super.checkBoardXML(loadedGame.getBoard());
+
+    }
+
+    private void setDynamicPlayers(DynamicPlayers gamePlayers)throws XmlNotValidException {
+        gameTitle = gamePlayers.getGameTitle();
+        numOfPlayers = gamePlayers.getTotalPlayers();
+        if(numOfPlayers < MIN_PLAYERS || numOfPlayers > MAX_PLAYERS){
+            validationResult.add(String.format("%d - Invalid number of players! Players Numbers must be from 3 to 6",numOfPlayers));
+            numOfPlayers = 0;
             throw new XmlNotValidException(validationResult);
         }
-            setNumOfPlayers(numOfPlayers);
-            super.checkBoardXML(loadedGame.getBoard());
-            checkAndSetPlayersXML(loadedGame.getPlayers());
     }
 
     @Override
     public void checkRandomBoardValidity(Range boardRange, int boardSize) throws XmlNotValidException
     {
         int range;
-
         if(!(boardRange.getFrom() >= BoardRange.MIN_BOARD_RANGE &&  boardRange.getTo() <= BoardRange.MAX_BOARD_RANGE))
         {
             validationResult.add(String.format("Random Board Validation Error: board range have to be in [-99,99] range,range [%d,%d] is invalid ",
@@ -245,32 +256,31 @@ public class AdvancedGame extends GameLogic{
 
 
 
-    @Override
-    public void checkAndSetPlayersXML(GameEngine.jaxb.schema.generated.Players players)throws XmlNotValidException {
-        List<Player> gamePlayers = players.getPlayer();
-        GameEngine.gameObjects.Player newPlayer;
-
-
-        for (Player player : gamePlayers) {
-             newPlayer = new GameEngine.gameObjects.Player(ePlayerType.valueOf(player.getType()), player.getName(), player.getId().intValue(), player.getColor());
-            if(getPlayers()!=null)
-            {
-                if (getPlayers().contains(newPlayer)) {
-                    validationResult.add(String.format("Player Validation Error: name = %s ,id = %d, color = %s already exists !",
-                            player.getName(),player.getId(),player.getColor()));
-                    getPlayers().clear();
-                    throw new XmlNotValidException(validationResult);
-                } else {
-                    getPlayers().add(newPlayer);
-                }
-            }
-            else
-            {
-                getPlayers().add(newPlayer);
-            }
-
-        }
-    }
+//    @Override
+//    public void checkAndSetPlayersXML(GameEngine.jaxb.schema.generated.Players players)throws XmlNotValidException {
+//        List<Player> gamePlayers = players.getPlayer();
+//        GameEngine.gameObjects.Player newPlayer;
+//
+//
+//        for (Player player : gamePlayers) {
+//             newPlayer = new GameEngine.gameObjects.Player(ePlayerType.valueOf(player.getType()), player.getName(), player.getId().intValue(), player.getColor());
+//            if(getPlayers()!=null)
+//            {
+//                if (getPlayers().contains(newPlayer)) {
+//                    validationResult.add(String.format("Player Validation Error: name = %s ,id = %d, color = %s already exists !",
+//                            player.getName(),player.getId(),player.getColor()));
+//                    getPlayers().clear();
+//                    throw new XmlNotValidException(validationResult);
+//                } else {
+//                    getPlayers().add(newPlayer);
+//                }
+//            }
+//            else
+//            {
+//                getPlayers().add(newPlayer);
+//            }
+//        }
+//    }
 
 
     @Override
@@ -279,7 +289,7 @@ public class AdvancedGame extends GameLogic{
         int j ;
         int row =0;
         int col=0;
-        int color = players.get(0).getColor();
+        int color = GameColor.RED;
         int boardSize = gameBoard.GetBoardSize();
         BoardRange boardRange = gameBoard.getBoardRange();
         Square[][] board = gameBoard.getGameBoard();
@@ -307,7 +317,8 @@ public class AdvancedGame extends GameLogic{
                         rangeNumToPrint = boardRange.getFrom();
                     }
             }
-                color=players.get((k+1)%numOfPlayers).getColor();
+               // color=players.get((k+1)%numOfPlayers).getColor();
+                color =(color+1)/numOfPlayers;
 
         }
 

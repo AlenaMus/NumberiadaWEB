@@ -60,7 +60,7 @@ public class BasicGame extends GameLogic {
     {
         String winnerPlayer =" ";
         isEndOfGame = true;
-        updateHistory(null);
+       // updateHistory(null);
         if (currentPlayer.checkPlayerTurn(rowPlayer)) {
             //row player left
             winnerPlayer = "Column Player";
@@ -95,7 +95,7 @@ public class BasicGame extends GameLogic {
         Player player;
         String winnerStatistics="";
         isEndOfGame = true;
-        updateHistory(null);
+       // updateHistory(null);
         Collections.sort(players);
         Collections.reverse(players);
         String winner1=" ";

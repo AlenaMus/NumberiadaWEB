@@ -16,4 +16,8 @@ public class XmlNotValidException extends Exception {
         return r_ValidationResult;
     }
 
+    @Override
+    public String getMessage() {
+       return r_ValidationResult.toString();
+    }
 }

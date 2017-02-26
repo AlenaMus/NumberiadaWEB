@@ -2,7 +2,6 @@ package Servlets;
 
 import GameEngine.UsersManager;
 import com.google.gson.Gson;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -50,7 +49,6 @@ public class updatePlayers extends HttpServlet
 
     private class ResponseVariables
     {
-
         public int latestPlayersVersion;
         public List<String> players = null;
     }

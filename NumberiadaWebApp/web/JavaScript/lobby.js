@@ -3,10 +3,13 @@
  */
 
 window.myPlayersVersion = 0;
+window.myGamesVersion = 0;
 $(function () {
     $("#Error").hide();
     $("#logoutButton").click(onLogoutClick);
     $("#gameRoomButton").click(onGameRoomClick);
+    $('input[type=file]').bootstrapFileInput();
+    initilazeLoadGameForm();
 });
 
 $(window.intervalUpdates = setInterval(function ()
@@ -14,6 +17,12 @@ $(window.intervalUpdates = setInterval(function ()
         updatePlayers();
     }, 200)
 );
+
+// $(window.intervalUpdates = setInterval(function ()
+//     {
+//         updateGamesTable();
+//     }, 200)
+// );
 
 function updatePlayers() {
     $.ajax({
@@ -31,6 +40,33 @@ function updatePlayers() {
                         "<td style=\"text-align: left;\">" + player + "</td>" +
                         "</tr>");
                 });
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (textStatus === "timeout") {
+                $("#Error").text("Server Timeout setAction. Try again..").show();
+            }
+            else {
+                $("#Error").text("Something went wrong setAction. Try again..").show();
+            }
+        }
+    });
+}
+
+
+function updateGamesTable() {
+    $.ajax({
+        type: 'POST',
+        url: "updateGamesTable",
+        data: {myGamesVersion: window.myGamesVersion},
+        dataType: 'json',
+        timeout: 6000,
+        success: function (data, textStatus, jqXHR) {
+            if (data.latestGameVersion !== window.myGamesVersion) {
+                window.myGamesVersion = data.latestPlayersVersion;
+                // $("#gamesTable > tr").remove();
+                // $.each(data.games,
+                //     addNewGame(game.gameTitle,game.playerName,game.boardSize,game.playersNumber,game.gameNumber));
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -68,51 +104,60 @@ function onGameRoomClick()
 {
     window.location.href = "GameRoom.html";
 }
-/*
-var fileForm = document.getElementById("LoadFileForm");
-var fileSelect = document.getElementById("LoadFileInput");
-var fileSpan = document.getElementById("uploadGame");
+
+function initilazeLoadGameForm() {
+
+    $("#LoadFileForm").change(function (event) {
+         $("#Error").hide();
+        event.preventDefault();
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            url: 'loadGameXML',
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: 'json',
+            timeout: 6000,
+            success: function (gameData, textStatus, jqXHR) {
+                if (!(gameData == null)) {
+                    console.log("success load !");
+                    addNewGame(gameData.gameTitle,gameData.userName,gameData.boardSize,gameData.numOfPlayers,gameData.gameNumber);
+                }
+                else
+                    $("#Error").text("Loading Error.. " + gameData).show();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (textStatus === "timeout") {
+                    $("#Error").text("Server Timeout. Try again..").show();
+                }
+                else {
+                    $("#Error").text(errorThrown.toString()).show();
+                }
+                console.error(errorThrown.toString());
+            }
+        });
+        return false;
+    });
 
 
-fileForm.onSubmit = function(event) {
-    event.preventDefault();
-    fileSpan.InnerHTML = "Uploading File";
-    var file = fileSelect.files[0];
-    if (!file.type.match("application/xml")) {
-        $("#Error").text("Invalid file type , please upload only xml files").show();
-    }
-    var formData = new FormData();
-    formData.append('gameFile',file);
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'LoadGameXML', true);
-    xhr.onLoad = function () {
-        if (xhr.status === 200) {
-            // File(s) uploaded.
-           fileSpan.innerHTML = 'Uploaded';
-        } else {
-            alert('An error occurred while uploading!');
-        }
-    };
-    xhr.send(formData);
+function addNewGame(gameTitle,playerName,boardSize,playersNumber,gameNumber){
+        $("#gamesTable").append("<tr class=GameRow>" +
+       "<td style=\"text-align: left;\">" + gameNumber + "</td>" +
+        "<td style=\"text-align: left;\">" + gameTitle + "</td>" +
+        "<td style=\"text-align: left;\">" + playerName + "</td>" +
+        "<td style=\"text-align: left;\">" + boardSize + "</td>" +
+         "<td style=\"text-align: left;\">" + playersNumber + "</td>" +
+        "<td style=\"text-align:left;\">" + "<button type='submit'  id='showBoardId'>Show Game Board</button></td>"+
+        "</tr>" );
+
+    //set boardView
+
+
 }
 
-// $.ajax({
-//     type: 'POST',
-//     url: "LoadGameXML",
-//     data: formData,
-//     dataType: 'xml',
-//     timeout: 6000,
-//     success: function (data, textStatus, jqXHR) {
-//         fileSpan.innerHTML = 'Uploaded';
-//     },
-//     error: function (jqXHR, textStatus, errorThrown) {
-//         if (textStatus === "timeout") {
-//             $("#Error").text("Server Timeout setAction. Try again..").show();
-//         }
-//         else {
-//             $("#Error").text("An error occurred while uploading!").show();
-//         }
-//     }
-// });
-    */
+
+}

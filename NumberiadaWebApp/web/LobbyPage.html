@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css">
     <script type="text/javascript" src="JavaScript/bootstrap.js"></script>
     <link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css">
+    <script type="text/javascript" src="JavaScript/bootstrap.file-input.js"></script>
     <script id="PageScript" type="text/javascript" src="JavaScript/lobby.js"></script>
     <title>Game Lobby</title>
 </head>
@@ -48,13 +49,10 @@
     </div>
     <div class="gamesDiv">
         <div class="gamesActions">
-            <!--<span>Upload Game:</span>-->
-            <!--<input id="fileInput" type="file" class="fileInput" accept="text/xml" onchange="loadGameClicked(event)"/>-->
-            <form action="load-game"  method="POST" enctype="multipart/form-data" id="LoadFileForm">
-                <span id="uploadGame">Upload Game:</span>
+            <form action="loadGameXML" method="post" enctype="multipart/form-data" id="LoadFileForm">
                 <input accept="application/xml" class="btn btn-primary btn-lg btn-block" id="LoadFileInput" type="file" name="loadGameFile" title="Load Game" data-filename-placement="inside">
             </form>
-
+            <div class="alert alert-danger" role="alert" id="Error" ></div>
         </div>
         <table class="gamesTable">
             <thead>
@@ -65,7 +63,7 @@
             <th>Player's number</th>
             <th>Moves number</th>
             </thead>
-            <tbody class="tableBody">
+            <tbody id= gamesTable class="tableBody">
             </tbody>
         </table>
     </div>

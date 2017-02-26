@@ -29,6 +29,16 @@ public class Player implements Comparable<Player> {
         this.scoreString.set(scoreString);
     }
 
+
+    public Player(String name ,ePlayerType type){
+
+        this.name = new SimpleStringProperty(name);
+        playerType = new SimpleStringProperty(String.valueOf(type));
+        score = new SimpleIntegerProperty(0);
+        numOfMoves = 0;
+
+    }
+
     public Player(ePlayerType playerType1, String playerName, int playerId, int color1)
     {
         this();

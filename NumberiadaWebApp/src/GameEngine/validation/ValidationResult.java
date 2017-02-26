@@ -39,4 +39,14 @@ public class ValidationResult implements Iterable<String> {
     {
         return m_IsValid;
     }
+
+    @Override
+    public String toString() {
+       String validationMessage ="";
+        for(String message:r_Messages){
+            validationMessage+=message+"\n";
+
+        }
+        return validationMessage;
+    }
 }

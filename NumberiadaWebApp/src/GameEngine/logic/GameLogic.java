@@ -10,7 +10,9 @@ import GameEngine.jaxb.schema.generated.Range;
 import GameEngine.jaxb.schema.generated.Squares;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public abstract class GameLogic {
@@ -25,8 +27,9 @@ public abstract class GameLogic {
     public static final int EMPTY_SQUARE_BASIC=1006;
 
     public static boolean isEndOfGame = false;
+    protected String gameTitle = "";
     protected IntegerProperty gameMoves = new SimpleIntegerProperty(0);
-    public static ValidationResult validationResult;
+    public static ValidationResult validationResult  = new ValidationResult();
     protected List<Square> explicitSquares;
     protected List<GameMove> historyMoves;
     protected List<Player>  players;
@@ -37,7 +40,6 @@ public abstract class GameLogic {
     protected Player currentPlayer = new Player();
     private eGameType gameType;
     protected int currentPlayerIndex;
-
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
@@ -84,9 +86,13 @@ public abstract class GameLogic {
     public abstract void checkRandomBoardValidity(Range boardRange, int boardSize)throws XmlNotValidException;
     public abstract String gameOver();
     public abstract boolean switchPlayer();
-    protected void checkAndSetPlayersXML(GameEngine.jaxb.schema.generated.Players players)throws XmlNotValidException{}
+ //  protected void checkAndSetPlayersXML(GameEngine.jaxb.schema.generated.Players players)throws XmlNotValidException{}
     public abstract boolean isGameOver();
 
+
+    public String getGameTitle(){
+        return gameTitle;
+    }
 
     public void gameLogicClear(){
         players.clear();
@@ -106,27 +112,27 @@ public abstract class GameLogic {
         currentPlayer.scoreStringProperty().set(String.valueOf(newScore));
     }
 
-    public void updateHistory(Point chosenSquare){
-        GameMove move = new GameMove(gameType,gameBoard,currentPlayer,players,gameMoves.get());
-        if(chosenSquare!= null){
-            Square chosenSq = new Square(gameBoard.getGameBoard()[chosenSquare.getRow()][chosenSquare.getCol()]);
-            move.setChosenMove(chosenSq);
-        }
-        historyMoves.add(move);
-    }
+//    public void updateHistory(Point chosenSquare){
+//        GameMove move = new GameMove(gameType,gameBoard,currentPlayer,players,gameMoves.get());
+//        if(chosenSquare!= null){
+//            Square chosenSq = new Square(gameBoard.getGameBoard()[chosenSquare.getRow()][chosenSquare.getCol()]);
+//            move.setChosenMove(chosenSq);
+//        }
+//        historyMoves.add(move);
+//    }
 
-    public void clearHistory(){
-        if(historyMoves != null){
-            for (GameMove move:historyMoves) {
-                move.clear();
-            }
-            historyMoves.clear();
-        }
-    }
+//    public void clearHistory(){
+//        if(historyMoves != null){
+//            for (GameMove move:historyMoves) {
+//                move.clear();
+//            }
+//            historyMoves.clear();
+//        }
+//    }
     public void setFirstPlayer()
     {
-        setCurrentPlayer(players.get(0));
-        currentPlayerIndex = 0;
+        //setCurrentPlayer(players.get(0));
+      //  currentPlayerIndex = 0;
     }
 
     public String getWinner(){
@@ -149,6 +155,9 @@ public abstract class GameLogic {
         return winnerMessage;
     }
 
+    public void startGame(){
+        //to implement !!
+    }
 
     public void initGame()
     {
@@ -185,7 +194,7 @@ public abstract class GameLogic {
 
     public void updateDataMove(Point squareLocation){
         int squareValue;
-        updateHistory(squareLocation);
+        //updateHistory(squareLocation);
         //gameBoard.getGameBoard()[squareLocation.getRow()][squareLocation.getRow()].setSetEffect(false);
         squareValue = updateBoard(squareLocation);
         updateUserData(squareValue);
@@ -199,14 +208,14 @@ public abstract class GameLogic {
         eBoardType boardType;
         int size = board.getSize().intValue();
 
-        if((size >= Board.MIN_SIZE )&& (size <= Board.MAX_SIZE)) {
+        if((size >= Board.MIN_SIZE )&&(size <= Board.MAX_SIZE)) {
             boardType = eBoardType.valueOf(board.getStructure().getType());
 
             switch (boardType) {
                 case Random:
                     Range range = board.getStructure().getRange();
                     try {
-                        checkRandomBoardValidity(range, size);
+                        checkRandomBoardValidity(range,size);
                     }
                     catch (XmlNotValidException ex)
                     {
@@ -264,40 +273,51 @@ public abstract class GameLogic {
             throw new XmlNotValidException(validationResult);
         }
 
-        for (GameEngine.jaxb.schema.generated.Square square : squares) {
-            row = square.getRow().intValue();
-            col = square.getColumn().intValue();
-            val = square.getValue().intValue();
-            color = square.getColor();
+        if(squares.size() > 0) {
 
-            if ((val < BoardRange.MIN_BOARD_RANGE )|| (val > BoardRange.MAX_BOARD_RANGE)) {
-                validationResult.add("Explicit Board Validation Error: squares values must be in between -99 and 99" );
-                throw new XmlNotValidException(validationResult);
-            }
+            for (GameEngine.jaxb.schema.generated.Square square : squares) {
+                row = square.getRow().intValue();
+                col = square.getColumn().intValue();
+                val = square.getValue().intValue();
+                color = square.getColor();
 
-            if(!(row == marker.getRow().intValue() && col == marker.getColumn().intValue())) {
-
-                if (isInBoardRange(row, boardSize) && isInBoardRange(col, boardSize)) //location is ok
-                {
-                    newSquare = new Square(new Point(row, col), String.valueOf(val), color);
-                    if (explicitSquares.contains(newSquare)) {
-                        validationResult.add(String.format("Explicit Board validation error: square double location [%d,%d] existance!",
-                                square.getRow().intValue(), square.getColumn().intValue()));
-                        throw new XmlNotValidException(validationResult);
-
-                    } else {
-                        explicitSquares.add(newSquare);
-                    }
-                } else {
-                    explicitSquares.clear();
-                    validationResult.add(String.format("Explicit Board Validation Error: Square row :%d,column:%d outside board size :%d", row, col, boardSize));
+                if ((val < BoardRange.MIN_BOARD_RANGE) || (val > BoardRange.MAX_BOARD_RANGE)) {
+                    validationResult.add("Explicit Board Validation Error: squares values must be in between -99 and 99");
                     throw new XmlNotValidException(validationResult);
                 }
-            }else{
-                validationResult.add(String.format("Explicit Board Validation Error: Square row :%d,column:%d is both @ marker location and play square location!",
-                        row, col));
-                throw new XmlNotValidException(validationResult);
+
+                if(color > numOfPlayers){
+                    validationResult.add(String.format("Explicit Board Validation Error: There are more colors than players exist! Color must be in range from 1 to %d",numOfPlayers));
+                    throw new XmlNotValidException(validationResult);
+                }
+
+                if (!(row == marker.getRow().intValue() && col == marker.getColumn().intValue())) {
+
+                    if (isInBoardRange(row, boardSize) && isInBoardRange(col, boardSize)) //location is ok
+                    {
+                        newSquare = new Square(new Point(row, col), String.valueOf(val), color);
+                        if (explicitSquares.contains(newSquare)) {
+                            validationResult.add(String.format("Explicit Board validation error: square double location [%d,%d] existance!",
+                                    square.getRow().intValue(), square.getColumn().intValue()));
+                            throw new XmlNotValidException(validationResult);
+
+                        } else {
+                            explicitSquares.add(newSquare);
+                        }
+                    } else {
+                        explicitSquares.clear();
+                        validationResult.add(String.format("Explicit Board Validation Error: Square row :%d,column:%d outside board size :%d", row, col, boardSize));
+                        throw new XmlNotValidException(validationResult);
+                    }
+                } else {
+                    validationResult.add(String.format("Explicit Board Validation Error: Square row :%d,column:%d is both @ marker location and play square location!",
+                            row, col));
+                    throw new XmlNotValidException(validationResult);
+                }
             }
+        }else{
+               validationResult.add("Explicit Board Validation Error: The Board cannot be set cause it is empty!");
+               throw new XmlNotValidException(validationResult);
         }
     }
 
@@ -305,14 +325,13 @@ public abstract class GameLogic {
     public void loadDataFromJaxbToGame(GameDescriptor loadedGame,String gameType) {
         setGameType(eGameType.valueOf(gameType));
         GameEngine.jaxb.schema.generated.Board loadedBoard = loadedGame.getBoard();
-         setBoard(loadedBoard);
+        setBoard(loadedBoard);
     }
 
     public void setBoard(GameEngine.jaxb.schema.generated.Board board)
     {
         eBoardType boardType = eBoardType.valueOf(board.getStructure().getType());
         gameBoard = new Board(board.getSize().intValue(),boardType);
-
         switch (boardType) {
             case Explicit: Point markerLocation = new Point(board.getStructure().getSquares().getMarker().getRow().intValue(),board.getStructure().getSquares().getMarker().getColumn().intValue());
                 FillExplicitBoard(explicitSquares,markerLocation);
@@ -321,11 +340,12 @@ public abstract class GameLogic {
             case Random:
                 BoardRange range = new BoardRange(board.getStructure().getRange().getFrom(),board.getStructure().getRange().getTo());
                 gameBoard.setBoardRange(range);
-                if(GameManager.gameRound > 0){
-                    gameBoard = new Board(historyMoves.get(0).getGameBoard());
-                }else{
-                    FillRandomBoard();
-                }
+                FillRandomBoard();
+//                if(GameManager.gameRound > 0){
+//                    gameBoard = new Board(historyMoves.get(0).getGameBoard());
+//                }else{
+//
+//                }
                 break;
         }
     }
