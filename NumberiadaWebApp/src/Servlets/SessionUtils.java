@@ -39,6 +39,16 @@ public class SessionUtils
         servletContext.setAttribute(Constants.GAME_MANAGER, gameLogic);
     }
 
+    public static String getGameTitle(ServletContext servletContext)
+    {
+        return (String) servletContext.getAttribute(Constants.GAME_TITLE);
+    }
+
+    public static void setGameTitle(ServletContext servletContext, String gameTitle)
+    {
+        servletContext.setAttribute(Constants.GAME_TITLE, gameTitle);
+    }
+
     public static void clearGameManager(ServletContext servletContext)
     {
         servletContext.removeAttribute(Constants.GAME_MANAGER);

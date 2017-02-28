@@ -1,11 +1,38 @@
 
+table#board{
+    padding: 5px;
+    text-align: center;
+    border: 1px outset blue;
+    border-spacing:0 0px;
+}
+
+.square{
+    /*border: 1px outset blue;*/
+    /*background-color: lightBlue;*/
+    height:50px;
+    width:50px;
+    cursor:pointer;
+    padding: 1px 1px;
+}
+
+.tdBoard{
+    height: 50px;
+    width: 50px;
+}
+
+.butt:hover {
+    background-color: blue;
+    color:white;
+}
+
+
 .cell{
     border-radius: 50px;
     margin-left: 2px;
 }
 .cell{
-    width:30px; /*same as the height*/
-    height:30px; /*same as the width*/
+    width:50px; /*same as the height*/
+    height:50px; /*same as the width*/
     background-color: #269abc;
     border:1px solid #8176bd; /*same colour as the background*/
     color: buttonface;
@@ -53,3 +80,8 @@
     border-radius: 15px 15px 15px 15px;
     position: relative;
 }
+
+.green {background-color: #4CAF50;} /* Green */
+.blue {background-color: #008CBA;} /* Blue */
+.red {background-color: #f44336;} /* Red */
+.gray {background-color: #e7e7e7; color: black;} /* Gray */

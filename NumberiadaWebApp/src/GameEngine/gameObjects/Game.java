@@ -9,6 +9,7 @@ public class Game{
         private String userName;
         private String gameTitle;
         private Board board;
+        //private Square[][] gameBoard;
         private int numOfPlayers;
         private int boardSize;
         private int gameNumber;
@@ -22,6 +23,7 @@ public class Game{
             this.board = new Board(board);
             this.gameNumber = gameNumber;
             boardSize = board.GetBoardSize();
+          //  this.gameBoard = board.getGameBoard();
         }
 
     public String getUserName() {

@@ -162,8 +162,10 @@ body{
     font-size: 24px;
     margin-left: 1%;
     border-radius: 14px;
-    background: antiquewhite;
     box-shadow: -1px 0px 3px 1px;
+    background: cadetblue;
+    height: 300px;
+    width: 300px;
 }
 
 .details > div > {
@@ -233,16 +235,17 @@ body{
     margin-right: 1%;
     display: inline-block;
     height: 500px;
-    width: 245px;
+    width: 400px;
     float: right;
     text-align: center;
-    background: rgb(43, 163, 43);
+    background: rgb(14, 126, 163);
     opacity: 0.6;
     border-radius: 15px;
     box-shadow: 3px 6px 17px 1px;
     font-size: 20px;
-    color: burlywood;
+    color: #ddd6de;
     font-style: italic;
+    font-family: Arial;
 }
 
 .playerContainerDiv {
@@ -282,6 +285,19 @@ body{
     margin: 0px 5px 0px 5px;
     width: 50px;
     vertical-align: top;
+}
+
+.playerColors {
+    display: inline-block;
+    border-radius: inherit;
+    height: inherit;
+    margin: 0px 5px 0px 5px;
+    width: 50px;
+    vertical-align: top;
+}
+
+.CurrentPlayer {
+    color: #3571de;
 }
 
 .playerDiv{
@@ -349,11 +365,16 @@ body{
 }
 
 .PlayerTurn {
+    color: #2ab2de;
     display: inline-block;
 }
 
-.currentPlayerName{
+.CurrentPlayerDetails{
+    margin-left: 1%;
+    margin-right: 1%;
     display: inline-block;
+    color: #f4f1fa;
+    font-family:Arial;
 }
 
 .moveListDialog{

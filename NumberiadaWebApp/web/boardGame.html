@@ -1,49 +1,23 @@
 
 <html>
     <head>
-        <title>Chinese Checkers</title>
+        <title>Numberiada Game</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <script type="text/javascript" src="script/jquery-2.1.4.js"></script>
-        <script type="text/javascript" src="script/jquery-ui.js"></script>
-        <link rel="stylesheet" href="resource/css/jquery-ui.css" type="text/css"/>
-        <script type="text/javascript" src="script/bootstrap.js"></script>
-        <link rel="stylesheet" href="resource/css/bootstrap.css" type="text/css"/>
-        <link rel="stylesheet" href="resource/css/style.css" type="text/css"/>
-        <link rel="stylesheet" href="resources/css/board.css" type="text/css"/>
-        <link rel="stylesheet" href="resource/css/bootstrap.css" type="text/css"/>
-        <script type="text/javascript" src="../../../../../Users/OR/IdeaProjects/NumberiadaWEB/NumberiadaWebApp/web/JavaScript/boardGame.js"></script>
-        <script type="text/javascript" src="script/bootstrap.file-input.js"></script>
-        <script type="text/javascript" src="script/GameManagerJS.js"></script>
-        <script type="text/javascript" src="script/code.jquery.com_color_jquery.color-2.1.2.js"></script>
+        <link rel="stylesheet" type="text/css" href="resources/css/LobbyPage.css">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.js"></script>
+        <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css">
+        <script type="text/javascript" src="JavaScript/bootstrap.js"></script>
+        <link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css">
+        <script type="text/javascript" src="JavaScript/bootstrap.file-input.js"></script>
+        <script type="text/javascript" src="JavaScript/lobby.js"></script>
+        <script type="text/javascript" src="JavaScript/boardGame.js"></script>
     </head>
     <body>
         <div class="container" id="GameContainer">
             <button  class="btn btn-primary btn-lg btn-block" id="BackButton">Back to menu</button>
-            <div class="col" id="SideBarMenu">
-                <img class="SideBarMenuItem" id="endTurnButton" src="resource/images/Done%20(1).jpg" title="End Turn" alt="End Turn"/>
-                <img class="SideBarMenuItem" id="quitButton" src="resource/images/quitIcon.png" title="Quit" alt="Quit"/>
-                <img class="SideBarMenuItem" id="SoundButton" src="resource/images/sound%20on.jpg" title="Sound" alt="Sound"/>
-            </div>
-            <div class="alert alert-danger" role="alert" id="Error" ></div>
-            <div class="row">
-                <div class="col-md-3" id="LeftBar">
-                    <div class="row" id="PlayersBar">
-                    </div>
-                </div>
-                <div class="col-md-6" id="GameBoardContainer">
-                    <table style="margin: 0 auto;" id="GameBoardTable">
-                        <thead></thead>
-                        <tbody></tbody>
-                    </table>
-                    <div id="Sounds">
-                        <audio id="BackGroundAudio" src="resource/sounds/11.%20Run.mp3" loop></audio>
-                    </div>
-                </div>
-                <div class="col-md-3" id="RightBar">
-                    <div class="row" id="PlayersBar2">
-                    </div>
-                </div>
+            <!--<div class="alert alert-danger" role="alert" id="Error" ></div>-->
+
             </div>
         </div>
     </body>

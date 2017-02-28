@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css">
     <script type="text/javascript" src="JavaScript/bootstrap.js"></script>
     <link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="resources/css/board.css" type="text/css">
     <script type="text/javascript" src="JavaScript/bootstrap.file-input.js"></script>
     <script id="PageScript" type="text/javascript" src="JavaScript/lobby.js"></script>
     <title>Game Lobby</title>
@@ -19,14 +20,14 @@
         <span class="userNameSpan"></span>
         <span class="emptySpan"></span>
         <span class="logoSpan">
-            <img src="nonogramLogo.JPG" class="image"/>
+            <!--<img src="nonogramLogo.JPG" class="image"/>-->
         </span>
     </div>
 </div>
 <div class="mainDiv">
     <div class="dialogDiv">
         <div class="close" onclick="removeGameDialog()">
-            <img src="close.JPG"/>
+            <!--<img src="close.JPG"/>-->
         </div>
         <div class="dialogContent">
             <div class="details">
@@ -38,9 +39,6 @@
                 <div class="playerNumber"></div>
                 <div>Registered players:</div>
                 <div class="playersNames"></div>
-            </div>
-            <div class="board">
-
             </div>
         </div>
         <div class="dialogButtons">
@@ -61,12 +59,27 @@
             <th>Creator's name</th>
             <th>Board size</th>
             <th>Player's number</th>
-            <th>Moves number</th>
+            <th>Signed Players</th>
+            <th>Board Preview</th>
             </thead>
             <tbody id= gamesTable class="tableBody">
             </tbody>
         </table>
     </div>
+
+    <table style="margin: 0 auto; border-spacing: 0;" id="GameBoardTable">
+        <thead id = "boardHead">
+
+        </thead>
+        <tbody id="board">
+
+        </tbody>
+    </table>
+    <!--<div class="col-md-6" id="GameBoardContainer">-->
+        <!--<div id="Sounds">-->
+            <!--<audio id="BackGroundAudio" src="resources/images/Maid with the Flaxen Hair.mp3" loop></audio>-->
+        <!--</div>-->
+    <!--</div>-->
     <div class="usersDiv">
         <table class="usersTable">
     <thead>

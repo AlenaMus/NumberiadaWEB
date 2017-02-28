@@ -35,6 +35,7 @@ public class GameManager {
   public Game getNewGameData(String editorName){
       Game game = new Game(editorName,gameLogic.getGameTitle(),gameLogic.getNumOfPlayers(),gameLogic.getGameBoard(),AppManager.numOfGame);
       AppManager.AddNewGameInfo(game);
+
       return game;
   }
 
