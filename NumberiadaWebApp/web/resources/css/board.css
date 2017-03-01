@@ -26,11 +26,11 @@ table#board{
 }
 
 
-.cell{
+.Cell{
     border-radius: 50px;
     margin-left: 2px;
 }
-.cell{
+.Cell{
     width:50px; /*same as the height*/
     height:50px; /*same as the width*/
     background-color: #269abc;
@@ -47,7 +47,7 @@ table#board{
     box-shadow: 2px 2px 15px rgba(0,0,0, .75);
 }
 /***NOW STYLE THE BUTTON'S HOVER STATE***/
-.cell:hover{
+.Cell:hover{
     background:#c20b0b;
     border:1px solid #c20b0b;
     /*reduce the size of the shadow to give a pushed effect*/

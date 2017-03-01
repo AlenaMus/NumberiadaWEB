@@ -2,14 +2,11 @@ package GameEngine.logic;
 
 import GameEngine.gameObjects.*;
 import GameEngine.jaxb.schema.generated.DynamicPlayers;
-import GameEngine.validation.ValidationResult;
-import GameEngine.validation.XmlNotValidException;
 import GameEngine.jaxb.schema.generated.GameDescriptor;
-import GameEngine.jaxb.schema.generated.Player;
 import GameEngine.jaxb.schema.generated.Range;
+import GameEngine.validation.XmlNotValidException;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 

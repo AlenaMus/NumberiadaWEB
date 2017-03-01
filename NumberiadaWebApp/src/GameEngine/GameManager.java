@@ -1,6 +1,5 @@
 package GameEngine;
 
-import GameEngine.gameObjects.Board;
 import GameEngine.gameObjects.Game;
 import GameEngine.jaxb.schema.generated.GameDescriptor;
 import GameEngine.logic.AdvancedGame;
@@ -19,7 +18,6 @@ import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
-import java.io.File;
 import java.io.InputStream;
 
 
@@ -30,7 +28,6 @@ public class GameManager {
     private GameLogic gameLogic = null;
     private String gameTitle = "";
     public GameLogic getGameLogic(){return gameLogic;}
-
 
   public Game getNewGameData(String editorName){
       Game game = new Game(editorName,gameLogic.getGameTitle(),gameLogic.getNumOfPlayers(),gameLogic.getGameBoard(),AppManager.numOfGame);
@@ -224,44 +221,9 @@ public class GameManager {
 //
 //    }
 //
-//    private void findPlayerToNextMove() {
-//        if (!logic.isGameOver()) {
-//            boolean hasMove = logic.switchPlayer();
-//            setCurrentPlayer(logic.getCurrentPlayer());
-//            while (!hasMove) {
-//                noPossibleMovesAlert();
-//                hasMove = logic.switchPlayer();
-//                setCurrentPlayer(logic.getCurrentPlayer());
-//            }
-//            if(logic.getCurrentPlayer().getPlayerType().equals(String.valueOf(ePlayerType.Computer))){
-//                makeComputerMove();
-//            }
-//        } else {
-//            setGameOver();
-//        }
-//
-//    }
 
 
-   // private void setGameOver()
-//    {
-//        String winnerMessage = logic.getWinner();
-//        String statistics = logic.gameOver();
-//        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//        alert.setTitle("GAME OVER !!!");
-//        alert.setHeaderText(winnerMessage);
-//        alert.setContentText(String.join(System.lineSeparator(),statistics));
-//        alert.showAndWait();
-//
-//        LoadXmlFileButton.disableProperty().setValue(false);
-//        MakeAMoveButton.disableProperty().setValue(true);
-//        LeaveGameButton.disableProperty().setValue(true);
-//        StartGameButton.disableProperty().setValue(false);
-//
-//        clearGameWindow();
-//        enableHistoryView();
-//    }
-//
+
 
    // private void ExitGameButtonClicked(ActionEvent event){
 //        Alert exitWindow = new Alert(Alert.AlertType.CONFIRMATION);
@@ -279,53 +241,89 @@ public class GameManager {
 //        }
 //    }
 
-   // private void MoveAdvanceMove()
+// private String setGameOver()
+//    {
+//        String winnerMessage = logic.getWinner(); //BRING A STRING WITH WINNER NAMES
+//        String statistics = logic.gameOver(); //BRING STRING WITH OTHER PLAYER SCORE
+   //NEED TO UPDATE CLIENTS WITH THOSE STRINGS !
+//       // Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//       // alert.setTitle("GAME OVER !!!");
+//        //alert.setHeaderText(winnerMessage);
+//        //alert.setContentText(String.join(System.lineSeparator(),statistics));
+//        // alert.showAndWait();
+//
+//        //LoadXmlFileButton.disableProperty().setValue(false);
+//        MakeAMoveButton.disableProperty().setValue(true);
+//        LeaveGameButton.disableProperty().setValue(true);
+//        StartGameButton.disableProperty().setValue(false);
+//
+//        clearGameWindow();
+//        //enableHistoryView();
+//    return (winnerMessage + statistics)
+//    }
+
+//    private String findPlayerToNextMove() {
+//        String noMovesString = "" ;
+//        if (!logic.isGameOver()) {
+//            boolean hasMove = logic.switchPlayer();
+//           // setCurrentPlayer(logic.getCurrentPlayer());
+//            while (!hasMove) {
+//                 noMovesString = noMovesString + "/n no possible moves for user"  + logic.getCurrentPlayer();
+//                  hasMove = logic.switchPlayer();
+//                //setCurrentPlayer(logic.getCurrentPlayer());
+//            }
+//            if(logic.getCurrentPlayer().getPlayerType().equals(String.valueOf(ePlayerType.Computer))){
+//                makeComputerMove(); // I THINK NEED TO SPERATE (THIS IS ANOTHER MOVE)
+//            }
+//        } else {
+//            setGameOver();
+//        }
+//        return noMovesString;
+//
+//    }
+//
+//    private String MoveAdvanceMove()
 //    {
 //        int pointStatus;
 //        String value="";
-//       BoardButton butt = builder.getChosenButton();
-//        Point userPoint = builder.getChosenPoint();
+//        String errorString = "";
+//        //Point userPoint = builder.getChosenPoint();
 //        if (userPoint != null) {
 //            pointStatus = logic.isValidPoint(userPoint);
-//            if (pointStatus == GameLogic.GOOD_POINT) {
-//                    logic.updateDataMove(userPoint);
-//                    findPlayerToNextMove();
+//                if (pointStatus == GameLogic.GOOD_POINT) {
+//                    logic.updateDataMove(userPoint); // NEED TO UPDATE CLIENT WITH BOARD CHANGE
+//                    errorString = findPlayerToNextMove(); //I THINK NEED TO SEPERATE
 //            }
 //            else if (pointStatus == GameLogic.NOT_IN_MARKER_ROW_AND_COLUMN)
 //            {
-//                value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
-//                logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
-//                Alert alert = new Alert(Alert.AlertType.ERROR);
-//                alert.setHeaderText("You choose illegal square -the square needs to be in the marker raw or column");
-//                alert.showAndWait();
+//               // value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
+//               // logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
+//                errorString = "You choose illegal square -the square needs to be in the marker raw or column";
 //            }
 //            else if (pointStatus == GameLogic.NOT_PLAYER_COLOR)
 //            {
-//                value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
-//                logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
-//                Alert alert = new Alert(Alert.AlertType.ERROR);
-//                alert.setHeaderText("You choose illegal square - the square is not in your color!");
-//                alert.showAndWait();
+//                //value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
+//                //logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
+//                errorString = ("You choose illegal square - the square is not in your color!");
 //            }
 //        }
 //        else
 //        {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setHeaderText("YOU DIDN'T CHOOSE A SQUARE!");
-//            alert.showAndWait();
+//            errorString = ("YOU DIDN'T CHOOSE A SQUARE!");
 //        }
 //
-//        butt.removeChosenButtonEffect();
+//        return errorString;
 //    }
-//
+
 //
 
    // private void AdvanceRetire()
 //    {
 //        logic.playerRetire();
 //        if(!GameLogic.isEndOfGame){
-//            builder.clearPlayersScoreView(PlayerScoreGridPane);
-//            builder.setPlayersScore(PlayerScoreGridPane,logic.getPlayers());
+    //NEED TO UPDATE PLAYER LIST IN CLIENTS AND BOARD!
+//            //builder.clearPlayersScoreView(PlayerScoreGridPane);
+//            //builder.setPlayersScore(PlayerScoreGridPane,logic.getPlayers());
 //            findPlayerToNextMove();
 //        }else{
 //            setGameOver();

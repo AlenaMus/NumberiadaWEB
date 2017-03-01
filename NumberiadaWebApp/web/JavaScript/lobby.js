@@ -9,7 +9,7 @@ window.myGamesVersion=0;
 $(function () {
     $("#Error").hide();
     $("#logoutButton").click(onLogoutClick);
-    $("#gameRoomButton").click(onGameRoomClick);
+    $("#gameButton").click(onGameRoomClick);
     $('input[type=file]').bootstrapFileInput();
      initilazeLoadGameForm();
     $('#showBoardId').click(function () {
