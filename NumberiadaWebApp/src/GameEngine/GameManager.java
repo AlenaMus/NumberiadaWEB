@@ -1,6 +1,7 @@
 package GameEngine;
 
 import GameEngine.gameObjects.Game;
+import GameEngine.gameObjects.Player;
 import GameEngine.jaxb.schema.generated.GameDescriptor;
 import GameEngine.logic.AdvancedGame;
 import GameEngine.logic.BasicGame;
@@ -28,6 +29,16 @@ public class GameManager {
     private GameLogic gameLogic = null;
     private String gameTitle = "";
     public GameLogic getGameLogic(){return gameLogic;}
+
+    public boolean SignToGame(String gameTitle,Player player)
+    {
+        boolean signed = false;
+        if((!gameLogic.getPlayers().contains(player)) && (gameLogic.getPlayers().size() < gameLogic.getNumOfPlayers())){
+            gameLogic.getPlayers().add(player);
+            signed = true;
+        }
+        return signed;
+    }
 
   public Game getNewGameData(String editorName){
       Game game = new Game(editorName,gameLogic.getGameTitle(),gameLogic.getNumOfPlayers(),gameLogic.getGameBoard(),AppManager.numOfGame);

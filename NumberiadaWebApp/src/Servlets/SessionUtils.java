@@ -20,6 +20,14 @@ public class SessionUtils
         return sessionAttribute != null ? sessionAttribute.toString() : null;
     }
 
+    public static Boolean getIsComputer(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession(false);
+        Object sessionAttribute = session != null ? session.getAttribute(Constants.IS_COMPUTER) : null;
+        return sessionAttribute != null ?( Boolean)sessionAttribute: null;
+    }
+
+
     public static UsersManager getUserManager(ServletContext servletContext)
     {
         if (servletContext.getAttribute(USER_MANAGER_ATTRIBUTE_NAME) == null)

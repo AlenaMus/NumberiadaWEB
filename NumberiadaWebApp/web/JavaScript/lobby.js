@@ -10,6 +10,7 @@ $(function () {
     $("#Error").hide();
     $("#logoutButton").click(onLogoutClick);
     $("#gameButton").click(onGameRoomClick);
+    $("#signToGameButton").click(onSignToGameClick);
     $('input[type=file]').bootstrapFileInput();
      initilazeLoadGameForm();
     $('#showBoardId').click(function () {
@@ -113,6 +114,38 @@ function onLogoutClick()
     });
 }
 
+
+
+function onSignToGameClick(title,gameNumber)
+{
+    $.ajax({
+        type: 'POST',
+        url: "signUserToGame",
+        data: {gameTitle: title},
+        timeout: 6000,
+        success: function (isSigned, textStatus, jqXHR) {
+            if (isSigned)
+            {
+                //window.location.href = "gameRoom.html";
+                updateSignedPlayers(gameNumber)
+            }
+            else
+            {
+                $("#Error").text("failed to sign you to game,game is full.try another game")
+            }
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (textStatus === "timeout") {
+                $("#Error").text("Server Timeout setAction. Try again..").show();
+            }
+            else {
+                $("#Error").text("Something went wrong setAction. Try again..").show();
+            }
+        }
+    });
+}
+
 function onGameRoomClick()
 {
     window.location.href = "GameRoom.html";
@@ -158,15 +191,30 @@ function initilazeLoadGameForm() {
     });
 }
 
+function updateSignedPlayers(gameNumber) {
+
+    var singedPlayers =$("#gamesTable").children(gameNumber).text();
+    console.log(singedPlayers);
+    var users =  $('#'+gameNumber).html();
+    console.log(users);
+    $('#'+gameNumber).html(singedPlayers+1);
+   // var gameRow =  $('#gamesTable tr').eq(gameNumber-1);
+   //  var signedPlayers = gameRow.find("td").eq(5);
+   //  var players = signedPlayers.html;
+   //  signedPlayers.html = players+1;
+
+
+}
 
     function addNewGame(gameTitle, playerName, boardSize, playersNumber, gameNumber, board) {
+        var signedPlayers = 0;
         $("#gamesTable").append("<tr class=GameRow>" +
             "<td style=\"text-align: left;\">" + gameNumber + "</td>" +
             "<td style=\"text-align: left;\">" + gameTitle + "</td>" +
             "<td style=\"text-align: left;\">" + playerName + "</td>" +
             "<td style=\"text-align: left;\">" + boardSize + 'X' + boardSize + "</td>" +
             "<td style=\"text-align: left;\">" + playersNumber + "</td>" +
-            "<td style=\"text-align: left;\">" + "Signed Players" + "</td>" +
+            "<td style=\"text-align: left;\" id = gameNumber>" + signedPlayers + "</td>" +
             "<td style=\"text-align:left;\">" + "<button type='submit'  id='showBoardId' >Show Game Board</button>" +
             //  "<div id='myModal' class='modal'>" + "<div class='modal-content' id='boardId'><table class ='boardTable' id='board'></table><span class='close'>&times;</span></div></div>"+
             "</td>" +
@@ -175,6 +223,16 @@ function initilazeLoadGameForm() {
         $('#showBoardId').click(function () {
             createBoard(board,boardSize,gameTitle);
         });
+
+
+    // var chosenRow = document.getElementsByClassName('GameRow');
+        $('.GameRow').click(function () {
+            var title = $(this).find("td").eq(1).html();
+            console.log(title);
+            onSignToGameClick(title,gameNumber);
+        });
+
+
 
     }
 

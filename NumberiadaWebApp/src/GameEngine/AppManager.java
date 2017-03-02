@@ -3,11 +3,13 @@ package GameEngine;
 
 import GameEngine.gameObjects.Game;
 import GameEngine.gameObjects.Player;
+import GameEngine.gameObjects.ePlayerType;
 import GameEngine.logic.GameLogic;
 import GameEngine.validation.XmlNotValidException;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class AppManager {
 
@@ -39,12 +41,15 @@ public final class AppManager {
 
 }
 
-    public static boolean SignToGame(String gameTitle,Player player)
+    public static boolean SignToGame(String gameTitle,String username,Boolean isComputer)
     {
         boolean signed = false;
+        ePlayerType type = isComputer ? ePlayerType.Computer : ePlayerType.Human;
+        Player player = new Player(username,type);
         GameLogic game = games.get(gameTitle);
         if((!game.getPlayers().contains(player)) && (game.getPlayers().size() < game.getNumOfPlayers())){
             game.getPlayers().add(player);
+            game.setNumOfSignedPlayers(game.getNumOfSignedPlayers()+1);
             signed = true;
         }
         return signed;

@@ -21,8 +21,10 @@ function initilazeGame() {
   url: "Get-Game-Players",
   timeout: 6000,
   success: function (playersData, textStatus, jqXHR) {
-   window.myPlayerIndex = playersData.myPlayerIndex;
+   //window.myPlayerIndex = playersData.myPlayerIndex;
    updateCurrentPlayer(playersData.checkPlayer);
+   setPlayersBar(0, playersData.checkPlayer);
+   setPlayersBar(0, playersData.checkPlayer2);
    //buildPlayersBar(playersData);
    //buildGameBoardStructure();
    //setCellClick();
@@ -89,25 +91,18 @@ function buildPlayersBar(players) {
   var player = players.players[i];
  // var playerPic;
   //playerPic = player.playerType === "COMPUTER" ? "ComputerAvatar.png" : "HumanAvatar.png";
-  setPlayersBar(i, player.name);
+  setPlayersBar(i, player);
  }
 }
 
-function setPlayersBar(index, name) {
- var playerBar;
- index < 3 ? playerBar = "div#PlayersBar" : playerBar = "div#PlayersBar2";
- $(playerBar).append("<div index=" + index + ">" +
-     "<div class=\"col col-md-10 PlayerBox ActivePlayer\">" +
-     "<div class=\"row\">" +
-     "<div class=\"col-md-10  PlayerName\"><span class='label label-primary'>" + name + "</span></div>" +
-     "</div>" +
-     "<div class=\"row\">" +
-     "<div class=\"\"><img class=\"PlayerImage\" src=\"resource/images/player" + (index + 1) + playerPic + "\"></div>" +
-     "</div>" +
-     "</div>" +
-     "</div>");
-}
+function setPlayersBar(index, player) {
+ $("#playersNamesBody").append("<br>  <tr class=PlayerName>" +
+     "<td style=\"text-align: left;\">" + player.name.value + "</td>" +
+     "<td style=\"text-align: left;\">" + player.playerType.value + "</td>" +
+     "<td style=\"text-align: left;\">" + player.score.value + "</td>" +
+     "</tr>");
 
+}
 function showPlayerTurn(currPlayer) {
  $(".PlayerBox").popover("destroy").removeClass("MyTurn");
  if (currPlayer === window.myPlayerIndex) {

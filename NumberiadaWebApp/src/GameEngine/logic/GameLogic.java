@@ -1,18 +1,16 @@
 package GameEngine.logic;
 
 import GameEngine.gameObjects.*;
+import GameEngine.jaxb.schema.generated.GameDescriptor;
+import GameEngine.jaxb.schema.generated.Range;
+import GameEngine.jaxb.schema.generated.Squares;
 import GameEngine.validation.ValidationResult;
 import GameEngine.validation.XmlNotValidException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import GameEngine.jaxb.schema.generated.GameDescriptor;
-import GameEngine.jaxb.schema.generated.Range;
-import GameEngine.jaxb.schema.generated.Squares;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public abstract class GameLogic {
@@ -36,6 +34,7 @@ public abstract class GameLogic {
     protected List<Player> winners;
     protected GameDescriptor loadedGame;
     protected  int numOfPlayers;
+    public int numOfSignedPlayers = 0;
     protected Board gameBoard;
     protected Player currentPlayer = new Player();
     private eGameType gameType;
@@ -61,6 +60,8 @@ public abstract class GameLogic {
     public eGameType getGameType() {
         return gameType;
     }
+    public int getNumOfSignedPlayers () {return numOfSignedPlayers;}
+    public void setNumOfSignedPlayers(int num) { numOfSignedPlayers = num; }
     public int getNumOfPlayers () {return numOfPlayers;}
     public void setNumOfPlayers(int num) { numOfPlayers = num; }
     public Board getGameBoard() {return gameBoard;}

@@ -323,6 +323,12 @@ body{
     margin-left: 15%;
 }
 
+.playersNamesBody {
+    border: 1px black solid;
+    border-radius: 6px;
+    width: 100%;
+}
+
 .bottomDiv{
     min-width: 800px;
     white-space: nowrap;

@@ -6,9 +6,8 @@
 package Servlets;
 
 
+import GameEngine.AppManager;
 import GameEngine.GameManager;
-import GameEngine.gameObjects.Player;
-import GameEngine.gameObjects.ePlayerType;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -19,50 +18,31 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 
-@WebServlet(name = "GetGamePlayers", urlPatterns =
-{
-    "/Get-Game-Players"
-})
-public class GetGamePlayers extends HttpServlet
+@WebServlet(name = "signUserToGame", urlPatterns =
+        {
+                "/signUserToGame"
+        })
+public class signUserToGame extends HttpServlet
 {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("application/json");
-        ResponseVariables responseVariables = new ResponseVariables();
         HttpSession session = request.getSession(false);
-        Player or = new Player("or",ePlayerType.Computer);
-        Player moshe = new Player("moshe",ePlayerType.Human);
-        responseVariables.checkPlayer = or;
-        responseVariables.checkPlayer2 = moshe;
+        String gameTitle = request.getParameter("gameTitle");
+        SessionUtils.setGameTitle(getServletContext(), gameTitle);
+        String userName = SessionUtils.getUsername(request);
+        Boolean IsComputer = SessionUtils.getIsComputer(request);
         GameManager game = SessionUtils.getGameManager(getServletContext());
-        responseVariables.players = game.getGameLogic().getPlayers();
-        responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
-        //responseVariables.numOfHumans = game.getNumOfActiveHumanPlayers();
-        //responseVariables.numOfHumansToStart = game.getGameSettings().getNumOfHumans();
-        responseVariables.numOfPlayers = responseVariables.players.size();
-        //responseVariables.myPlayerIndex = game.getMyPlayerIndexByName((String) session.getAttribute(Constants.USERNAME));
-        //responseVariables.lastJoinedIndex = game.getLastActivateIndexPlayer();
+        Boolean isSigned = AppManager.SignToGame(gameTitle,userName,IsComputer);
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
-        out.print(json.toJson(responseVariables));
+        out.print(json.toJson(isSigned));
         out.flush();
     }
 
-    private class ResponseVariables
-    {
-        public Player checkPlayer;
-        public Player checkPlayer2;
-        public List<Player> players;
-        public int numOfHumans;
-        public Player currPlayer;
-        public int numOfPlayers;
-        public int myPlayerIndex;
-        public int numOfHumansToStart;
-        public int lastJoinedIndex;
-    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
