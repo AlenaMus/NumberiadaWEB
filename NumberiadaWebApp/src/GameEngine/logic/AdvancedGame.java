@@ -315,7 +315,7 @@ public class AdvancedGame extends GameLogic{
                     }
             }
                // color=players.get((k+1)%numOfPlayers).getColor();
-                color =(color+1)/numOfPlayers;
+               color++;
 
         }
 

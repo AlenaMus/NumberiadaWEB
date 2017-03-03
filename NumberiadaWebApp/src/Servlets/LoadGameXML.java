@@ -1,5 +1,6 @@
 package Servlets;
 
+import GameEngine.AppManager;
 import GameEngine.GameManager;
 import Servlets.Const.Constants;
 import com.google.gson.Gson;
@@ -36,6 +37,7 @@ public class LoadGameXML extends HttpServlet {
             try
             {
                 gameManager.LoadGameFromXmlAndValidate(loadGameFile);
+                AppManager.AddNewGame(gameManager,gameManager.getGameTitle());
                 if(!GameManager.gameExists){
                     GameManager.gameExists = true;
                     out.print(json.toJson(gameManager.getNewGameData(userName)));

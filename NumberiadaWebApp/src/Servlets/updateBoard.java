@@ -35,7 +35,7 @@ public class updateBoard extends HttpServlet {
             gameTitle = request.getParameter("gameTitle");
             Gson json = new Gson();
             PrintWriter out = response.getWriter();
-            out.print(json.toJson(AppManager.games.get(gameTitle).getGameBoard()));
+            out.print(json.toJson(AppManager.games.get(gameTitle).getGameLogic().getGameBoard()));
             out.flush();
         }
 

@@ -25,11 +25,17 @@ import java.io.InputStream;
 public class GameManager {
 
     public static int gameRound = 0;
+    public  boolean runningGame = false;
     public static boolean gameExists = false;
     private GameLogic gameLogic = null;
     private String gameTitle = "";
     public GameLogic getGameLogic(){return gameLogic;}
 
+
+
+public String getGameTitle(){
+    return  gameTitle;
+}
     public boolean SignToGame(String gameTitle,Player player)
     {
         boolean signed = false;
@@ -117,7 +123,7 @@ public class GameManager {
                 gameLogic.setGameType(eGameType.valueOf(gameType));
                 gameLogic.checkXMLData(loadedGame);
                 gameLogic.loadDataFromJaxbToGame(loadedGame,gameType);
-                AppManager.AddNewGame(gameLogic,gameTitle);
+               // AppManager.AddNewGame(this,gameTitle);
 
             }else{
                 gameExists = true;
@@ -132,8 +138,8 @@ public class GameManager {
 
 
 
-    //    void StartGameButtonClicked(ActionEvent event) {
-//
+ //    void StartGameButtonClicked(ActionEvent event) {
+//          runningGame = true;
 //        builder.removeButtonsEffect();
 //        if(GameManager.gameRound > 0){
 //                restartGame();

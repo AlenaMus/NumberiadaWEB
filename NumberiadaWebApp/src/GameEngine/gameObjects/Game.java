@@ -13,6 +13,7 @@ public class Game{
         private int numOfPlayers;
         private int boardSize;
         private int gameNumber;
+        private int signedPlayers = 0;
 
 
         public Game(String editorName,String gameTitle, int numOfPlayers,Board board, int gameNumber){
@@ -25,6 +26,9 @@ public class Game{
             boardSize = board.GetBoardSize();
           //  this.gameBoard = board.getGameBoard();
         }
+
+    public void updateSignedPlayers(){signedPlayers++;}
+    public int getSignedPlayers(){return signedPlayers;}
 
     public String getUserName() {
         return userName;

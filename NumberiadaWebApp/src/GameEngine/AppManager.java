@@ -5,6 +5,7 @@ import GameEngine.gameObjects.Game;
 import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.ePlayerType;
 import GameEngine.logic.GameLogic;
+import GameEngine.validation.UserMessageConfirmation;
 import GameEngine.validation.XmlNotValidException;
 
 import java.io.InputStream;
@@ -15,7 +16,8 @@ public final class AppManager {
 
     private GameManager gameManager;
 
-    public static Map<String,GameLogic> games = new HashMap<>();
+    public static int signedPlayersVersion =0;
+    public static Map<String,GameManager> games = new HashMap<>();
     public static Map<String,Game> gamesInfo = new HashMap<>();
     public static UsersManager userManager = new UsersManager();
     public static int numOfGame = 0;
@@ -29,9 +31,9 @@ public final class AppManager {
 
         gamesInfo.put(game.getGameTitle(),game);
     }
-    public static void AddNewGame(GameLogic game,String title){
+    public static void AddNewGame(GameManager gameManager,String title){
 
-        games.put(title,game);
+        games.put(title,gameManager);
         numOfGame++;
     }
 
@@ -41,18 +43,38 @@ public final class AppManager {
 
 }
 
-    public static boolean SignToGame(String gameTitle,String username,Boolean isComputer)
+    public static UserMessageConfirmation SignToGame(String gameTitle,String username,Boolean isComputer)
     {
         boolean signed = false;
+        String message = "";  // can be 1. Success 2.Failed - the game is already full of players 3.the player is already signed to game 4.game is Running
         ePlayerType type = isComputer ? ePlayerType.Computer : ePlayerType.Human;
         Player player = new Player(username,type);
-        GameLogic game = games.get(gameTitle);
-        if((!game.getPlayers().contains(player)) && (game.getPlayers().size() < game.getNumOfPlayers())){
-            game.getPlayers().add(player);
-            game.setNumOfSignedPlayers(game.getNumOfSignedPlayers()+1);
-            signed = true;
+        GameLogic game = games.get(gameTitle).getGameLogic();
+
+        if(!games.get(gameTitle).runningGame) {
+
+            if (game.getPlayers().size() < game.getNumOfPlayers()) {
+                if (!game.getPlayers().contains(player)) {
+                    game.getPlayers().add(player);
+                    gamesInfo.get(gameTitle).updateSignedPlayers();
+                    game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
+                    signedPlayersVersion++;
+                    signed = true;
+
+                } else {
+
+                      message = String.format("User %s is already signed to %s game !", username, gameTitle);
+                }
+            } else {
+
+                     message = String.format("Game %s if full of players, try another time !", gameTitle);
+            }
+        }else{
+                    message = String.format("Game %s if already started, try another time !", gameTitle);
         }
-        return signed;
+
+
+        return new UserMessageConfirmation(signed,message);
     }
 
 
@@ -74,7 +96,7 @@ public final class AppManager {
     }
 
     public void StartGame(String gameTitle){
-        games.get(gameTitle).startGame();
+        games.get(gameTitle).getGameLogic().startGame();
     }
 
 
