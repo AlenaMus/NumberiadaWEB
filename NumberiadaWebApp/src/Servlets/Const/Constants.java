@@ -6,6 +6,7 @@ package Servlets.Const;
     public class Constants {
 
         public static final String USERNAME = "username";
+        public static final String GAME_NUMBER ="gameNumber";
         public static final String GAME_TITLE = "gameTitle";
         public static final String IS_COMPUTER = "isComputer";
         public static final String USER_NAME_ERROR = "username_error";

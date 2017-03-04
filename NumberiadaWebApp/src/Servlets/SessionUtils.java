@@ -56,6 +56,14 @@ public class SessionUtils
         servletContext.setAttribute(Constants.GAME_TITLE, gameTitle);
     }
 
+    public static void setGameNumber(ServletContext servletContext, String gameNumber){
+        servletContext.setAttribute(Constants.GAME_NUMBER, gameNumber);
+    }
+
+    public static int getGameNumber(ServletContext servletContext){
+        return (int) servletContext.getAttribute(Constants.GAME_NUMBER);
+    }
+
     public static void clearGameManager(ServletContext servletContext)
     {
         servletContext.removeAttribute(Constants.GAME_MANAGER);

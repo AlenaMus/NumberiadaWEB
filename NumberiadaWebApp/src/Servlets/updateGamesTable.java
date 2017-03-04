@@ -33,13 +33,16 @@ public class updateGamesTable extends HttpServlet {
 
             if (AppManager.gamesInfo != null)
             {
-                List<Game> games = new ArrayList<>(AppManager.gamesInfo.values());
+                List<Game> games = AppManager.gamesInfo;
 
                 if (Integer.parseInt(request.getParameter("myGamesVersion")) != games.size())
                 {
                     responseVariables.games = games;
                 }
+                responseVariables.listSize = games.size();
                 responseVariables.latestGameVersion = games.size();
+            }else{
+                responseVariables.latestGameVersion = 0;
             }
             Gson json = new Gson();
             PrintWriter out = response.getWriter();
@@ -61,6 +64,7 @@ public class updateGamesTable extends HttpServlet {
     private class ResponseVariables
     {
         public int latestGameVersion;
+        public int listSize = 0;
         public List<Game> games = null;//new ArrayList<>();
     }
 

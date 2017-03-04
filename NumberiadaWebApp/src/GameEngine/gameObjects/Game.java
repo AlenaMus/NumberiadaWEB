@@ -1,15 +1,11 @@
 package GameEngine.gameObjects;
 
-/**
- * Created by Alona on 2/26/2017.
- */
 
 public class Game{
 
         private String userName;
         private String gameTitle;
         private Board board;
-        //private Square[][] gameBoard;
         private int numOfPlayers;
         private int boardSize;
         private int gameNumber;
@@ -28,6 +24,7 @@ public class Game{
         }
 
     public void updateSignedPlayers(){signedPlayers++;}
+
     public int getSignedPlayers(){return signedPlayers;}
 
     public String getUserName() {

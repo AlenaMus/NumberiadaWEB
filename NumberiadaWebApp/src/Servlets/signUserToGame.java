@@ -31,12 +31,13 @@ public class signUserToGame extends HttpServlet
     {
         response.setContentType("application/json");
         HttpSession session = request.getSession(false);
+        String gameNumber = request.getParameter("gameNumber");
         String gameTitle = request.getParameter("gameTitle");
-        SessionUtils.setGameTitle(getServletContext(), gameTitle);
+      //  SessionUtils.setGameNumber(getServletContext(), gameNumber);
         String userName = SessionUtils.getUsername(request);
         Boolean IsComputer = SessionUtils.getIsComputer(request);
         GameManager game = SessionUtils.getGameManager(getServletContext());
-        UserMessageConfirmation messageConfirm = AppManager.SignToGame(gameTitle,userName,IsComputer);
+        UserMessageConfirmation messageConfirm = AppManager.SignToGame(Integer.parseInt(gameNumber),gameTitle,userName,IsComputer);
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
         out.print(json.toJson(messageConfirm));

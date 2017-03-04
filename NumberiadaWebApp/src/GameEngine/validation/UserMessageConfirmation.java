@@ -6,10 +6,12 @@ package GameEngine.validation;
 public class UserMessageConfirmation {
     private boolean success = false;
     private String message = "";
+    private int playersUpdateNum;
 
-    public UserMessageConfirmation(boolean success,String message){
+    public UserMessageConfirmation(boolean success,String message,int playersUpdate){
         this.success = success;
         this.message = message;
+       this.playersUpdateNum = playersUpdate;
     }
 
     public boolean isSuccess() {
@@ -26,5 +28,13 @@ public class UserMessageConfirmation {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getPlayersUpdateNum() {
+        return playersUpdateNum;
+    }
+
+    public void setPlayersUpdateNum(int playersUpdateNum) {
+        this.playersUpdateNum = playersUpdateNum;
     }
 }

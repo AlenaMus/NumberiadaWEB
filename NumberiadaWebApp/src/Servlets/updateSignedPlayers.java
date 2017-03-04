@@ -38,9 +38,9 @@ public class updateSignedPlayers extends HttpServlet {
 
             if (AppManager.gamesInfo != null)
             {
-                List<Game> games = new ArrayList<>(AppManager.gamesInfo.values());
+                List<Game> games = AppManager.gamesInfo;
 
-                if (Integer.parseInt(request.getParameter("signedPlayersVersion")) < AppManager.signedPlayersVersion)
+                if (Integer.parseInt(request.getParameter("mySignedPlayersVersion")) != AppManager.signedPlayersVersion)
                 {
                     responseVariables.games = games;
                 }

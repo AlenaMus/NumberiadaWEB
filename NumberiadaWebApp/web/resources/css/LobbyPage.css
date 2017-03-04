@@ -332,3 +332,22 @@ dialog {
     font-family:sans-serif;
     padding: 5px 10px 20px 20px;
 }
+
+table#GameBoardTable{
+
+     max-width:100%;
+     border-collapse: collapse;
+     white-space:nowrap;
+
+}
+
+#GameBoardTable td{
+    white-space: nowrap;
+    padding: 0;
+
+}
+
+/*.tdBoard{*/
+    /*white-space: nowrap;*/
+    /*padding: 0;*/
+/*}*/
