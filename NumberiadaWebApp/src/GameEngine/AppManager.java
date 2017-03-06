@@ -41,6 +41,16 @@ public final class AppManager {
         numOfGame++;
     }
 
+    public static GameLogic getGameForUser(Player player){
+
+       for(GameManager gameManager : games.values()){
+           if(gameManager.getGameLogic().getPlayers().contains(player)){
+               return gameManager.getGameLogic();
+           }
+        }
+        return null;
+    }
+
     public void CreateNewGame(Player user,InputStream filePath)throws XmlNotValidException{
         // gameManager.LoadGameFromXmlAndValidate(filePath);
          //games.put(user.getName(), gameManager.getGameLogic());

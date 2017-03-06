@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet"  href="resources/css/GameRoom.css" type="text/css" >
-    <script
-            src="https://code.jquery.com/jquery-3.1.1.js"
-            integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
-            crossorigin="anonymous">
-    </script>
+    <!--<script-->
+            <!--src="https://code.jquery.com/jquery-3.1.1.js"-->
+            <!--integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="-->
+            <!--crossorigin="anonymous">-->
+    <!--</script>-->
+    <script type="text/javascript" src="JavaScript/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="JavaScript/jquery-ui.js"></script>
+    <link rel="stylesheet" href="resources/css/jquery-ui.css" type="text/css">
+    <script type="text/javascript" src="JavaScript/bootstrap.js"></script>
+    <link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="resources/css/GameRoom.css" type="text/css">
     <script id="PageScript" type="text/javascript" src="JavaScript/boardGame.js"></script>
-    <link rel="stylesheet" href="resources/css/board.css" type="text/css"/>
     <title>Game Room</title>
 </head>
 <body>
@@ -94,13 +99,16 @@
             </div>
         </div>
 
-        <div class="col-md-6" id="GameBoardContainer">
-            <table style="margin: 0 auto;" id="GameBoardTable">
-                <thead></thead>
-                <tbody></tbody>
+        <div align="center" class="col-md-6" id="GameBoardContainer">
+            <table  class="Board" id="GameBoardTable">
+
+
+
+
+
             </table>
             <div id="Sounds">
-                <audio id="BackGroundAudio" src="resources/images/Maid with the Flaxen Hair.mp3" loop></audio>
+                <!--<audio id="BackGroundAudio" src="resources/images/Maid with the Flaxen Hair.mp3" loop></audio>-->
             </div>
         </div>
         <div class="players">

@@ -10,13 +10,11 @@ window.mySignedPlayersVersion = 0;
 $(function () {
     $("#Error").hide();
     $("#logoutButton").click(onLogoutClick);
-    $("#gameButton").click(onGameRoomClick);
+  //  $("#gameButton").click(onGameRoomClick);
+    $("#gameButton").click(getFuckingBoard);
     $("#signToGameButton").click(onSignToGameClick);
     $('input[type=file]').bootstrapFileInput();
      initilazeLoadGameForm();
-    $('#showBoardId').click(function () {
-        window.location.href = 'boardGame.html';
-    });
 });
 
 $(window.intervalUpdates = setInterval(function ()
@@ -97,6 +95,11 @@ function updateGamesTable() {
         }
     });
 }
+
+
+
+
+
 
 function onLogoutClick()
 {
@@ -224,6 +227,43 @@ function updateSignedPlayers() {
 
 }
 
+// function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersNumber,signedPlayers,board) {
+//         $("#gamesTable").append("<tr class=GameRow >" +
+//         "<td style=\"text-align: left;\">" + gameNumber + "</td>" +
+//         "<td style=\"text-align: left;\">" + gameTitle + "</td>" +
+//         "<td style=\"text-align: left;\">" + playerName + "</td>" +
+//         "<td style=\"text-align: left;\">" + boardSize + 'X' + boardSize + "</td>" +
+//         "<td style=\"text-align: left;\">" + playersNumber + "</td>" +
+//         "<td style=\"text-align: left; \" valign = bottom><div id = 'playersNumber' style = 'width:100%'></div><button class ='SignToGameButton'>Sign into game</button></td>" +
+//         "<td style=\"text-align:left;\">" + "<button type='submit'  id='showBoardId' >Show Game Board</button>" +
+//         "</td>" +
+//         "</tr>");
+//
+//    // var signedInPlayersID = document.getElementById('playersNumber');
+//      var id = 'signToGame'+ gameNumber;
+//     $('#playersNumber').attr('id',id);
+//     $('#'+id).html(signedPlayers);
+//     //signedInPlayersID.id = 'signToGame'+ gameNumber;
+//    // $('#'+signedInPlayersID.id).html(signedPlayers);
+//
+//     var gameBoardView = document.getElementById('showBoardId');
+//     gameBoardView.id = 'showBoardId'+ gameNumber;
+//     $('#'+ gameBoardView.id).click(function() {
+//         var title = $(this).closest("tr").find("td").eq(1).html();
+//         var gameNumber = $(this).closest("tr").find("td").eq(0).html();
+//         gameBoardPreview(title,gameNumber);
+//
+//     });
+//
+//     $('.SignToGameButton').click(function () {
+//         var title = $(this).closest("tr").find("td").eq(1).html();
+//         var gameNumber = $(this).closest("tr").find("td").eq(0).html();
+//         onSignToGameClick(title,gameNumber);
+//     });
+//
+// }
+
+
 function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersNumber,signedPlayers,board) {
     $("#gamesTable").append("<tr class=GameRow>" +
         "<td style=\"text-align: left;\">" + gameNumber + "</td>" +
@@ -259,6 +299,18 @@ function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersN
     });
 
 }
+
+
+
+
+
+
+
+
+function getFuckingBoard(){
+    window.location.href = 'GameRoom.html';
+}
+
 
 function gameBoardPreview(gameTitle,gameNumber) {
     $.ajax({
@@ -311,8 +363,9 @@ function createBoard(board, size, gameNumber) {
             color = gameBoard[i][j].color.value;
             classColor = chooseSquare(color);
             var idd= i.toString() + j.toString();
-            result.append("<td class='tdBoard'><button class='square' id='boardButton' onclick='chooseSquare()'>"+value+"</button></td>");
+            result.append("<td class='cell'><div class='divButt'><button class='square' id='boardButton' onclick='chooseSquare()'>"+value+"</button></div></td>");
             var button = document.getElementById('boardButton');
+            button.class = 'square'+color;
             button.id = idd;
             $('#'+button.id).css("background-color",classColor);
         }
@@ -340,30 +393,13 @@ function createBoard(board, size, gameNumber) {
                 break;
             case 6:setcolor = '#f8609f';
                 break;
+            case 100:setcolor = '#89F455';
+                break;
         }
         return setcolor;
     }
 
-    function getBoard(title) {
-        $.ajax({
-            type: 'GET',
-            dataType: 'json',
-            data: {gameTitle: title},
-            url: "updateBoard",
-            timeout: 6000,
-            success: function (board, textStatus, jqXHR) {
-                createBoard(board.gameBoard, board.boardSize, title);
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                if (textStatus === "timeout") {
-                    $("#Error").text("Server Timeout setAction. Try again..").show();
-                }
-                else {
-                    $("#Error").text("Something went wrong setAction. Try again..").show();
-                }
-            }
-        });
-    }
+
 
 
 
