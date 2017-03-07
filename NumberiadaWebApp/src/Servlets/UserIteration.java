@@ -5,10 +5,10 @@
  */
 package Servlets;
 
-
-import GameEngine.AppManager;
 import GameEngine.GameManager;
-import GameEngine.validation.UserMessageConfirmation;
+import GameEngine.gameObjects.Point;
+import Servlets.SessionUtils;
+import Servlets.Const.Constants;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -16,39 +16,49 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
-@WebServlet(name = "signUserToGame", urlPatterns =
+@WebServlet(name = "UserIteration", urlPatterns =
         {
-                "/signUserToGame"
+                "/User-Iteration"
         })
-public class signUserToGame extends HttpServlet
+public class UserIteration extends HttpServlet
 {
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException
     {
-        response.setContentType("application/json");
-        HttpSession session = request.getSession(false);
-
-        String gameNumber = request.getParameter("gameNumber");
-        String gameTitle = request.getParameter("gameTitle");
-
-      //  SessionUtils.setGameNumber(getServletContext(), gameNumber);
-        String userName = SessionUtils.getUsername(request);
-        Boolean IsComputer = SessionUtils.getIsComputer(request);
-        SessionUtils.setGameManager(getServletContext(), AppManager.games.get(gameTitle));
-        UserMessageConfirmation messageConfirm = AppManager.SignToGame(Integer.parseInt(gameNumber),gameTitle,userName,IsComputer);
-        SessionUtils.setPlayerIndex(getServletContext(),Integer.toString(messageConfirm.getPlayersIndex()));
+        GameManager gameManager = SessionUtils.getGameManager(getServletContext());
+        String message="";
+        if (gameManager != null)
+        {
+            switch (request.getParameter(Constants.ACTION_TYPE))
+            {
+                case "userIteration":
+                   message = gameManager.MoveAdvanceMove(makePointFromNum(request, gameManager));
+                    break;
+                case "computerIteration":
+                    gameManager.makeComputerMove();
+                    break;
+               /* case "endTurn":
+                    gameManager.endTurn();
+                    break;*/
+                /*case "quit":
+                    int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+                    gameManager.playerQuitByIndex(playerIndex);
+                    break;*/
+                default:
+                    break;
+            }
+            gameManager.updateGameVersion();
+        }
 
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
-        out.print(json.toJson(messageConfirm));
+        out.print(json.toJson(message));
         out.flush();
     }
-
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -57,7 +67,7 @@ public class signUserToGame extends HttpServlet
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws java.io.IOException if an I/O error occurs
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -72,7 +82,7 @@ public class signUserToGame extends HttpServlet
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * @throws java.io.IOException if an I/O error occurs
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -92,4 +102,10 @@ public class signUserToGame extends HttpServlet
         return "Short description";
     }// </editor-fold>
 
+    private Point makePointFromNum(HttpServletRequest request, GameManager gameManager)
+    {
+        int row = Integer.parseInt(request.getParameter(Constants.ROW));
+        int col = Integer.parseInt(request.getParameter(Constants.COL));
+        return /*gameEngine.convertPointToBoardPoint*/(new Point(row, col));
+    }
 }

@@ -29,7 +29,7 @@ public class updatePlayers extends HttpServlet
             if (userManager != null)
             {
                 List<String> users = userManager.getUsers();
-                if (Integer.parseInt(request.getParameter("myPlayersVersion")) != users.size())
+                if (Integer.parseInt(request.getParameter("myPlayersListVersion")) != users.size())
                 {
                     responseVariables.players = users;
                 }

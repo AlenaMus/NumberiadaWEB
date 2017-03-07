@@ -14,7 +14,7 @@
     <script type="text/javascript" src="JavaScript/bootstrap.js"></script>
     <link rel="stylesheet" href="resources/css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="resources/css/GameRoom.css" type="text/css">
-    <script id="PageScript" type="text/javascript" src="JavaScript/boardGame.js"></script>
+    <script  type="text/javascript" src="JavaScript/GameManager.js"></script>
     <title>Game Room</title>
 </head>
 <body>
@@ -22,7 +22,7 @@
     <div class="toolbarContent">
         <button class="leaveGame" >Leave Game</button>
         <span class="userNameSpan">Hi, Ben</span>
-        <span class="gameStatus">Game status: Waiting for players...</span>
+        <span id="gameStatus">Game status: Waiting for players...</span>
         <span class="logoSpan">
              <img src="resources/images/num3.jpg" class="image"/>
         </span>
@@ -31,7 +31,7 @@
 <div class="mainDiv">
     <div class="winnerDialog">
         <div class="closeEnd" onclick="removeDialog(event)">
-            <img class="closeEnd" src="close.JPG"/>
+            <img class="closeEnd" src="resources/images/close.png"/>
         </div>
         <div class="dialogContent">
             <div class="endDetails">
@@ -57,7 +57,7 @@
     </div>
     <div class="moveListDialog">
         <div class="close" onclick="removeDialog(event)">
-            <img class="close" src="close.JPG"/>
+            <img class="close" src="resources/images/close.png"/>
         </div>
         <h2>Displaying Move List:</h2>
         <div class="moveListBody">
@@ -66,7 +66,7 @@
     </div>
     <div class="replayDialog">
         <div class="closeReplay" onclick="onReplayClose()">
-            <img class="closeEnd" src="close.JPG"/>
+            <img class="closeEnd" src="resources/images/close.png"/>
         </div>
         <div class="replayDialogContent">
             <h2>Displaaying replay board: </h2>
@@ -90,13 +90,26 @@
             <h2 class="CurrentPlayer">Current Player </h2>
         </div>
         <div class="leftDiv">
-            <div class="CurrentPlayerDetails">
+            <!--<div class="CurrentPlayerDetails">-->
 
-                <div id="currentPlayerName" >Name:  </div>
-                <div id="currentPlayerScore">Score:</div>
-                <div id="currentPlayerColor">Color:</div>
-                <div id="currentPlayerType">Type:</div>
-            </div>
+                <table id="CurrentPlayerDetails">
+                    <tr>
+                        <th>Name: </th>
+                        <td> <div id="currentPlayerName" ></div></td>
+                    </tr>
+                    <tr>
+                        <th>Type: </th>
+                        <td><div id="currentPlayerType"></div></td>
+                    </tr>
+                    <tr>
+                        <th>Score: </th>
+                        <td><div id="currentPlayerScore"></div></td>
+                    </tr>
+                    <tr>
+                        <th>Color: </th>
+                        <td><div id="currentPlayerColor"></div></td>
+                    </tr>
+                </table>
         </div>
 
         <div align="center" class="col-md-6" id="GameBoardContainer">
@@ -111,24 +124,47 @@
                 <!--<audio id="BackGroundAudio" src="resources/images/Maid with the Flaxen Hair.mp3" loop></audio>-->
             </div>
         </div>
-        <div class="players">
-            <table class="playersNames">
-                <a>Name</a>
-                <tbody id="playersNamesBody" class="tableBody">
+        <div class="gamePlayersContainer">
+            <table class="players">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Color</th>
+                    <th>Score</th>
+                </tr>
+                </thead>
+                <tbody id="playersInfoTable">
+                <!--<tr>-->
+                    <!--<th scope="row">1</th>-->
+                    <!--<td>Mark</td>-->
+                    <!--<td>Human</td>-->
+                    <!--<td>Red</td>-->
+                    <!--<td>0</td>-->
+                <!--</tr>-->
+
                 </tbody>
             </table>
-            <div class="playersTypes">
-                <a>Type</a>
-                <div class="playersTypesBody"></div>
-            </div>
-            <div class="playerColors">
-                <a>Color</a>
-                <div class="playerColorsBody"></div>
-            </div>
-            <div class="playersScore">
-                <a>Score</a>
-                <div class="playersScoreBody"></div>
-            </div>
+
+            <!--<table class="playersNames">-->
+                <!--<a>Name</a>-->
+                <!--<tbody id="playersNamesBody" class="tableBody">-->
+
+                <!--</tbody>-->
+            <!--</table>-->
+            <!--<div class="playersTypes">-->
+                <!--<a>Type</a>-->
+                <!--<div class="playersTypesBody"></div>-->
+            <!--</div>-->
+            <!--<div class="playerColors">-->
+                <!--<a>Color</a>-->
+                <!--<div class="playerColorsBody"></div>-->
+            <!--</div>-->
+            <!--<div class="playersScore">-->
+                <!--<a>Score</a>-->
+                <!--<div class="playersScoreBody"></div>-->
+            <!--</div>-->
         </div>
     </div>
 </div>

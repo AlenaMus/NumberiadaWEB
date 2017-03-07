@@ -89,6 +89,7 @@ public abstract class GameLogic {
     public abstract boolean switchPlayer();
  //  protected void checkAndSetPlayersXML(GameEngine.jaxb.schema.generated.Players players)throws XmlNotValidException{}
     public abstract boolean isGameOver();
+    private List<Square> cellsToUpdate = new ArrayList<>();
 
 
     public String getGameTitle(){
@@ -132,8 +133,8 @@ public abstract class GameLogic {
 //    }
     public void setFirstPlayer()
     {
-        //setCurrentPlayer(players.get(0));
-      //  currentPlayerIndex = 0;
+        setCurrentPlayer(players.get(0));
+        currentPlayerIndex = 0;
     }
 
     public String getWinner(){
@@ -192,6 +193,10 @@ public abstract class GameLogic {
         }
     }
 
+
+    public List<Square> getSquaresToUpdate(){
+        return cellsToUpdate;
+    }
 
     public void updateDataMove(Point squareLocation){
         int squareValue;
@@ -253,6 +258,13 @@ public abstract class GameLogic {
 
         gameBoard.getGameBoard()[squareLocation.getRow()][squareLocation.getCol()].setValue(Marker.markerSign); //update marker to square
         gameBoard.getGameBoard()[squareLocation.getRow()][squareLocation.getCol()].setColor(GameColor.MARKER);
+
+        Square newMarkerLocation =  gameBoard.getGameBoard()[squareLocation.getRow()][squareLocation.getCol()];
+        Square oldMarkerLocatoion = gameBoard.getGameBoard()[oldMarkerPoint.getRow()-1][oldMarkerPoint.getCol()-1];
+
+        cellsToUpdate.add(oldMarkerLocatoion);
+        cellsToUpdate.add(newMarkerLocation);
+
 
         return squareValue;
     }

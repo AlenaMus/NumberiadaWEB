@@ -2,8 +2,8 @@
  * Created by OR on 2/13/2017.
  */
 
-window.myPlayersVersion = 0;
-window.myGamesVersion = 0;
+window.myPlayersListVersion = 0;
+window.myGamesListVersion = 0;
 window.mySignedPlayersVersion = 0;
 
 
@@ -42,12 +42,12 @@ function updatePlayers() {
     $.ajax({
         type: 'POST',
         url: "updatePlayers",
-        data: {myPlayersVersion: window.myPlayersVersion},
+        data: {myPlayersListVersion: window.myPlayersListVersion},
         dataType: 'json',
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
-            if (data.latestPlayersVersion !== window.myPlayersVersion) {
-                window.myPlayersVersion = data.latestPlayersVersion;
+            if (data.latestPlayersVersion !== window.myPlayersListVersion) {
+                window.myPlayersListVersion = data.latestPlayersVersion;
                 $("#usersList > tr").remove();
                 $.each(data.players, function (index, player) {
                     $("#usersList").append("<tr class=PlayerRow>" +
@@ -71,16 +71,16 @@ function updateGamesTable() {
     $.ajax({
         type: 'POST',
         url: "updateGamesTable",
-        data: {myGamesVersion: window.myGamesVersion},
+        data: {myGamesListVersion: window.myGamesListVersion},
         dataType: 'json',
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
             if(data.games !== null) {
-                if (data.latestGameVersion !== window.myGamesVersion) {
-                    window.myGamesVersion = data.latestGameVersion;
+                if (data.latestGameVersion !== window.myGamesListVersion) {
+                    window.myGamesListVersion = data.latestGameVersion;
                     $("#gamesTable > tr").remove();
                     $.each(data.games, function (index, game) {
-                        updateGamesTableView(game.gameNumber, game.gameTitle, game.userName, game.boardSize, game.numOfPlayers, game.signedPlayers, game.board);
+                        updateGamesTableView(game.gameNumber, game.gameTitle, game.userName, game.boardSize, game.numOfPlayers, game.signedPlayers);
                     });
                 }
             }
@@ -134,7 +134,7 @@ function onSignToGameClick(title,gameNumber)
             {
                 $('#signToGame' + gameNumber).html(messageConfirm.playersUpdateNum);
                   window.mySignedPlayersVersion++;
-                //window.location.href = "gameRoom.html";
+                  window.location.href = "GameRoom.html";
             }
             else
             {
@@ -177,13 +177,13 @@ function initilazeLoadGameForm() {
             dataType: 'json',
             timeout: 6000,
             success: function (gameData, textStatus, jqXHR) {
-                if (gameData !== null) {
-                    addNewGame(gameData.gameTitle, gameData.userName, gameData.boardSize, gameData.numOfPlayers, gameData.gameNumber, gameData.board.gameBoard);
-                    myGamesVersion++;
+                if (gameData.isValidXML == true) {
+                    addNewGame(gameData.game.gameTitle, gameData.game.userName, gameData.game.boardSize, gameData.game.numOfPlayers, gameData.game.gameNumber);
+                    myGamesListVersion++;
                     updateGamesTable();
                 }
                 else
-                    $("#Error").text("Loading Error.. " + gameData).show();
+                    $("#Error").text("Loading Error.. " + gameData.errorMessage).show();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (textStatus === "timeout") {
@@ -264,7 +264,7 @@ function updateSignedPlayers() {
 // }
 
 
-function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersNumber,signedPlayers,board) {
+function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersNumber,signedPlayers) {
     $("#gamesTable").append("<tr class=GameRow>" +
         "<td style=\"text-align: left;\">" + gameNumber + "</td>" +
         "<td style=\"text-align: left;\">" + gameTitle + "</td>" +
@@ -299,10 +299,6 @@ function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersN
     });
 
 }
-
-
-
-
 
 
 

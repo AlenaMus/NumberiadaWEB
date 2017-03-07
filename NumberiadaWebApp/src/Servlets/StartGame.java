@@ -5,10 +5,8 @@
  */
 package Servlets;
 
-
-import GameEngine.AppManager;
 import GameEngine.GameManager;
-import GameEngine.validation.UserMessageConfirmation;
+import GameEngine.gameObjects.Player;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -20,35 +18,58 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
-@WebServlet(name = "signUserToGame", urlPatterns =
+@WebServlet(name = "StartGame", urlPatterns =
         {
-                "/signUserToGame"
+                "/Start-Game"
         })
-public class signUserToGame extends HttpServlet
+public class StartGame extends HttpServlet
 {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+
+        Player currentPlayer = null;
+        String message = "";
         response.setContentType("application/json");
-        HttpSession session = request.getSession(false);
-
-        String gameNumber = request.getParameter("gameNumber");
-        String gameTitle = request.getParameter("gameTitle");
-
-      //  SessionUtils.setGameNumber(getServletContext(), gameNumber);
-        String userName = SessionUtils.getUsername(request);
-        Boolean IsComputer = SessionUtils.getIsComputer(request);
-        SessionUtils.setGameManager(getServletContext(), AppManager.games.get(gameTitle));
-        UserMessageConfirmation messageConfirm = AppManager.SignToGame(Integer.parseInt(gameNumber),gameTitle,userName,IsComputer);
-        SessionUtils.setPlayerIndex(getServletContext(),Integer.toString(messageConfirm.getPlayersIndex()));
-
+        HttpSession session = request.getSession(true);
+        GameManager gameManager = SessionUtils.getGameManager(getServletContext());
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
-        out.print(json.toJson(messageConfirm));
+        int numOfPlayersToStartGame = gameManager.getGameLogic().getNumOfPlayers();
+        int numOfSignedPlayers = gameManager.getGameLogic().getNumOfSignedPlayers();
+
+        if (numOfPlayersToStartGame == numOfSignedPlayers)
+        {
+                message = gameManager.findFirstPlayerToMove();
+                currentPlayer = gameManager.getGameLogic().getCurrentPlayer();
+                out.print(json.toJson(new ResponseVariables(true,message,currentPlayer)));
+        } else
+        {
+            out.print(json.toJson(new ResponseVariables(false, "There is not enough players to start the game")));
+        }
         out.flush();
     }
 
+    private class ResponseVariables
+    {
 
+        public boolean succeedToStartGame;
+        public String message;
+        public Player currentPlayer;
+
+        public ResponseVariables(boolean succeedToStartGame,String message,Player currentPlayer)
+        {
+            this.succeedToStartGame = succeedToStartGame;
+            this.currentPlayer = currentPlayer;
+            this.message = message;
+        }
+
+        public ResponseVariables(boolean succeedToStartGame, String message)
+        {
+            this.succeedToStartGame = succeedToStartGame;
+            this.message = message;
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -91,5 +112,4 @@ public class signUserToGame extends HttpServlet
     {
         return "Short description";
     }// </editor-fold>
-
 }

@@ -35,7 +35,7 @@ public class updateGamesTable extends HttpServlet {
             {
                 List<Game> games = AppManager.gamesInfo;
 
-                if (Integer.parseInt(request.getParameter("myGamesVersion")) != games.size())
+                if (Integer.parseInt(request.getParameter("myGamesListVersion")) != games.size())
                 {
                     responseVariables.games = games;
                 }

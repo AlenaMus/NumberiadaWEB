@@ -7,11 +7,21 @@ public class UserMessageConfirmation {
     private boolean success = false;
     private String message = "";
     private int playersUpdateNum;
+    private int playersIndex;
 
-    public UserMessageConfirmation(boolean success,String message,int playersUpdate){
+    public UserMessageConfirmation(boolean success,String message,int playersUpdate,int index){
         this.success = success;
         this.message = message;
        this.playersUpdateNum = playersUpdate;
+        this.playersIndex = index;
+    }
+
+    public int getPlayersIndex() {
+        return playersIndex;
+    }
+
+    public void setPlayersIndex(int playersIndex) {
+        this.playersIndex = playersIndex;
     }
 
     public boolean isSuccess() {

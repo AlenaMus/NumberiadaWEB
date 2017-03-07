@@ -74,28 +74,37 @@ public class SessionUtils
         request.getSession().invalidate();
     }
 
-    public static void setPlayersVersion(ServletContext servletContext, int[] playersVersion)
-    {
-        initArray(playersVersion);
-        servletContext.setAttribute(Constants.PLAYERS_VERSION, playersVersion);
+    public static void setPlayerIndex(ServletContext servletContext, String playerIndex){
+        servletContext.setAttribute(Constants.PLAYER_INDEX, playerIndex );
     }
+
+    public static int getPlayerIndex(ServletContext servletContext){
+        return (int) servletContext.getAttribute(Constants.PLAYER_INDEX);
+    }
+
+
+//    public static void setPlayersVersion(ServletContext servletContext, int[] playersVersion)
+//    {
+//        initArray(playersVersion);
+//        servletContext.setAttribute(Constants.PLAYERS_VERSION, playersVersion);
+//    }
 
     public static int[] getPlayersVersion(ServletContext servletContext)
     {
         return (int[]) servletContext.getAttribute(Constants.PLAYERS_VERSION);
     }
 
-    public static void setPlayerVersionByIndex(ServletContext servletContext, int playerIndex, int playerVersion)
-    {
-        getPlayersVersion(servletContext)[playerIndex] = playerVersion;
-    }
-
-    private static void initArray(int[] playersVersion)
-    {
-        for (int player : playersVersion)
-        {
-            player = 0;
-        }
-    }
+//    public static void setPlayerVersionByIndex(ServletContext servletContext, int playerIndex, int playerVersion)
+//    {
+//        getPlayersVersion(servletContext)[playerIndex] = playerVersion;
+//    }
+//
+//    private static void initArray(int[] playersVersion)
+//    {
+//        for (int player : playersVersion)
+//        {
+//            player = 0;
+//        }
+//    }
 
 }

@@ -16,6 +16,7 @@ public class Player implements Comparable<Player> {
     private BooleanProperty IsActive;
     private StringProperty playerType;
     private StringProperty scoreString;
+    private int playerVersion;
 
     public String getScoreString() {
         return scoreString.get();
@@ -29,13 +30,23 @@ public class Player implements Comparable<Player> {
         this.scoreString.set(scoreString);
     }
 
+    public int getPlayerVersion() {
 
-    public Player(String name ,ePlayerType type){
+        return playerVersion;
+    }
+
+    public void setPlayerVersion(int version){
+        this.playerVersion = version;
+    }
+
+    public Player(String name , ePlayerType type){
 
         this.name = new SimpleStringProperty(name);
         playerType = new SimpleStringProperty(String.valueOf(type));
         score = new SimpleIntegerProperty(0);
+        color = new SimpleIntegerProperty();
         numOfMoves = 0;
+        playerVersion = 0;
 
     }
 
@@ -78,12 +89,18 @@ public class Player implements Comparable<Player> {
     }
 
 
+    public int getColor() {
+        return color.get();
+    }
 
-
+    public void setColor(int color) {
+        this.color.set(color);
+    }
 
     public Player()
     {
         IsActive = new SimpleBooleanProperty(true);
+
         name = new SimpleStringProperty();
         id = new SimpleIntegerProperty();
         playerType = new SimpleStringProperty();
@@ -106,15 +123,9 @@ public class Player implements Comparable<Player> {
         this.score.setValue(score);
     }
 
-    public String getPlayerColor() {return playerColor.get();}
-    public StringProperty playerColorProperty() {return playerColor;}
-    public void setPlayerColor(String playerColor) {this.playerColor.set(playerColor);}
+
     public IntegerProperty colorProperty() {return color;}
-    public void setColor(int color) {this.color.set(color);}
-    public int getColor()
-    {
-        return color.get();
-    }
+
 
     public IntegerProperty idProperty() {return id;}
     public IntegerProperty scoreProperty() {return score;}

@@ -9,6 +9,7 @@ package Servlets;
 import GameEngine.GameManager;
 import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.ePlayerType;
+import Servlets.Const.Constants;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -33,17 +34,12 @@ public class GetGamePlayers extends HttpServlet
         response.setContentType("application/json");
         ResponseVariables responseVariables = new ResponseVariables();
         HttpSession session = request.getSession(false);
-        Player or = new Player("or",ePlayerType.Computer);
-        Player moshe = new Player("moshe",ePlayerType.Human);
-        responseVariables.checkPlayer = or;
-        responseVariables.checkPlayer2 = moshe;
         GameManager game = SessionUtils.getGameManager(getServletContext());
+
         responseVariables.players = game.getGameLogic().getPlayers();
         responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
-        //responseVariables.numOfHumans = game.getNumOfActiveHumanPlayers();
-        //responseVariables.numOfHumansToStart = game.getGameSettings().getNumOfHumans();
         responseVariables.numOfPlayers = responseVariables.players.size();
-        //responseVariables.myPlayerIndex = game.getMyPlayerIndexByName((String) session.getAttribute(Constants.USERNAME));
+        responseVariables.myPlayerIndex = game.getMyPlayerIndexByName((String) session.getAttribute(Constants.USERNAME));
         //responseVariables.lastJoinedIndex = game.getLastActivateIndexPlayer();
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
@@ -53,15 +49,15 @@ public class GetGamePlayers extends HttpServlet
 
     private class ResponseVariables
     {
-        public Player checkPlayer;
-        public Player checkPlayer2;
+       // public Player checkPlayer;
+       // public Player checkPlayer2;
         public List<Player> players;
-        public int numOfHumans;
+       // public int numOfHumans;
         public Player currPlayer;
         public int numOfPlayers;
         public int myPlayerIndex;
-        public int numOfHumansToStart;
-        public int lastJoinedIndex;
+       // public int numOfHumansToStart;
+       // public int lastJoinedIndex;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

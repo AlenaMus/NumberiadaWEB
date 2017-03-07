@@ -7,6 +7,7 @@ import GameEngine.gameObjects.ePlayerType;
 import GameEngine.logic.GameLogic;
 import GameEngine.validation.UserMessageConfirmation;
 import GameEngine.validation.XmlNotValidException;
+import Servlets.SessionUtils;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -64,7 +65,11 @@ public final class AppManager {
         String message = "";  // can be 1. Success 2.Failed - the game is already full of players 3.the player is already signed to game 4.game is Running
         ePlayerType type = isComputer ? ePlayerType.Computer : ePlayerType.Human;
         Player player = new Player(username,type);
+
         GameLogic game = games.get(gameTitle).getGameLogic();
+        int playerColor = game.getNumOfSignedPlayers();
+        player.setColor(playerColor+1);
+        int playerIndex =playerColor;
 
         if(!games.get(gameTitle).runningGame) {
 
@@ -91,7 +96,7 @@ public final class AppManager {
         }
 
         numOfPlayersToGame = gamesInfo.get(gameNumber-1).getSignedPlayers();
-        return new UserMessageConfirmation(signed,message,numOfPlayersToGame);
+        return new UserMessageConfirmation(signed,message,numOfPlayersToGame,playerIndex);
     }
 
 

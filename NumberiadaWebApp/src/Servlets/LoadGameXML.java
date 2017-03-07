@@ -2,6 +2,7 @@ package Servlets;
 
 import GameEngine.AppManager;
 import GameEngine.GameManager;
+import GameEngine.gameObjects.Game;
 import Servlets.Const.Constants;
 import com.google.gson.Gson;
 
@@ -40,7 +41,7 @@ public class LoadGameXML extends HttpServlet {
                 AppManager.AddNewGame(gameManager,gameManager.getGameTitle());
                 if(!GameManager.gameExists){
                     GameManager.gameExists = true;
-                    out.print(json.toJson(gameManager.getNewGameData(userName)));
+                    out.print(json.toJson(new xmlDataValidation(true,gameManager.getNewGameData(userName))));
                     out.flush();
                 }else{
                     out.print(json.toJson("There is already an existing game..."));
@@ -48,7 +49,7 @@ public class LoadGameXML extends HttpServlet {
                 }
 
             } catch (Exception ex){
-                out.print(json.toJson(ex.getMessage()));
+                out.print(json.toJson(new xmlDataValidation(false,ex.getMessage())));
                 out.flush();
             }
 
@@ -95,6 +96,26 @@ public class LoadGameXML extends HttpServlet {
     {
         return "Short description";
     }// </editor-fold>
+
+    private class xmlDataValidation{
+
+       public boolean isValidXML = false;
+        public Game game = null;
+        public String errorMessage="";
+
+        public xmlDataValidation(boolean isValidXML,Game game){
+            this.isValidXML = isValidXML;
+            this.game = game;
+        }
+
+        public xmlDataValidation(boolean isValidXML,String error){
+            this.isValidXML = isValidXML;
+            this.errorMessage = error;
+        }
+
+
+
+    }
 }
 
 
