@@ -63,7 +63,7 @@ public final class AppManager {
 
        // int gameNumber = Integer.parseInt(gameNumber1);
         //int index = Integer.parseInt(playerIndex);
-        playersGameVersion.get(gameNumber).set(index,gameVersion);
+        playersGameVersion.get(gameNumber).add(index,gameVersion);
     }
 
 

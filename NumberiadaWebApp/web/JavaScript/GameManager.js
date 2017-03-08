@@ -349,14 +349,40 @@ function buildGameBoard(board,size) {
 
             cell = $('<td>', {class: 'cell', align: 'center'});
             var div = $('<div>',{class:'divButt',align: 'center'});
-            var button = $('<button/>', {class: 'square',text: value, id: 'butt', "row": i, "col": j,align: 'center'});
+            var button = $('<button/>', {class: 'square',text: value, id: buttId, align: 'center',row: i, col: j}); //id: 'butt',"row": i, "col": j,
             button.id = buttId;
-            button.onclick = clickedSquare();
-           // $('.square').click(clickedSquare(this));
             button.css("background-color",classColor);
             div.append(button);
             cell.append(div);
             cell.appendTo(boardRow);
+
+           //  $('.divButt').on('click','.square',function() {
+            $('#'+buttId).on('click',function() {
+                 var row = $(this).attr("row");
+                 var col = $(this).attr("col");
+                  clickedSquare(row,col);
+            //     if(window.isGameStarted == true) {
+            //
+            //         var row =  $(this).attr('row');
+            //         var col =  $(this).attr('col');
+            //
+            //         $.ajax({
+            //             type: 'POST',
+            //             data: {row: row, col: col, actionType: "userIteration"},
+            //             url: "User-Iteration",
+            //             timeout: 6000,
+            //             dataType: 'json',
+            //             success: function (message) {
+            //                 console.log("pressed button success"+message);
+            //                 $('#gameStatus').html(message);
+            //             },
+            //             error: function (textStatus) {
+            //                 //setCellClick();
+            //                 $("#Error").text("A temporary problem").show();
+            //             }
+            //         });
+            //     }
+             });
 
 
         }
@@ -390,11 +416,8 @@ function chooseSquare(color){
 
 
 
-function clickedSquare(){
+function clickedSquare(row,col){
     if(window.isGameStarted == true) {
-
-        var row = $(this).attr("row");
-        var col = $(this).attr("col");
 
         $.ajax({
             type: 'POST',

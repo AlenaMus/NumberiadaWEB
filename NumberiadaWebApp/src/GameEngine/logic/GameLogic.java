@@ -113,7 +113,7 @@ public void clearCellsToUpdate(){
         int newScore = currentPlayer.getScore()+squareValue;
         currentPlayer.setNumOfMoves(currentPlayer.getNumOfMoves()+1); //maybe do totalmoves var in gameManager
         currentPlayer.scoreProperty().set(newScore);
-        currentPlayer.scoreStringProperty().set(String.valueOf(newScore));
+        //currentPlayer.scoreStringProperty().set(String.valueOf(newScore));
     }
 
 //    public void updateHistory(Point chosenSquare){

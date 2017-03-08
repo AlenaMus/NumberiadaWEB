@@ -47,6 +47,7 @@ public class Player implements Comparable<Player> {
         color = new SimpleIntegerProperty();
         numOfMoves = 0;
         playerVersion = 0;
+        //scoreString = new SimpleStringProperty("0");
 
     }
 
