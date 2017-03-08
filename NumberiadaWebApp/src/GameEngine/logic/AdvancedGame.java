@@ -12,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class AdvancedGame extends GameLogic{
 
-    public static final int MIN_PLAYERS = 3;
+    public static final int MIN_PLAYERS = 2;
     public static final int MAX_PLAYERS = 6;
 
 

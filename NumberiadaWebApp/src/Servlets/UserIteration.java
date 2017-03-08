@@ -104,8 +104,10 @@ public class UserIteration extends HttpServlet
 
     private Point makePointFromNum(HttpServletRequest request, GameManager gameManager)
     {
-        int row = Integer.parseInt(request.getParameter(Constants.ROW));
-        int col = Integer.parseInt(request.getParameter(Constants.COL));
-        return /*gameEngine.convertPointToBoardPoint*/(new Point(row, col));
+        String row1 = request.getParameter(Constants.ROW);
+        String col1 = request.getParameter(Constants.COL);
+        int row = Integer.parseInt(row1);
+        int col = Integer.parseInt(col1);
+        return new Point(row, col);
     }
 }

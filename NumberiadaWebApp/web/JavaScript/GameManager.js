@@ -349,8 +349,10 @@ function buildGameBoard(board,size) {
 
             cell = $('<td>', {class: 'cell', align: 'center'});
             var div = $('<div>',{class:'divButt',align: 'center'});
-            var button = $('<button/>', {class: 'square',text: value, id: 'butt', "row": i, "col": j,align: 'center',click:clickedSquare()});
+            var button = $('<button/>', {class: 'square',text: value, id: 'butt', "row": i, "col": j,align: 'center'});
             button.id = buttId;
+            button.onclick = clickedSquare();
+           // $('.square').click(clickedSquare(this));
             button.css("background-color",classColor);
             div.append(button);
             cell.append(div);
