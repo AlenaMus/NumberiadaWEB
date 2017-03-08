@@ -5,6 +5,7 @@
  */
 package Servlets;
 
+import GameEngine.AppManager;
 import GameEngine.GameManager;
 import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.Square;
@@ -35,7 +36,7 @@ public class GameUpdates extends HttpServlet
         if (gameManager != null)
         {
             int playerVersion = Integer.parseInt(request.getParameter(Constants.PLAYER_VERSION));
-           // int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+            int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
 
 
             if (isPlayerUpToDate(playerVersion, playerIndex, gameManager))
@@ -44,19 +45,18 @@ public class GameUpdates extends HttpServlet
 
             } else
             {
-                writeJasonRespons(false, response);
+                writeJasonResponse(false, response);
             }
         }
     }
 
-    private void clearData(GameManager gameEngine)
+    private void clearData(GameManager gameManager)
     {
-//        gameEngine.clearCellsToUpdate();
-//        gameEngine.clearDeletedPlayerIndex();
-//        if (gameEngine.isGameOver())
-//        {
-//            SessionUtils.clearGameManager(getServletContext());
-//        }
+          gameManager.getGameLogic().clearCellsToUpdate();
+        if (gameManager.getGameLogic().isGameOver())
+        {
+            AppManager.initPlayersGameVersions(gameManager.getGameNumber());
+        }
     }
 
     private void getUpdatesFromGame(GameManager gameManager, JasonResponse jasonResponse, HttpServletResponse response) throws IOException
@@ -72,8 +72,8 @@ public class GameUpdates extends HttpServlet
         jasonResponse.currentPlayer = gameManager.getGameLogic().getCurrentPlayer();
         jasonResponse.latestGameVersion = gameManager.getGameVersion();
         jasonResponse.computerTurn = gameManager.isComputerTurn();
-        jasonResponse.allPlayersAreUpToDate = areAllPlayersUpTODate(SessionUtils.getPlayersVersion(getServletContext()), gameManager);
-        writeJasonRespons(jasonResponse, response);
+        jasonResponse.allPlayersAreUpToDate = AppManager.checkGamePlayersVersionUpToDate(gameManager.getGameNumber(),gameManager.getGameVersion());   //areAllPlayersUpTODate(SessionUtils.getPlayersVersion(getServletContext()), gameManager);
+        writeJasonResponse(jasonResponse, response);
         if (jasonResponse.allPlayersAreUpToDate)
         {
             clearData(gameManager);
@@ -128,13 +128,13 @@ public class GameUpdates extends HttpServlet
         {
             int index = Integer.parseInt(String.valueOf(SessionUtils.getPlayerIndex(getServletContext())));
             gameManager.getGameLogic().getPlayers().get(index).setPlayerVersion(gameManager.getGameVersion());
-            //SessionUtils.setPlayerVersionByIndex(getServletContext(), playerIndex, playerVersion + 1);
+            AppManager.updatePlayersVersion(gameManager.getGameNumber(),playerIndex,gameManager.getGameVersion());
             return true;
         }
         return false;
     }
 
-    private void writeJasonRespons(Object jasonResponse, HttpServletResponse response) throws IOException
+    private void writeJasonResponse(Object jasonResponse, HttpServletResponse response) throws IOException
     {
         try (PrintWriter out = response.getWriter())
         {
@@ -143,24 +143,11 @@ public class GameUpdates extends HttpServlet
         }
     }
 
-    private boolean areAllPlayersUpTODate(int[] playersVersion, GameManager gameEngine)
-    {
-        boolean isSuccess = true;
-        for (int i = 0; i < playersVersion.length; i++)
-        {
-           // if (gameEngine.isPlayerByIndexIsHuman(i) && playersVersion[i] != gameEngine.getGameVersion())
-           // {
-           //     isSuccess = false;
-           // }
-        }
-        return isSuccess;
-    }
 
     private class JasonResponse
     {
         public int latestGameVersion;
         public Player currentPlayer;
-        //public int DeletedPlayerIndex = -1;
         public int lastPlayerIndexWhoQuit = -1; //should be the index of the player who did quit.
         public boolean allPlayersAreUpToDate = false;
         public String winner;

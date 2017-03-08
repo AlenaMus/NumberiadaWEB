@@ -91,7 +91,9 @@ public abstract class GameLogic {
     public abstract boolean isGameOver();
     private List<Square> cellsToUpdate = new ArrayList<>();
 
-
+public void clearCellsToUpdate(){
+     cellsToUpdate.clear();
+}
     public String getGameTitle(){
         return gameTitle;
     }

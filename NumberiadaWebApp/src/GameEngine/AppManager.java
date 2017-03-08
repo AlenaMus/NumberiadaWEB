@@ -9,6 +9,7 @@ import GameEngine.validation.UserMessageConfirmation;
 import GameEngine.validation.XmlNotValidException;
 import Servlets.SessionUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,12 +26,58 @@ public final class AppManager {
     public static List<Game> gamesInfo = new ArrayList<>();
     public static UsersManager userManager = new UsersManager();
     public static int numOfGame = 0;
+    public static List<ArrayList<Integer>> playersGameVersion = new ArrayList<>();
+
+
+
+    public static void initPlayersGameVersions(int gameNumber){ //init gameVersion for all players
+       int version = 0;
+        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
+           playersGameVersion.get(gameNumber).set(i,version);
+        }
+    }
+
+    public static void createPlayersGameVersionList(int gameNumber){
+        playersGameVersion.add(gameNumber,new ArrayList<Integer>());
+    }
+
+    public static void setPlayersGameVersionList(int gameNumber, List<Player> players){
+
+        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
+            playersGameVersion.get(gameNumber).set(i,players.get(i).getPlayerVersion());
+        }
+    }
+
+    public static boolean checkGamePlayersVersionUpToDate(int gameNumber,int gameVersion){
+        int version;
+        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
+            version = playersGameVersion.get(gameNumber).get(i);
+            if(version != gameVersion){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void updatePlayersVersion(int gameNumber,int index,int gameVersion){
+
+       // int gameNumber = Integer.parseInt(gameNumber1);
+        //int index = Integer.parseInt(playerIndex);
+        playersGameVersion.get(gameNumber).set(index,gameVersion);
+    }
+
+
+    public static void initGamesVersion(){
+
+        for(int i = 0;i < playersGameVersion.size();i++){
+            initPlayersGameVersions(i);
+        }
+    }
+
 
     private AppManager(){
         gameManager = new GameManager();
     }
-
-
     public static void AddNewGameInfo(Game game){
 
         //gamesInfo.put(game.getGameTitle(),game);
@@ -39,7 +86,9 @@ public final class AppManager {
     public static void AddNewGame(GameManager gameManager,String title){
 
         games.put(title,gameManager);
+        gameManager.setGameNumber(numOfGame);
         numOfGame++;
+
     }
 
     public static GameLogic getGameForUser(Player player){
@@ -65,22 +114,19 @@ public final class AppManager {
         String message = "";  // can be 1. Success 2.Failed - the game is already full of players 3.the player is already signed to game 4.game is Running
         ePlayerType type = isComputer ? ePlayerType.Computer : ePlayerType.Human;
         Player player = new Player(username,type);
-
+        int playerIndex = 0;
         GameLogic game = games.get(gameTitle).getGameLogic();
         int playerColor = game.getNumOfSignedPlayers();
         player.setColor(playerColor+1);
-        int playerIndex =playerColor;
-
         if(!games.get(gameTitle).runningGame) {
 
             if (game.getPlayers().size() < game.getNumOfPlayers()) {
                 if (!game.getPlayers().contains(player)) {
                     game.getPlayers().add(player);
-                    System.out.println(player.toString());
+                    playerIndex = game.getNumOfSignedPlayers()-1;
                     gamesInfo.get(gameNumber-1).updateSignedPlayers();
                     game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
                     signedPlayersVersion++;
-                    System.out.println(signedPlayersVersion);
                     signed = true;
 
                 } else {

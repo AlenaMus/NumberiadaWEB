@@ -12,6 +12,7 @@ import GameEngine.gameObjects.ePlayerType;
 import Servlets.Const.Constants;
 import com.google.gson.Gson;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,7 +40,7 @@ public class GetGamePlayers extends HttpServlet
         responseVariables.players = game.getGameLogic().getPlayers();
         responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
         responseVariables.numOfPlayers = responseVariables.players.size();
-        responseVariables.myPlayerIndex = game.getMyPlayerIndexByName((String) session.getAttribute(Constants.USERNAME));
+        responseVariables.myPlayerIndex = SessionUtils.getPlayerIndex(getServletContext());
         //responseVariables.lastJoinedIndex = game.getLastActivateIndexPlayer();
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
@@ -49,8 +50,6 @@ public class GetGamePlayers extends HttpServlet
 
     private class ResponseVariables
     {
-       // public Player checkPlayer;
-       // public Player checkPlayer2;
         public List<Player> players;
        // public int numOfHumans;
         public Player currPlayer;

@@ -35,12 +35,13 @@ public class signUserToGame extends HttpServlet
         String gameNumber = request.getParameter("gameNumber");
         String gameTitle = request.getParameter("gameTitle");
 
-      //  SessionUtils.setGameNumber(getServletContext(), gameNumber);
+        SessionUtils.setGameNumber(getServletContext(), gameNumber);
         String userName = SessionUtils.getUsername(request);
         Boolean IsComputer = SessionUtils.getIsComputer(request);
         SessionUtils.setGameManager(getServletContext(), AppManager.games.get(gameTitle));
         UserMessageConfirmation messageConfirm = AppManager.SignToGame(Integer.parseInt(gameNumber),gameTitle,userName,IsComputer);
-        SessionUtils.setPlayerIndex(getServletContext(),Integer.toString(messageConfirm.getPlayersIndex()));
+        String indexOfPlayer =Integer.toString(messageConfirm.getPlayersIndex());
+        SessionUtils.setPlayerIndex(getServletContext(),indexOfPlayer);
 
         Gson json = new Gson();
         PrintWriter out = response.getWriter();

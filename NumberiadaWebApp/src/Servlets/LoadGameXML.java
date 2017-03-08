@@ -39,6 +39,7 @@ public class LoadGameXML extends HttpServlet {
             {
                 gameManager.LoadGameFromXmlAndValidate(loadGameFile);
                 AppManager.AddNewGame(gameManager,gameManager.getGameTitle());
+                AppManager.createPlayersGameVersionList(gameManager.getGameNumber());
                 if(!GameManager.gameExists){
                     GameManager.gameExists = true;
                     out.print(json.toJson(new xmlDataValidation(true,gameManager.getNewGameData(userName))));

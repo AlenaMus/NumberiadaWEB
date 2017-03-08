@@ -32,9 +32,18 @@ public class GameManager {
     private GameLogic gameLogic = null;
     private String gameTitle = "";
     private int gameVersion = 0;
+    private int gameNumber = 0;
     public GameLogic getGameLogic(){return gameLogic;}
 
 
+
+    public void setGameNumber(int gameNumber){
+        this.gameNumber = gameNumber;
+    }
+
+    public int getGameNumber(){
+        return this.gameNumber;
+    }
 
     public int getGameVersion() {
         return gameVersion;
@@ -129,6 +138,7 @@ public class GameManager {
                 gameLogic.setGameType(eGameType.valueOf(gameType));
                 gameLogic.checkXMLData(loadedGame);
                 gameLogic.loadDataFromJaxbToGame(loadedGame,gameType);
+
                // AppManager.AddNewGame(this,gameTitle);
 
             }else{
@@ -145,6 +155,7 @@ public String findFirstPlayerToMove() {
       runningGame = true;
       String message ="";
 
+    AppManager.setPlayersGameVersionList(gameNumber,getGameLogic().getPlayers());
 //        if(GameManager.gameRound > 0){
 //                restartGame();
 //            }else {

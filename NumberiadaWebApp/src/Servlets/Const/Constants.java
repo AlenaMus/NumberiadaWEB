@@ -24,7 +24,7 @@ package Servlets.Const;
         public static final String PLAYER_TYPE = "playerType";
         public static final String IS_GAME_EXIST = "game";
         public static final String IS_GAME_RUN = "gameRun";
-        public static final String PLAYER_VERSION = "myGameVerion";
+        public static final String PLAYER_VERSION = "myPlayerGameVersion";
         public static final String PLAYERS_VERSION = "myGameVerion";
         public static final String PLAYER_INDEX = "playerIndex";
         public static final String SELECTED_PLAYER_INDEX = "selectedPlayerIndex";

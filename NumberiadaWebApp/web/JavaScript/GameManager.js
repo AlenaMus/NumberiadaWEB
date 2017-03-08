@@ -1,8 +1,7 @@
 window.playSound = true;
-window.playerVerion = 0;
+window.playerGameVersion = 0;
 
 window.CurrPlayerIndex = 0;
-//window.intervalUpdates = 0;
 window.playersUpdates = 0;
 window.intervalStartGame = 0;
 window.intervalGameUpdates=0;
@@ -129,12 +128,12 @@ function getGameUpdate()
 {
     $.ajax({
     type: 'POST',
-    data: {myGameVerion: window.playerVerion}, //playerIndex: window.myPlayerIndex},
+    data: {myPlayerGameVersion: window.playerGameVersion, playerIndex: window.myPlayerIndex},
     url: "Game-Updates",
     dataType: "json",
     timeout: 6000,
     success: function (data, textStatus, jqXHR) {
-    if (data !== false && data.latestGameVersion !== window.playerVerion)
+    if (data !== false && data.latestGameVersion !== window.playerGameVersion)
     {
         updateBoardAfterMove(data);
 
@@ -166,7 +165,7 @@ function updateBoardAfterMove(data) {
     time = data.computerTurn === true ? 500 : 200;
 
     if (data.cellToUpdate !== undefined && data.cellToUpdate !== null) {
-        window.playerVerion++;
+        window.playerGameVersion++;
         window.CurrPlayerIndex = data.currentPlayerIndex;
 
         data.cellToUpdate.forEach(function (square) {

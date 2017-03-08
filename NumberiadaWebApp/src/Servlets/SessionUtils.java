@@ -75,11 +75,12 @@ public class SessionUtils
     }
 
     public static void setPlayerIndex(ServletContext servletContext, String playerIndex){
-        servletContext.setAttribute(Constants.PLAYER_INDEX, playerIndex );
+        servletContext.setAttribute(Constants.PLAYER_INDEX, playerIndex);
     }
 
     public static int getPlayerIndex(ServletContext servletContext){
-        return (int) servletContext.getAttribute(Constants.PLAYER_INDEX);
+        String playerIndex = servletContext.getAttribute(Constants.PLAYER_INDEX).toString();
+        return Integer.parseInt(playerIndex);
     }
 
 
