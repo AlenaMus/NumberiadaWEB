@@ -11,10 +11,7 @@ import Servlets.SessionUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class AppManager {
 
@@ -29,7 +26,6 @@ public final class AppManager {
     public static List<ArrayList<Integer>> playersGameVersion = new ArrayList<>();
 
 
-
     public static void initPlayersGameVersions(int gameNumber){ //init gameVersion for all players
        int version = 0;
         for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
@@ -37,14 +33,14 @@ public final class AppManager {
         }
     }
 
-    public static void createPlayersGameVersionList(int gameNumber){
+    public static void createPlayersGameVersionList(int gameNumber){ //loadXml
         playersGameVersion.add(gameNumber,new ArrayList<Integer>());
     }
 
-    public static void setPlayersGameVersionList(int gameNumber, List<Player> players){
+    public static void setPlayersGameVersionList(int gameNumber, List<Player> players){ //start new Game
 
-        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
-            playersGameVersion.get(gameNumber).set(i,players.get(i).getPlayerVersion());
+        for(int i=0; i < players.size();i++){
+            playersGameVersion.get(gameNumber).add(players.get(i).getPlayerVersion());
         }
     }
 
@@ -60,10 +56,12 @@ public final class AppManager {
     }
 
     public static void updatePlayersVersion(int gameNumber,int index,int gameVersion){
+        if(playersGameVersion.get(gameNumber).size() > index){
+            playersGameVersion.get(gameNumber).set(index,gameVersion);
+        }else{
+            playersGameVersion.get(gameNumber).add(gameVersion);
+        }
 
-       // int gameNumber = Integer.parseInt(gameNumber1);
-        //int index = Integer.parseInt(playerIndex);
-        playersGameVersion.get(gameNumber).add(index,gameVersion);
     }
 
 
@@ -101,11 +99,6 @@ public final class AppManager {
         return null;
     }
 
-    public void CreateNewGame(Player user,InputStream filePath)throws XmlNotValidException{
-        // gameManager.LoadGameFromXmlAndValidate(filePath);
-         //games.put(user.getName(), gameManager.getGameLogic());
-
-}
 
     public static UserMessageConfirmation SignToGame(int gameNumber,String gameTitle,String username,Boolean isComputer)
     {
@@ -122,8 +115,9 @@ public final class AppManager {
 
             if (game.getPlayers().size() < game.getNumOfPlayers()) {
                 if (!game.getPlayers().contains(player)) {
+                    playerIndex = game.getNumOfSignedPlayers();
+                    player.setPlayerIndex(playerIndex);
                     game.getPlayers().add(player);
-                    playerIndex = game.getNumOfSignedPlayers()-1;
                     gamesInfo.get(gameNumber-1).updateSignedPlayers();
                     game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
                     signedPlayersVersion++;

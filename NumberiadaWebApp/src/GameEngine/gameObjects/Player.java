@@ -17,6 +17,16 @@ public class Player implements Comparable<Player> {
     private StringProperty playerType;
     private StringProperty scoreString;
     private int playerVersion;
+    private int playerIndex;
+
+
+    public int getPlayerIndex() {
+        return playerIndex;
+    }
+
+    public void setPlayerIndex(int playerIndex) {
+        this.playerIndex = playerIndex;
+    }
 
     public String getScoreString() {
         return scoreString.get();
@@ -47,7 +57,7 @@ public class Player implements Comparable<Player> {
         color = new SimpleIntegerProperty();
         numOfMoves = 0;
         playerVersion = 0;
-        //scoreString = new SimpleStringProperty("0");
+        playerIndex = -1;
 
     }
 

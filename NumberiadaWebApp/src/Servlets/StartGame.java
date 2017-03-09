@@ -20,7 +20,7 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "StartGame", urlPatterns =
         {
-                "/Start-Game"
+                "/startGame"
         })
 public class StartGame extends HttpServlet
 {

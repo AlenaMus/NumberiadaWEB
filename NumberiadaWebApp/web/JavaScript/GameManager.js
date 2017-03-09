@@ -1,13 +1,15 @@
 window.playSound = true;
 window.playerGameVersion = 0;
 
+window.myPlayerIndex = 0;
 window.CurrPlayerIndex = 0;
 window.playersUpdates = 0;
+
 window.intervalStartGame = 0;
 window.intervalGameUpdates=0;
 window.quited = false;
 
-window.myPlayerIndex = 0;
+
 window.isGameStarted = false;
 
 
@@ -32,8 +34,6 @@ $(function() {
             updateGamePlayersList();
         }, 300)
     );
-
-
 
 
 $("#quitButton").click(function () {
@@ -74,14 +74,14 @@ alt: "Sound"});
 function checkGameStart() {
     $.ajax({
         type: 'POST',
-        url: "Start-Game",
+        url: "startGame",
         dataType: 'json',
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
             if (data.succeedToStartGame === false) {
                 $('#gameStatus').html(data.message);
             } else {
-                window.isGameStarted = true;
+                 window.isGameStarted = true;
                 $('#gameStatus').html('Game Started!');
                 clearInterval(window.intervalStartGame);
                 if(data.message !== ""){
@@ -106,7 +106,7 @@ function setAction(actionType)
     $.ajax({
     type: 'POST',
     data: {actionType: actionType, playerIndex: window.myPlayerIndex},
-    url: "User-Iteration",
+    url: "userIteration",
     timeout: 6000,
     success: function (data) {
         updateBoardAfterMove(data);
@@ -129,11 +129,11 @@ function getGameUpdate()
     $.ajax({
     type: 'POST',
     data: {myPlayerGameVersion: window.playerGameVersion, playerIndex: window.myPlayerIndex},
-    url: "Game-Updates",
+    url: "gameUpdates",
     dataType: "json",
     timeout: 6000,
     success: function (data, textStatus, jqXHR) {
-    if (data !== false && data.latestGameVersion !== window.playerGameVersion)
+    if ((data !== false) && (window.playerGameVersion!== data.latestGameVersion ))
     {
         updateBoardAfterMove(data);
 
@@ -142,8 +142,8 @@ function getGameUpdate()
         handelGameOver(data);
     }
     else {
-            handelComputerTurn(data);
-            updateCurrentPlayer(data.currentPlayer);
+          handelComputerTurn(data);
+          updateCurrentPlayer(data.currentPlayer);
             //showPlayerTurn(data.currentPlayerIndex);
         }
      }
@@ -166,7 +166,7 @@ function updateBoardAfterMove(data) {
 
     if (data.cellToUpdate !== undefined && data.cellToUpdate !== null) {
         window.playerGameVersion++;
-        window.CurrPlayerIndex = data.currentPlayerIndex;
+        window.CurrPlayerIndex = data.currentPlayer.playerIndex;
 
         data.cellToUpdate.forEach(function (square) {
 
@@ -183,9 +183,13 @@ function updateBoardAfterMove(data) {
 }
 
 function updateCurrentPlayer(currPlayer) {
+    var color = chooseColor(currPlayer.color.value);
+    var fontColor = chooseSquare(currPlayer.color.value);
+    window.CurrPlayerIndex = currPlayer.playerIndex;
     $("#currentPlayerName").text(currPlayer.name.value);
     $("#currentPlayerScore").text(currPlayer.score.value);
-    $("#currentPlayerColor").text(currPlayer.color.value);
+    $("#currentPlayerColor").text(color);
+    $("#currentPlayerColor").css('color',fontColor);
     $("#currentPlayerType").text(currPlayer.playerType.value.toString());
 
 }
@@ -204,32 +208,6 @@ function handelGameOver(data) {
         clearInterval(window.intervalGameUpdates);
 }
 
-
-function chooseSquare(color){
-    var setcolor;
-    switch (color){
-        case 0: setcolor = '#b8a3a3';
-            break;
-        case 1:setcolor = '#f44336';
-            break;
-        case 2:setcolor = '#008CBA';
-            break;
-        case 3:setcolor = '#4CAF50';
-            break;
-        case 4:setcolor = '#f4d42b';
-            break;
-        case 5:setcolor = '#9d3b9c';
-            break;
-        case 6:setcolor = '#f8609f';
-            break;
-        case 100:setcolor ='#89F455';
-            break;
-    }
-    return setcolor;
-}
-
-
-
 //$(function () {
 // $("#BackButton").click(function () {
 //  if (window.quited === false)
@@ -247,7 +225,7 @@ function chooseSquare(color){
 function updateGamePlayersList() {
     $.ajax({
         type: 'POST',
-        url: "Get-Game-Players",
+        url: "getGamePlayers",
         dataType: 'json',
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
@@ -272,11 +250,11 @@ function initilazeGame() {
     $.ajax({
         type: 'POST',
         dataType: 'json',
-        url: "Get-Game-Players",
+        url: "getGamePlayers",
         timeout: 6000,
         success: function (playersData, textStatus, jqXHR) {
 
-            //window.myPlayerIndex = playersData.myPlayerIndex;
+            window.myPlayerIndex = playersData.myPlayerIndex;
             //updateCurrentPlayer(playersData.currPlayer);
             buildPlayersBar(playersData);
             buildGameBoardStructure();
@@ -294,9 +272,6 @@ function initilazeGame() {
     });
 }
 
-
-
-
 function buildGameBoardStructure() {
     $.ajax({
         type: 'GET',
@@ -307,7 +282,6 @@ function buildGameBoardStructure() {
             if(board!=='Error'){
                 buildGameBoard(board.gameBoard,board.boardSize);
             }else{
-
             }
 
         },
@@ -336,7 +310,6 @@ function buildGameBoard(board,size) {
 
     for (var i = 0; i < size; i++) {
         boardRow = $('<tr>', {class: 'boardRow', align: 'center'});
-        //boardRow.css()
         boardRow.appendTo(gameBoard);
 
         for (var j = 0; j < size; j++) {
@@ -356,38 +329,108 @@ function buildGameBoard(board,size) {
             cell.append(div);
             cell.appendTo(boardRow);
 
-           //  $('.divButt').on('click','.square',function() {
             $('#'+buttId).on('click',function() {
                  var row = $(this).attr("row");
                  var col = $(this).attr("col");
                   clickedSquare(row,col);
-            //     if(window.isGameStarted == true) {
-            //
-            //         var row =  $(this).attr('row');
-            //         var col =  $(this).attr('col');
-            //
-            //         $.ajax({
-            //             type: 'POST',
-            //             data: {row: row, col: col, actionType: "userIteration"},
-            //             url: "User-Iteration",
-            //             timeout: 6000,
-            //             dataType: 'json',
-            //             success: function (message) {
-            //                 console.log("pressed button success"+message);
-            //                 $('#gameStatus').html(message);
-            //             },
-            //             error: function (textStatus) {
-            //                 //setCellClick();
-            //                 $("#Error").text("A temporary problem").show();
-            //             }
-            //         });
-            //     }
              });
 
 
         }
     }
 
+}
+
+
+function clickedSquare(row,col){
+    if(window.isGameStarted == true) {
+
+        if (window.myPlayerIndex === window.CurrPlayerIndex) {
+
+            $.ajax({
+                type: 'POST',
+                data: {row: row, col: col, actionType: "userIteration"},
+                url: "userIteration",
+                timeout: 6000,
+                dataType: 'json',
+                success: function (message) {
+                    console.log("pressed button success" + message);
+                    $('#gameStatus').html(message);
+                },
+                error: function (textStatus) {
+                    $("#Error").text("A temporary problem").show();
+                }
+            });
+        }else{
+            $("#Error").text("It is not your turn to move!");
+            $("#Error").dialog({
+                modal: true,
+                title: "Game Board",
+                height: "auto",
+                width: "auto"
+            });
+        }
+    }
+
+}
+
+function buildPlayersBar(players) {
+    for (var i = 0; i < players.numOfPlayers; i++) {
+        var player = players.players[i];
+        setPlayersBar(i, player);
+    }
+}
+
+function setPlayersBar(index, player) {
+
+    var color = chooseColor(player.color.value);
+    var fontColor = chooseSquare(player.color.value);
+
+    $('#playersInfoTable').append("<tr class = playerInfo ><td class='playerCell'>" + index + "</td>" +
+        "<td class='playerCell' >" + player.name.value + "</td>" + //style=\"text-align: left;\"
+        "<td class='playerCell'>" + player.playerType.value + "</td>" +
+        "<td class='playerCell' id ='playerColor'>" + color + "</td>" +
+        "<td class='playerCell'>" + player.score.value + "</td></tr>"); //style=\"text-align: left;\"
+
+    $('#playerColor').attr('id','color'+ player.color.value);
+    $('#color'+player.color.value).css({'color':fontColor});
+
+    $('.playerCell').css({
+        "margin-right": "10px",
+        "margin-left ":"10px",
+        "margin-bottom":"5px",
+        "border": "1px solid #CCC",
+        "height": "30px",
+        "padding": "10px 15px",
+        "background": "#FAFAFA",
+        "text-align": "center",
+        "vertical-align": "middle"
+    });
+
+
+}
+
+function chooseColor(color){
+    var setcolor;
+    switch (color){
+        case 0: setcolor = 'Gray';
+            break;
+        case 1:setcolor = 'Red';
+            break;
+        case 2:setcolor = 'Blue';
+            break;
+        case 3:setcolor = 'Green';
+            break;
+        case 4:setcolor = 'Yellow';
+            break;
+        case 5:setcolor = 'Violet';
+            break;
+        case 6:setcolor = 'Pink';
+            break;
+        case 100:setcolor ='Marker';
+            break;
+    }
+    return setcolor;
 }
 
 
@@ -413,49 +456,6 @@ function chooseSquare(color){
     }
     return setcolor;
 }
-
-
-
-function clickedSquare(row,col){
-    if(window.isGameStarted == true) {
-
-        $.ajax({
-            type: 'POST',
-            data: {row: row, col: col, actionType: "userIteration"},
-            url: "User-Iteration",
-            timeout: 6000,
-            dataType: 'json',
-            success: function (message) {
-                console.log("pressed button success"+message);
-                $('#gameStatus').html(message);
-            },
-            error: function (textStatus) {
-                //setCellClick();
-                $("#Error").text("A temporary problem").show();
-            }
-        });
-    }
-
-}
-
-function buildPlayersBar(players) {
-    for (var i = 0; i < players.numOfPlayers; i++) {
-        var player = players.players[i];
-        setPlayersBar(i, player);
-    }
-}
-
-function setPlayersBar(index, player) {
-    var playerRow = "<br><tr class=PlayerName>" +
-        "<th>index</th>"+
-        "<td style=\"text-align: left;\">" + player.name.value + "</td> "+
-        "<td style=\"text-align: left;\">" + player.playerType.value + "</td>" +
-        "<td style=\"text-align: left;\">" + player.score.value + "</td>" + "</tr>";
-
-    $('#playersInfoTable').append(playerRow);
-
-}
-
 
 
 

@@ -40,7 +40,7 @@ public class signUserToGame extends HttpServlet
         Boolean IsComputer = SessionUtils.getIsComputer(request);
         SessionUtils.setGameManager(getServletContext(), AppManager.games.get(gameTitle));
         UserMessageConfirmation messageConfirm = AppManager.SignToGame(Integer.parseInt(gameNumber),gameTitle,userName,IsComputer);
-        String indexOfPlayer =Integer.toString(messageConfirm.getPlayersIndex());
+        String indexOfPlayer = Integer.toString(messageConfirm.getPlayersIndex());
         SessionUtils.setPlayerIndex(getServletContext(),indexOfPlayer);
 
         Gson json = new Gson();

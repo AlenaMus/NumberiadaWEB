@@ -185,8 +185,8 @@ td.cell{
     border-radius: 14px;
     box-shadow: -1px 0px 3px 1px;
     background: cadetblue;
-    height: 300px;
-    width: 300px;
+    /*height: 300px;*/
+    /*width: 300px;*/
 }
 
 .details > div > {
@@ -233,9 +233,6 @@ td.cell{
     background: gray;
 }
 
-.undefinedChooser{
-
-}
 
 .action{
     border: 1px solid black;
@@ -251,23 +248,36 @@ td.cell{
     cursor: pointer;
 }
 
-.players {
-    margin-left: 1%;
-    margin-right: 1%;
-    display: inline-block;
-    height: 500px;
-    width: 400px;
-    float: right;
-    text-align: center;
-    background: rgb(14, 126, 163);
-    opacity: 0.6;
-    border-radius: 15px;
-    box-shadow: 3px 6px 17px 1px;
-    font-size: 20px;
-    color: #ddd6de;
-    font-style: italic;
-    font-family: Arial;
+
+
+
+#playersInfoTable {
+    border: 1px black solid;
+    border-radius: 6px;
+    width: 100%;
+   /*border-spacing: 0;  */
+    /*border-collapse: separate;*/
+    font: 14px/1.4 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #2d66dc;
+    font-family: Helvetica, Arial, sans-serif;
 }
+
+#playersHead {
+    background: #395870;
+    background: linear-gradient(#49708f, #293f50);
+    color: #fff;
+    font-size: 15px;
+    text-transform: uppercase;
+}
+
+.playersTh {
+    margin: 0px 5px 0px 5px;
+    background: #F3F3F3; /* Light grey background */
+    font-weight: bold; /* Make sure they're bold */
+    border: 1px solid #CCC;
+    height: 30px;
+    padding: 10px 15px; } /* Make cells a bit taller */
+
 
 .playerContainerDiv {
     position: relative;
@@ -318,7 +328,9 @@ td.cell{
 }
 
 .CurrentPlayer {
-    color: #3571de;
+    color: #1332de;
+    font-size: 15px;
+    font-family: Helvetica, Arial, sans-serif;
 }
 
 .playerDiv{
@@ -394,11 +406,12 @@ td.cell{
 .PlayerTurn {
     color: #2ab2de;
     display: inline-block;
+
 }
 
 .CurrentPlayerDetails{
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 5%;
+    margin-right: 5%;
     display: inline-block;
     color: #f4f1fa;
     font-family:Arial;

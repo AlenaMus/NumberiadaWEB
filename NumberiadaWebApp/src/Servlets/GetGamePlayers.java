@@ -24,9 +24,9 @@ import java.io.PrintWriter;
 import java.util.List;
 
 
-@WebServlet(name = "GetGamePlayers", urlPatterns =
+@WebServlet(name = "GetGamePlayers", urlPatterns = //"/Get-Game-Players"
 {
-    "/Get-Game-Players"
+    "/getGamePlayers"
 })
 public class GetGamePlayers extends HttpServlet
 {
@@ -37,22 +37,24 @@ public class GetGamePlayers extends HttpServlet
         HttpSession session = request.getSession(false);
         GameManager game = SessionUtils.getGameManager(getServletContext());
 
-        responseVariables.players = game.getGameLogic().getPlayers();
-        responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
-        responseVariables.numOfPlayers = responseVariables.players.size();
-        responseVariables.myPlayerIndex = SessionUtils.getPlayerIndex(getServletContext());
-        //responseVariables.lastJoinedIndex = game.getLastActivateIndexPlayer();
-        Gson json = new Gson();
-        PrintWriter out = response.getWriter();
-        out.print(json.toJson(responseVariables));
-        out.flush();
+        if(game != null) {
+            responseVariables.players = game.getGameLogic().getPlayers();
+            responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
+            responseVariables.numOfPlayers = responseVariables.players.size();
+            responseVariables.myPlayerIndex = SessionUtils.getPlayerIndex(getServletContext());
+            //responseVariables.lastJoinedIndex = game.getLastActivateIndexPlayer();
+            Gson json = new Gson();
+            PrintWriter out = response.getWriter();
+            out.print(json.toJson(responseVariables));
+            out.flush();
+        }
     }
 
     private class ResponseVariables
     {
-        public List<Player> players;
+        public List<Player> players = null;
        // public int numOfHumans;
-        public Player currPlayer;
+        public Player currPlayer = null;
         public int numOfPlayers;
         public int myPlayerIndex;
        // public int numOfHumansToStart;

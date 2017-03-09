@@ -23,7 +23,7 @@ import java.util.List;
 
 @WebServlet(name = "GameUpdates", urlPatterns =
         {
-                "/Game-Updates"
+                "/gameUpdates"
         })
 public class GameUpdates extends HttpServlet
 {
@@ -33,8 +33,7 @@ public class GameUpdates extends HttpServlet
         response.setContentType("application/json");
         GameManager gameManager = SessionUtils.getGameManager(getServletContext());
         JasonResponse jasonResponse = new JasonResponse();
-        if (gameManager != null)
-        {
+
             int playerVersion = Integer.parseInt(request.getParameter(Constants.PLAYER_VERSION));
             int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
 
@@ -47,8 +46,7 @@ public class GameUpdates extends HttpServlet
             {
                 writeJasonResponse(false, response);
             }
-        }
-    }
+       }
 
     private void clearData(GameManager gameManager)
     {
@@ -62,7 +60,7 @@ public class GameUpdates extends HttpServlet
     private void getUpdatesFromGame(GameManager gameManager, JasonResponse jasonResponse, HttpServletResponse response) throws IOException
     {
         jasonResponse.gameOver = gameManager.getGameLogic().isGameOver();
-        if (gameManager.getGameLogic().isGameOver())
+        if (jasonResponse.gameOver)
         {
             jasonResponse.winner = gameManager.setGameOver();
         }
@@ -126,8 +124,8 @@ public class GameUpdates extends HttpServlet
     {
         if (gameManager.getGameVersion() > playerVersion)
         {
-            int index = Integer.parseInt(String.valueOf(SessionUtils.getPlayerIndex(getServletContext())));
-            gameManager.getGameLogic().getPlayers().get(index).setPlayerVersion(gameManager.getGameVersion());
+           // int index = Integer.parseInt(String.valueOf(SessionUtils.getPlayerIndex(getServletContext())));
+            gameManager.getGameLogic().getPlayers().get(playerIndex).setPlayerVersion(gameManager.getGameVersion());
             AppManager.updatePlayersVersion(gameManager.getGameNumber(),playerIndex,gameManager.getGameVersion());
             return true;
         }

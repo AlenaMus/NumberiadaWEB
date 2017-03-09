@@ -79,9 +79,14 @@ function updateGamesTable() {
                 if (data.latestGameVersion !== window.myGamesListVersion) {
                     window.myGamesListVersion = data.latestGameVersion;
                     $("#gamesTable > tr").remove();
-                    $.each(data.games, function (index, game) {
+                    for (var i = 0; i < data.games.length; i++) {
+                        var game = data.games[i];
                         updateGamesTableView(game.gameNumber, game.gameTitle, game.userName, game.boardSize, game.numOfPlayers, game.signedPlayers);
-                    });
+                    }
+
+                    // $.each(data.games, function (index, game) {
+                    //     updateGamesTableView(game.gameNumber, game.gameTitle, game.userName, game.boardSize, game.numOfPlayers, game.signedPlayers);
+                    // });
                 }
             }
         },

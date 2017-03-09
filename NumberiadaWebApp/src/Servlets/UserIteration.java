@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "UserIteration", urlPatterns =
         {
-                "/User-Iteration"
+                "/userIteration"   //"/User-Iteration"
         })
 public class UserIteration extends HttpServlet
 {
