@@ -35,7 +35,9 @@ $(function() {
         }, 300)
     );
 
-
+    $("#leaveGame").click(function () {
+        quit();
+    });
 $("#quitButton").click(function () {
         quit();
 });
@@ -111,6 +113,7 @@ function setAction(actionType)
     success: function (data) {
         updateBoardAfterMove(data);
         handelComputerTurn(data);
+        $('#gameStatus').html(message);
     },
     error: function (textStatus) {
     if (textStatus === "timeout") {
@@ -196,16 +199,19 @@ function updateCurrentPlayer(currPlayer) {
 
 function handelComputerTurn(data) {
 
-    if (data.computerTurn === true && data.allPlayersAreUpToDate === true) {
+    if (data.computerTurn === true /*&& data.allPlayersAreUpToDate === true*/) {
         setAction("computerIteration");
         }
-    $("#endTurnButton").attr("disabled", data.computerTurn);
+    $('#gameStatus').html("Computer Turn");
+   // $("#endTurnButton").attr("disabled", data.computerTurn);
 }
 
 
 function handelGameOver(data) {
-        $("#GameBoardContainer").replaceWith('<span id="win" class="label label-primary">' + data.winner + "</span>");
-        clearInterval(window.intervalGameUpdates);
+       // $("#GameBoardContainer").replaceWith('<span id="win" class="label label-primary">' + data.winner + "</span>");
+       // clearInterval(window.intervalGameUpdates);
+    $('#gameStatus').html(data.winner);
+    //clearInterval(window.intervalGameUpdates);
 }
 
 //$(function () {

@@ -40,9 +40,9 @@ public class StartGame extends HttpServlet
 
         if (numOfPlayersToStartGame == numOfSignedPlayers)
         {
-                message = gameManager.findFirstPlayerToMove();
-                currentPlayer = gameManager.getGameLogic().getCurrentPlayer();
-                out.print(json.toJson(new ResponseVariables(true,message,currentPlayer)));
+            message = gameManager.findFirstPlayerToMove();
+            currentPlayer = gameManager.getGameLogic().getCurrentPlayer();
+            out.print(json.toJson(new ResponseVariables(true,message,currentPlayer)));
         } else
         {
             out.print(json.toJson(new ResponseVariables(false, "There is not enough players to start the game")));

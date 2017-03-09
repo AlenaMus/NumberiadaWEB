@@ -1,5 +1,4 @@
 package GameEngine;
-
 import GameEngine.gameObjects.Game;
 import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.Point;
@@ -179,7 +178,6 @@ public String findFirstPlayerToMove() {
 
 
         public void makeComputerMove() {
-
             //ComputerProgressBar.visibleProperty().set(true);
             //ComputerThinkingLabel.visibleProperty().set(true);
             //Task<Point> moveTask = new Task<Point>() {
@@ -260,6 +258,7 @@ public String findFirstPlayerToMove() {
 
         public String setGameOver()
         {
+            String returnString = " ";
             String winnerMessage = getGameLogic().getWinner(); //BRING A STRING WITH WINNER NAMES
             String statistics = getGameLogic().gameOver(); //BRING STRING WITH OTHER PLAYER SCORE
             //NEED TO UPDATE CLIENTS WITH THOSE STRINGS !
@@ -267,7 +266,9 @@ public String findFirstPlayerToMove() {
 
             //clearGameWindow();
             //enableHistoryView();
-            return (winnerMessage + statistics);
+            returnString += winnerMessage;
+            returnString += statistics;
+            return (returnString);
         }
 
         private String findPlayerToNextMove() { //return next player who have move
@@ -276,16 +277,16 @@ public String findFirstPlayerToMove() {
                 boolean hasMove = getGameLogic().switchPlayer();
                 // setCurrentPlayer(logic.getCurrentPlayer());
                 while (!hasMove) {
-                    returnedString = returnedString + "/n no possible moves for user"  + getGameLogic().getCurrentPlayer();
+                    returnedString = returnedString + "no possible moves for user"  + getGameLogic().getCurrentPlayer().getName();
                     hasMove = getGameLogic().switchPlayer();
                     //setCurrentPlayer(logic.getCurrentPlayer());
                 }
            /* if(logic.getCurrentPlayer().getPlayerType().equals(String.valueOf(ePlayerType.Computer))){
                 makeComputerMove(); // I THINK NEED TO SPERATE (THIS IS ANOTHER MOVE) *NEW*THINK WE GET THIS IN INTERVAL
             }*/
-            } else {
+            } /*else {
                 returnedString = setGameOver();
-            }
+            }*/
             return returnedString;
         }
 
@@ -332,9 +333,9 @@ public String findFirstPlayerToMove() {
 
 
 
-        private String AdvanceRetire()
+        public String AdvanceRetire()
         {
-            String returnedString;
+            String returnedString ="";
             getGameLogic().playerRetire();
             if(!GameLogic.isEndOfGame){
 
@@ -343,8 +344,8 @@ public String findFirstPlayerToMove() {
                 //builder.setPlayersScore(PlayerScoreGridPane,logic.getPlayers());
 
                 returnedString = findPlayerToNextMove();
-            }else{
-                returnedString = setGameOver();
+            }else{//Gameover
+               // returnedString = setGameOver();
             }
             return returnedString;
         }

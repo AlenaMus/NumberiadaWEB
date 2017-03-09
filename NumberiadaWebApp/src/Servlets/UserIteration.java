@@ -7,7 +7,6 @@ package Servlets;
 
 import GameEngine.GameManager;
 import GameEngine.gameObjects.Point;
-import Servlets.SessionUtils;
 import Servlets.Const.Constants;
 import com.google.gson.Gson;
 
@@ -16,7 +15,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -36,7 +34,7 @@ public class UserIteration extends HttpServlet
             switch (request.getParameter(Constants.ACTION_TYPE))
             {
                 case "userIteration":
-                   message = gameManager.MoveAdvanceMove(makePointFromNum(request, gameManager));
+                    message = gameManager.MoveAdvanceMove(makePointFromNum(request, gameManager));
                     break;
                 case "computerIteration":
                     gameManager.makeComputerMove();
@@ -44,10 +42,9 @@ public class UserIteration extends HttpServlet
                /* case "endTurn":
                     gameManager.endTurn();
                     break;*/
-                /*case "quit":
-                    int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
-                    gameManager.playerQuitByIndex(playerIndex);
-                    break;*/
+                case "quit":
+                     message =  gameManager.AdvanceRetire();
+                    break;
                 default:
                     break;
             }

@@ -6,12 +6,11 @@ import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.ePlayerType;
 import GameEngine.logic.GameLogic;
 import GameEngine.validation.UserMessageConfirmation;
-import GameEngine.validation.XmlNotValidException;
-import Servlets.SessionUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class AppManager {
 
@@ -105,7 +104,12 @@ public final class AppManager {
         boolean signed = false;
         int numOfPlayersToGame;
         String message = "";  // can be 1. Success 2.Failed - the game is already full of players 3.the player is already signed to game 4.game is Running
-        ePlayerType type = isComputer ? ePlayerType.Computer : ePlayerType.Human;
+        ePlayerType type ;
+        if (isComputer)
+            type =  ePlayerType.Computer;
+        else
+            type= ePlayerType.Human;
+        // isComputer ? ePlayerType.Computer : ePlayerType.Human;
         Player player = new Player(username,type);
         int playerIndex = 0;
         GameLogic game = games.get(gameTitle).getGameLogic();
