@@ -8,12 +8,22 @@ public class UserMessageConfirmation {
     private String message = "";
     private int playersUpdateNum;
     private int playersIndex;
+    private boolean isGameStarted = false;
 
-    public UserMessageConfirmation(boolean success,String message,int playersUpdate,int index){
+    public UserMessageConfirmation(boolean success,String message,int playersUpdate,int index,boolean isGameStarted){
         this.success = success;
         this.message = message;
        this.playersUpdateNum = playersUpdate;
         this.playersIndex = index;
+        this.isGameStarted = isGameStarted;
+    }
+
+    public boolean isGameStarted() {
+        return isGameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        isGameStarted = gameStarted;
     }
 
     public int getPlayersIndex() {

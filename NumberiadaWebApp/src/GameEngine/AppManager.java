@@ -16,7 +16,6 @@ import java.util.*;
 public final class AppManager {
 
     private GameManager gameManager;
-
     public static int signedPlayersVersion =0;
     public static Map<String,GameManager> games = new HashMap<>();
     //public static Map<String,Game> gamesInfo = new HashMap<>();
@@ -103,6 +102,7 @@ public final class AppManager {
     public static UserMessageConfirmation SignToGame(int gameNumber,String gameTitle,String username,Boolean isComputer)
     {
         boolean signed = false;
+        boolean isEnoughPlayersToGame = false;
         int numOfPlayersToGame;
         String message = "";  // can be 1. Success 2.Failed - the game is already full of players 3.the player is already signed to game 4.game is Running
         ePlayerType type = isComputer ? ePlayerType.Computer : ePlayerType.Human;
@@ -122,6 +122,9 @@ public final class AppManager {
                     game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
                     signedPlayersVersion++;
                     signed = true;
+                    games.get(gameTitle).runningGame = game.getNumOfSignedPlayers() == game.getNumOfPlayers();
+                    gamesInfo.get(gameNumber-1).setRunningGame(games.get(gameTitle).runningGame);
+
 
                 } else {
 
@@ -136,7 +139,7 @@ public final class AppManager {
         }
 
         numOfPlayersToGame = gamesInfo.get(gameNumber-1).getSignedPlayers();
-        return new UserMessageConfirmation(signed,message,numOfPlayersToGame,playerIndex);
+        return new UserMessageConfirmation(signed,message,numOfPlayersToGame,playerIndex,games.get(gameTitle).runningGame);
     }
 
 

@@ -10,6 +10,7 @@ public class Game{
         private int boardSize;
         private int gameNumber;
         private int signedPlayers = 0;
+        private boolean isRunningGame = false;
 
 
         public Game(String editorName,String gameTitle, int numOfPlayers,Board board, int gameNumber){
@@ -22,6 +23,14 @@ public class Game{
             boardSize = board.GetBoardSize();
           //  this.gameBoard = board.getGameBoard();
         }
+
+    public boolean isRunningGame() {
+        return isRunningGame;
+    }
+
+    public void setRunningGame(boolean runningGame) {
+        isRunningGame = runningGame;
+    }
 
     public void updateSignedPlayers(){signedPlayers++;}
 

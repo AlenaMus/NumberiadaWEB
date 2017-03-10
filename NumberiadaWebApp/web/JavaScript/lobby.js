@@ -1,6 +1,3 @@
-/**
- * Created by OR on 2/13/2017.
- */
 
 window.myPlayersListVersion = 0;
 window.myGamesListVersion = 0;
@@ -160,11 +157,6 @@ function onSignToGameClick(title,gameNumber)
     $("#Error").hide();
 }
 
-function onGameRoomClick()
-{
-    window.location.href = "GameRoom.html";
-}
-
 function initilazeLoadGameForm() {
 
     $("#LoadFileForm").change(function (event) {
@@ -216,7 +208,12 @@ function updateSignedPlayers() {
             if(window.mySignedPlayersVersion !== data.latestSignedPlayersVersion ) {
                 window.mySignedPlayersVersion = data.latestSignedPlayersVersion;
                 $.each(data.games, function (index, game) {
-                    $('#signToGame' + game.gameNumber).html(game.signedPlayers);
+                    if(game.isRunningGame === true){
+                        $('#signIn'+ game.gameNumber).prop("disabled",true);
+                        $('#signToGame'+ game.gameNumber).html('Game Running');
+                     }else{
+                        $('#signToGame' + game.gameNumber).html(game.signedPlayers);
+                    }
                 });
             }
         },
@@ -232,42 +229,6 @@ function updateSignedPlayers() {
 
 }
 
-// function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersNumber,signedPlayers,board) {
-//         $("#gamesTable").append("<tr class=GameRow >" +
-//         "<td style=\"text-align: left;\">" + gameNumber + "</td>" +
-//         "<td style=\"text-align: left;\">" + gameTitle + "</td>" +
-//         "<td style=\"text-align: left;\">" + playerName + "</td>" +
-//         "<td style=\"text-align: left;\">" + boardSize + 'X' + boardSize + "</td>" +
-//         "<td style=\"text-align: left;\">" + playersNumber + "</td>" +
-//         "<td style=\"text-align: left; \" valign = bottom><div id = 'playersNumber' style = 'width:100%'></div><button class ='SignToGameButton'>Sign into game</button></td>" +
-//         "<td style=\"text-align:left;\">" + "<button type='submit'  id='showBoardId' >Show Game Board</button>" +
-//         "</td>" +
-//         "</tr>");
-//
-//    // var signedInPlayersID = document.getElementById('playersNumber');
-//      var id = 'signToGame'+ gameNumber;
-//     $('#playersNumber').attr('id',id);
-//     $('#'+id).html(signedPlayers);
-//     //signedInPlayersID.id = 'signToGame'+ gameNumber;
-//    // $('#'+signedInPlayersID.id).html(signedPlayers);
-//
-//     var gameBoardView = document.getElementById('showBoardId');
-//     gameBoardView.id = 'showBoardId'+ gameNumber;
-//     $('#'+ gameBoardView.id).click(function() {
-//         var title = $(this).closest("tr").find("td").eq(1).html();
-//         var gameNumber = $(this).closest("tr").find("td").eq(0).html();
-//         gameBoardPreview(title,gameNumber);
-//
-//     });
-//
-//     $('.SignToGameButton').click(function () {
-//         var title = $(this).closest("tr").find("td").eq(1).html();
-//         var gameNumber = $(this).closest("tr").find("td").eq(0).html();
-//         onSignToGameClick(title,gameNumber);
-//     });
-//
-// }
-
 
 function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersNumber,signedPlayers) {
     $("#gamesTable").append("<tr class=GameRow>" +
@@ -276,7 +237,7 @@ function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersN
         "<td style=\"text-align: left;\">" + playerName + "</td>" +
         "<td style=\"text-align: left;\">" + boardSize + 'X' + boardSize + "</td>" +
         "<td style=\"text-align: left;\">" + playersNumber + "</td>" +
-        "<td style=\"text-align: left; \" valign = bottom><div id = 'playerNumber' style = 'width:100%'></div><button class ='SignToGameButton'>Sign into game</button></td>" +
+        "<td style=\"text-align: left; \" valign = bottom><div id = 'playerNumber' style = 'width:100%'></div><button id ='signIn' class ='SignToGameButton'>Sign into game</button></td>" +
         "<td style=\"text-align:left;\">" + "<button type='submit'  id='showBoardId' >Show Game Board</button>" +
         "</td>" +
         "</tr>");
@@ -285,6 +246,9 @@ function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersN
     var signedInPlayersID = document.getElementById('playerNumber');
     signedInPlayersID.id = 'signToGame'+ gameNumber;
     $('#'+signedInPlayersID.id).html(signedPlayers);
+
+    var signInButton = document.getElementById('signIn');
+        signInButton.id = 'signIn'+ gameNumber;
 
 
     var gameBoardView = document.getElementById('showBoardId');

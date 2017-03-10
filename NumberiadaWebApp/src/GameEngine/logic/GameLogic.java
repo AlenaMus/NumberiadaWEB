@@ -145,13 +145,13 @@ public void clearCellsToUpdate(){
         if(winners.size()> 1){
             winnerMessage = "It's a TIE!\nThe Winners are :\n";
             for (Player player:winners) {
-                winnerMessage+=String.format("%s id:%d -> score :%d\n",player.getName(),player.getId(),player.getScore());
+                winnerMessage+=String.format("%s -> score :%d\n",player.getName(),player.getScore());
             }
         }else{
             for (Player player:winners) {
                 if(player!=null){
                     winnerMessage = "The Winner is:\n" +
-                            String.format("%s id : %d -> score : %d", player.getName(), player.getId(), player.getScore());
+                            String.format("%s -> score : %d", player.getName(), player.getScore());
                     break;
                 }
             }
