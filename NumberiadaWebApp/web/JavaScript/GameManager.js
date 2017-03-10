@@ -46,10 +46,16 @@ $("#SoundButton").click(function () {
 });
 
 
+$("#leaveGame").click(function () {
+    quit();
+});
+
 function quit() {
     window.quited = true;
     setAction("quit");
 }
+
+
 function mute() {
 window.playSound = false;
 $("audio").trigger("pause");
@@ -196,7 +202,7 @@ function updateCurrentPlayer(currPlayer) {
 
 function handelComputerTurn(data) {
 
-    if (data.computerTurn === true && data.allPlayersAreUpToDate === true) {
+    if (data.computerTurn === true ){//&& data.allPlayersAreUpToDate === true) {
         setAction("computerIteration");
         }
     $("#endTurnButton").attr("disabled", data.computerTurn);
@@ -204,8 +210,8 @@ function handelComputerTurn(data) {
 
 
 function handelGameOver(data) {
-        $("#GameBoardContainer").replaceWith('<span id="win" class="label label-primary">' + data.winner + "</span>");
-        clearInterval(window.intervalGameUpdates);
+    $('#gameStatus').html(data.winner);
+    clearInterval(window.intervalGameUpdates);
 }
 
 //$(function () {

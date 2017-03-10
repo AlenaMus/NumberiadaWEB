@@ -27,21 +27,23 @@ import java.io.InputStream;
 public class GameManager {
 
     public static int gameRound = 0;
-    public  boolean runningGame = false;
+    public boolean runningGame = false;
     public static boolean gameExists = false;
     private GameLogic gameLogic = null;
     private String gameTitle = "";
     private int gameVersion = 0;
     private int gameNumber = 0;
-    public GameLogic getGameLogic(){return gameLogic;}
+
+    public GameLogic getGameLogic() {
+        return gameLogic;
+    }
 
 
-
-    public void setGameNumber(int gameNumber){
+    public void setGameNumber(int gameNumber) {
         this.gameNumber = gameNumber;
     }
 
-    public int getGameNumber(){
+    public int getGameNumber() {
         return this.gameNumber;
     }
 
@@ -53,26 +55,25 @@ public class GameManager {
         this.gameVersion++;
     }
 
-    public String getGameTitle(){
-    return  gameTitle;
-}
-    public boolean SignToGame(String gameTitle,Player player)
-    {
+    public String getGameTitle() {
+        return gameTitle;
+    }
+
+    public boolean SignToGame(String gameTitle, Player player) {
         boolean signed = false;
-        if((!gameLogic.getPlayers().contains(player)) && (gameLogic.getPlayers().size() < gameLogic.getNumOfPlayers())){
+        if ((!gameLogic.getPlayers().contains(player)) && (gameLogic.getPlayers().size() < gameLogic.getNumOfPlayers())) {
             gameLogic.getPlayers().add(player);
             signed = true;
         }
         return signed;
     }
 
-  public Game getNewGameData(String editorName){
-      Game game = new Game(editorName,gameLogic.getGameTitle(),gameLogic.getNumOfPlayers(),gameLogic.getGameBoard(),AppManager.numOfGame);
-      AppManager.AddNewGameInfo(game);
+    public Game getNewGameData(String editorName) {
+        Game game = new Game(editorName, gameLogic.getGameTitle(), gameLogic.getNumOfPlayers(), gameLogic.getGameBoard(), AppManager.numOfGame);
+        AppManager.AddNewGameInfo(game);
 
-      return game;
-  }
-
+        return game;
+    }
 
 
     public GameDescriptor loadGameFromFile(InputStream file) throws XmlNotValidException {
@@ -87,15 +88,12 @@ public class GameManager {
             GameDescriptor JaxbGame;
             JaxbGame = (GameDescriptor) unmarshaller.unmarshal(file);
             return JaxbGame;
-        }
-        catch (JAXBException e) {
+        } catch (JAXBException e) {
 
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(String.format("JAXBException: file %1$s xml is not in a valid GameDescriptor schema", "file"));
             throw new XmlNotValidException(validationResult);
-        }
-
-        catch (SAXException e) {
+        } catch (SAXException e) {
             ValidationResult validationResult = new ValidationResult();
             validationResult.add(String.format("SAXException: file %1$s xml is not in a valid GameDescriptor schema", "file"));
             throw new XmlNotValidException(validationResult);
@@ -103,45 +101,42 @@ public class GameManager {
 
     }
 
-    public void LoadGameFromXmlAndValidate(InputStream file) throws XmlNotValidException
-    {
-        String gameType ="";
+    public void LoadGameFromXmlAndValidate(InputStream file) throws XmlNotValidException {
+        String gameType = "";
         GameDescriptor loadedGame;
 
-        try{
+        try {
             loadedGame = loadGameFromFile(file);
-        }
-        catch (XmlNotValidException ex)
-        {
+        } catch (XmlNotValidException ex) {
             throw new XmlNotValidException(ex.getValidationResult());
         }
 
-        if(loadedGame!= null) {
+        if (loadedGame != null) {
 
             gameType = loadedGame.getGameType();
 
-         //   if(gameRound == 0) {
+            //   if(gameRound == 0) {
 
-                if (gameType.equals(String.valueOf(eGameType.AdvanceDynamic))) {
-                    gameLogic = new AdvancedGame();
-                } else {
-                    ValidationResult valid = new ValidationResult();
-                    valid.add("Invalid Game Type - game type must be AdvancedDynamic!/n");
-                    throw new XmlNotValidException(valid);
-                }
-           // }
+            if (gameType.equals(String.valueOf(eGameType.AdvanceDynamic))) {
+                gameLogic = new AdvancedGame();
+            } else {
+                ValidationResult valid = new ValidationResult();
+                valid.add("Invalid Game Type - game type must be AdvancedDynamic!/n");
+                throw new XmlNotValidException(valid);
+            }
+            // }
 
             gameTitle = loadedGame.getDynamicPlayers().getGameTitle();
-            if(!AppManager.ExistsGame(gameTitle)){
+            if (!AppManager.ExistsGame(gameTitle)) {
                 gameExists = false;
                 gameLogic.initGame();
                 gameLogic.setGameType(eGameType.valueOf(gameType));
                 gameLogic.checkXMLData(loadedGame);
-                gameLogic.loadDataFromJaxbToGame(loadedGame,gameType);
+                gameLogic.loadDataFromJaxbToGame(loadedGame, gameType);
 
-               // AppManager.AddNewGame(this,gameTitle);
+                // AppManager.AddNewGame(this,gameTitle);
 
-            }else{
+            } else {
                 gameExists = true;
             }
 
@@ -150,47 +145,58 @@ public class GameManager {
     }
 
 
+    public String findFirstPlayerToMove() {
+        runningGame = true;
+        String message = "";
 
-public String findFirstPlayerToMove() {
-      runningGame = true;
-      String message ="";
-
-    AppManager.setPlayersGameVersionList(gameNumber,getGameLogic().getPlayers());
+        AppManager.setPlayersGameVersionList(gameNumber, getGameLogic().getPlayers());
 //        if(GameManager.gameRound > 0){
 //                restartGame();
 //            }else {
 //                logic.setHistoryMoves();
 //            }
 //
-         GameManager.gameRound++;
-         gameLogic.setFirstPlayer();
-      if (!gameLogic.InitMoveCheck()) //first player check
-       {
-          message = "No Possible moves for current player";
-          message += findPlayerToNextMove();
-       }
-       return message;
-  }
+        GameManager.gameRound++;
+        gameLogic.setFirstPlayer();
+        if (!gameLogic.InitMoveCheck()) //first player check
+        {
+            message = "No Possible moves for current player";
+            message += findPlayerToNextMove();
+        }
+        return message;
+    }
 
 
+    public String AdvanceRetire() {
+        String returnedString = "";
+        getGameLogic().playerRetire();
+        if (!GameLogic.isEndOfGame) {
+
+            //NEED TO UPDATE PLAYER LIST IN CLIENTS AND BOARD!
+            //builder.clearPlayersScoreView(PlayerScoreGridPane);
+            //builder.setPlayersScore(PlayerScoreGridPane,logic.getPlayers());
+
+            returnedString = findPlayerToNextMove();
+        } else {//Gameover
+            // returnedString = setGameOver();
+        }
+        return returnedString;
+    }
 
 
+    public void makeComputerMove() {
+
+        //ComputerProgressBar.visibleProperty().set(true);
+        //ComputerThinkingLabel.visibleProperty().set(true);
+        //Task<Point> moveTask = new Task<Point>() {
+        Point squareLocation = null;
 
 
+        // @Override
+        // protected Point call() throws Exception {
+        //    int i;
 
-        public void makeComputerMove() {
-
-            //ComputerProgressBar.visibleProperty().set(true);
-            //ComputerThinkingLabel.visibleProperty().set(true);
-            //Task<Point> moveTask = new Task<Point>() {
-            Point squareLocation = null;
-
-
-            // @Override
-            // protected Point call() throws Exception {
-            //    int i;
-
-            squareLocation = getGameLogic().makeComputerMove();
+        squareLocation = getGameLogic().makeComputerMove();
 
            /*     for(i=1;i < 10; i++){
                     updateProgress(i,10);
@@ -198,8 +204,8 @@ public String findFirstPlayerToMove() {
                 }
                     Thread.sleep(300);
 */
-            //return squareLocation;
-            //}
+        //return squareLocation;
+        //}
         /*    @Override
             protected void updateProgress(double workTodo,double max){
                 updateMessage("Computer thinking...");
@@ -214,9 +220,9 @@ public String findFirstPlayerToMove() {
                  ComputerProgressBar.visibleProperty().set(false);
                  ComputerThinkingLabel.visibleProperty().set(false);
                  System.out.println("Updating Board!");*/
-            getGameLogic().updateDataMove(squareLocation);
-            //  System.out.println("Finding next player after computer");
-            findPlayerToNextMove();
+        getGameLogic().updateDataMove(squareLocation);
+        //  System.out.println("Finding next player after computer");
+        findPlayerToNextMove();
 
 
        /* moveTask.setOnFailed(t -> {
@@ -236,13 +242,10 @@ public String findFirstPlayerToMove() {
         Thread move = new Thread(moveTask);
         move.start();*/
 
-        }
+    }
 
 
-
-
-
-        // private void ExitGameButtonClicked(ActionEvent event){
+    // private void ExitGameButtonClicked(ActionEvent event){
 //        Alert exitWindow = new Alert(Alert.AlertType.CONFIRMATION);
 //        exitWindow.setTitle("Exit Game");
 //        exitWindow.setHeaderText("Do you want to exit Numberiada Game?");
@@ -258,96 +261,71 @@ public String findFirstPlayerToMove() {
 //        }
 //    }
 
-        public String setGameOver()
-        {
-            String winnerMessage = getGameLogic().getWinner(); //BRING A STRING WITH WINNER NAMES
-            String statistics = getGameLogic().gameOver(); //BRING STRING WITH OTHER PLAYER SCORE
-            //NEED TO UPDATE CLIENTS WITH THOSE STRINGS !
+    public String setGameOver() {
+        String winnerMessage = getGameLogic().getWinner(); //BRING A STRING WITH WINNER NAMES
+        String statistics = getGameLogic().gameOver(); //BRING STRING WITH OTHER PLAYER SCORE
+        //NEED TO UPDATE CLIENTS WITH THOSE STRINGS !
 
 
-            //clearGameWindow();
-            //enableHistoryView();
-            return (winnerMessage + statistics);
-        }
+        //clearGameWindow();
+        //enableHistoryView();
+        return (winnerMessage + statistics);
+    }
 
-        private String findPlayerToNextMove() { //return next player who have move
-            String returnedString = " ";
-            if (!getGameLogic().isGameOver()) {
-                boolean hasMove = getGameLogic().switchPlayer();
-                // setCurrentPlayer(logic.getCurrentPlayer());
-                while (!hasMove) {
-                    returnedString = returnedString + "/n no possible moves for user"  + getGameLogic().getCurrentPlayer();
-                    hasMove = getGameLogic().switchPlayer();
-                    //setCurrentPlayer(logic.getCurrentPlayer());
-                }
+    private String findPlayerToNextMove() { //return next player who have move
+        String returnedString = " ";
+        if (!getGameLogic().isGameOver()) {
+            boolean hasMove = getGameLogic().switchPlayer();
+            // setCurrentPlayer(logic.getCurrentPlayer());
+            while (!hasMove) {
+                returnedString = returnedString + "/n no possible moves for user" + getGameLogic().getCurrentPlayer();
+                hasMove = getGameLogic().switchPlayer();
+                //setCurrentPlayer(logic.getCurrentPlayer());
+            }}
            /* if(logic.getCurrentPlayer().getPlayerType().equals(String.valueOf(ePlayerType.Computer))){
                 makeComputerMove(); // I THINK NEED TO SPERATE (THIS IS ANOTHER MOVE) *NEW*THINK WE GET THIS IN INTERVAL
             }*/
-            } else {
-                returnedString = setGameOver();
-            }
-            return returnedString;
-        }
-
-        public boolean isComputerTurn()
-        {
-            boolean isComputerTurn = false;
-            if(getGameLogic().getCurrentPlayer().getPlayerType().equals(String.valueOf(ePlayerType.Computer)))
-                return isComputerTurn = true;
-            return isComputerTurn;
-        }
-
-        public String MoveAdvanceMove(Point userPoint) //needs to get user point from client
-        {
-            int pointStatus;
-            String value="";
-            String errorString = "";
-            if (userPoint != null) {
-                pointStatus = getGameLogic().isValidPoint(userPoint);
-                if (pointStatus == GameLogic.GOOD_POINT) {
-                    getGameLogic().updateDataMove(userPoint); // NEED TO UPDATE CLIENT WITH BOARD CHANGE
-                    errorString = findPlayerToNextMove(); //I THINK NEED TO SEPERATE (*new* seems ok china the same)
-                }
-                else if (pointStatus == GameLogic.NOT_IN_MARKER_ROW_AND_COLUMN)
-                {
-                    // value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
-                    // logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
-                    errorString = "You choose illegal square -the square needs to be in the marker raw or column";
-                }
-                else if (pointStatus == GameLogic.NOT_PLAYER_COLOR)
-                {
-                    //value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
-                    //logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
-                    errorString = ("You choose illegal square - the square is not in your color!");
-                }
-            }
-            else
-            {
-                errorString = ("YOU DIDN'T CHOOSE A SQUARE!");
-            }
-
-            return errorString;
-        }
-
-
-
-
-        private String AdvanceRetire()
-        {
-            String returnedString;
-            getGameLogic().playerRetire();
-            if(!GameLogic.isEndOfGame){
-
-                //NEED TO UPDATE PLAYER LIST IN CLIENTS AND BOARD!
-                //builder.clearPlayersScoreView(PlayerScoreGridPane);
-                //builder.setPlayersScore(PlayerScoreGridPane,logic.getPlayers());
-
-                returnedString = findPlayerToNextMove();
-            }else{
-                returnedString = setGameOver();
-            }
-            return returnedString;
-        }
-
+//        } else {
+//            returnedString = setGameOver();
+//        }
+        return returnedString;
     }
+
+    public boolean isComputerTurn() {
+        boolean isComputerTurn = false;
+        if (getGameLogic().getCurrentPlayer().getPlayerType().equals(String.valueOf(ePlayerType.Computer)))
+            return isComputerTurn = true;
+        return isComputerTurn;
+    }
+
+    public String MoveAdvanceMove(Point userPoint) //needs to get user point from client
+    {
+        int pointStatus;
+        String value = "";
+        String errorString = "";
+        if (userPoint != null) {
+            pointStatus = getGameLogic().isValidPoint(userPoint);
+            if (pointStatus == GameLogic.GOOD_POINT) {
+                getGameLogic().updateDataMove(userPoint); // NEED TO UPDATE CLIENT WITH BOARD CHANGE
+                errorString = findPlayerToNextMove(); //I THINK NEED TO SEPERATE (*new* seems ok china the same)
+            } else if (pointStatus == GameLogic.NOT_IN_MARKER_ROW_AND_COLUMN) {
+                // value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
+                // logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
+                errorString = "You choose illegal square -the square needs to be in the marker raw or column";
+            } else if (pointStatus == GameLogic.NOT_PLAYER_COLOR) {
+                //value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
+                //logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
+                errorString = ("You choose illegal square - the square is not in your color!");
+            }
+        } else {
+            errorString = ("YOU DIDN'T CHOOSE A SQUARE!");
+        }
+
+        return errorString;
+    }
+}
+
+
+
+
 

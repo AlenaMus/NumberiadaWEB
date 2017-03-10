@@ -22,7 +22,7 @@ function initilazeLoginButton() {
 function initilazeLogin()
 {
     var userNameInput = $("#usernameInput").val();
-    var isComputer = $("#isComputer").val();
+    var isComputer = $("#isComputer").prop('checked');
     $.ajax({
                 type: 'POST',
                 data: {username:userNameInput,isComputer:isComputer },

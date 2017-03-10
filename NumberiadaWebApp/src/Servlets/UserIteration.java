@@ -41,6 +41,9 @@ public class UserIteration extends HttpServlet
                 case "computerIteration":
                     gameManager.makeComputerMove();
                     break;
+                case "quit":
+                    message =  gameManager.AdvanceRetire();
+                    break;
                /* case "endTurn":
                     gameManager.endTurn();
                     break;*/
