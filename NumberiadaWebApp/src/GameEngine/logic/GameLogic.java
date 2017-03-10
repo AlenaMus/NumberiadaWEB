@@ -79,7 +79,7 @@ public abstract class GameLogic {
         this.gameMoves.set(gameMoves);
     }
     public abstract Point makeComputerMove();
-    public abstract String playerRetire();
+    //public abstract String playerRetire();
     public abstract int isValidPoint(Point squareLocation);
     public abstract boolean InitMoveCheck();
     public abstract void FillRandomBoard();
@@ -269,6 +269,27 @@ public void clearCellsToUpdate(){
 
 
         return squareValue;
+    }
+
+    public String playerRetire () {
+        for (int i = 0; i < gameBoard.GetBoardSize(); i++)
+            for (int j = 0; j < gameBoard.GetBoardSize(); j++)
+                if (gameBoard.getGameBoard()[i][j].getColor() == currentPlayer.getColor())
+                {
+                    gameBoard.getGameBoard()[i][j].setColor(GameColor.GRAY);
+                    gameBoard.getGameBoard()[i][j].setDisabled(true);
+                    gameBoard.getGameBoard()[i][j].setValue(" ");
+                    gameBoard.getGameBoard()[i][j].setEmpty(true);
+                    cellsToUpdate.add(gameBoard.getGameBoard()[i][j]);
+
+                }
+        currentPlayer.setActive(false);
+        players.remove(currentPlayer);
+        numOfPlayers--;
+        if(numOfPlayers==1) {
+            isEndOfGame = true;
+        }
+        return "";
     }
 
     protected void checkExplicitBoard(List<GameEngine.jaxb.schema.generated.Square> squares, GameEngine.jaxb.schema.generated.Marker marker, int boardSize) throws XmlNotValidException

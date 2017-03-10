@@ -11,6 +11,7 @@ import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.Square;
 import Servlets.Const.Constants;
 import com.google.gson.Gson;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.LinkedList;
 import java.util.List;
 
 @WebServlet(name = "GameUpdates", urlPatterns =

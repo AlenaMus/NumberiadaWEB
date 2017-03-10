@@ -120,6 +120,7 @@ public class AdvancedGame extends GameLogic{
                     gameBoard.getGameBoard()[i][j].setDisabled(true);
                     gameBoard.getGameBoard()[i][j].setValue(" ");
                     gameBoard.getGameBoard()[i][j].setEmpty(true);
+
                 }
         currentPlayer.setActive(false);
         players.remove(currentPlayer);
