@@ -265,8 +265,6 @@ public class GameManager {
         String winnerMessage = getGameLogic().getWinner(); //BRING A STRING WITH WINNER NAMES
         String statistics = getGameLogic().gameOver(); //BRING STRING WITH OTHER PLAYER SCORE
         //NEED TO UPDATE CLIENTS WITH THOSE STRINGS !
-
-
         //clearGameWindow();
         //enableHistoryView();
         return (winnerMessage + statistics);
