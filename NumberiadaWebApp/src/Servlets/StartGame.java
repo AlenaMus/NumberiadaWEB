@@ -7,6 +7,7 @@ package Servlets;
 
 import GameEngine.GameManager;
 import GameEngine.gameObjects.Player;
+import Servlets.Const.Constants;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -27,7 +28,6 @@ public class StartGame extends HttpServlet
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-
         Player currentPlayer = null;
         String message = "";
         response.setContentType("application/json");
@@ -37,15 +37,15 @@ public class StartGame extends HttpServlet
         PrintWriter out = response.getWriter();
         int numOfPlayersToStartGame = gameManager.getGameLogic().getNumOfPlayers();
         int numOfSignedPlayers = gameManager.getGameLogic().getNumOfSignedPlayers();
-
+        String userName = session.getAttribute(Constants.USERNAME).toString();
         if (numOfPlayersToStartGame == numOfSignedPlayers)
         {
             message = gameManager.findFirstPlayerToMove();
             currentPlayer = gameManager.getGameLogic().getCurrentPlayer();
-            out.print(json.toJson(new ResponseVariables(true,message,currentPlayer)));
+            out.print(json.toJson(new ResponseVariables(true,message,currentPlayer,userName)));
         } else
         {
-            out.print(json.toJson(new ResponseVariables(false, "There is not enough players to start the game")));
+            out.print(json.toJson(new ResponseVariables(false, "There is not enough players to start the game",userName)));
         }
         out.flush();
     }
@@ -56,18 +56,21 @@ public class StartGame extends HttpServlet
         public boolean succeedToStartGame;
         public String message;
         public Player currentPlayer;
+        public String userName;
 
-        public ResponseVariables(boolean succeedToStartGame,String message,Player currentPlayer)
+        public ResponseVariables(boolean succeedToStartGame,String message,Player currentPlayer,String userName)
         {
             this.succeedToStartGame = succeedToStartGame;
             this.currentPlayer = currentPlayer;
             this.message = message;
+            this.userName = userName;
         }
 
-        public ResponseVariables(boolean succeedToStartGame, String message)
+        public ResponseVariables(boolean succeedToStartGame, String message,String userName)
         {
             this.succeedToStartGame = succeedToStartGame;
             this.message = message;
+            this.userName = userName;
         }
     }
 

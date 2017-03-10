@@ -144,6 +144,7 @@ public class Player implements Comparable<Player> {
     public boolean isActive() {
         return IsActive.get();
     }
+
     public void setActive(boolean active) {IsActive.setValue(active);}
 
     public int getId() {

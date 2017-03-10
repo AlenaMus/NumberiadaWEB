@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.List;
 public class GameUpdates extends HttpServlet
 {
 
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("application/json");
@@ -36,6 +38,7 @@ public class GameUpdates extends HttpServlet
 
             int playerVersion = Integer.parseInt(request.getParameter(Constants.PLAYER_VERSION));
             int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+
 
 
             if (isPlayerUpToDate(playerVersion, playerIndex, gameManager))
@@ -62,7 +65,14 @@ public class GameUpdates extends HttpServlet
         jasonResponse.gameOver = gameManager.getGameLogic().isGameOver();
         if (jasonResponse.gameOver)
         {
-            jasonResponse.winner = gameManager.setGameOver();
+            if(gameManager.getWinners().isEmpty())
+            {
+                jasonResponse.winner = gameManager.setGameOver();
+            }else{
+
+                jasonResponse.winner = gameManager.getWinners();
+            }
+
         }
 
        // jasonResponse.DeletedPlayerIndex = gameManager.getDeletedPlayerIndex();
@@ -152,5 +162,6 @@ public class GameUpdates extends HttpServlet
         public boolean gameOver;
         public boolean computerTurn;
         public List<Square> cellToUpdate;
+        public String userName;
     }
 }

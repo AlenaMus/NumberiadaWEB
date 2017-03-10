@@ -38,13 +38,13 @@ public class AdvancedGame extends GameLogic{
         {
             player = players.get(i);
             if(!winners.contains(player)){
-                winnerStatistics += (String.format("player %s id: %d with score %d\n",
-                        player.getName(),player.getId(),player.getScore()));
+                winnerStatistics += (String.format("player %s : with score %d \n",
+                        player.getName(),player.getScore()));
             }
             i++;
         }
 
-        gameLogicClear();
+       //gameLogicClear();
         return winnerStatistics;
     }
 
@@ -111,25 +111,25 @@ public class AdvancedGame extends GameLogic{
         return gameOver;
     }
 
-    public String playerRetire () {
-        for (int i = 0; i < gameBoard.GetBoardSize(); i++)
-            for (int j = 0; j < gameBoard.GetBoardSize(); j++)
-                if (gameBoard.getGameBoard()[i][j].getColor() == currentPlayer.getColor())
-                {
-                    gameBoard.getGameBoard()[i][j].setColor(GameColor.GRAY);
-                    gameBoard.getGameBoard()[i][j].setDisabled(true);
-                    gameBoard.getGameBoard()[i][j].setValue(" ");
-                    gameBoard.getGameBoard()[i][j].setEmpty(true);
-
-                }
-        currentPlayer.setActive(false);
-        players.remove(currentPlayer);
-        numOfPlayers--;
-       if(numOfPlayers==1) {
-           isEndOfGame = true;
-       }
-       return "";
-    }
+//    public String playerRetire () {
+//        for (int i = 0; i < gameBoard.GetBoardSize(); i++)
+//            for (int j = 0; j < gameBoard.GetBoardSize(); j++)
+//                if (gameBoard.getGameBoard()[i][j].getColor() == currentPlayer.getColor())
+//                {
+//                    gameBoard.getGameBoard()[i][j].setColor(GameColor.GRAY);
+//                    gameBoard.getGameBoard()[i][j].setDisabled(true);
+//                    gameBoard.getGameBoard()[i][j].setValue(" ");
+//                    gameBoard.getGameBoard()[i][j].setEmpty(true);
+//                    cellsToUpdate.add(gameBoard.getGameBoard()[i][j]);
+//                }
+//       // currentPlayer.setActive(false);
+//        players.remove(currentPlayer);
+//        numOfPlayers--;
+//       if(numOfPlayers==1) {
+//           isEndOfGame = true;
+//       }
+//       return "";
+//    }
 
     private static int ComputerMove(int boardSize) {
         return (ThreadLocalRandom.current().nextInt(0, boardSize));

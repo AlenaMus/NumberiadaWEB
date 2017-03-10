@@ -89,7 +89,7 @@ public abstract class GameLogic {
     public abstract boolean switchPlayer();
  //  protected void checkAndSetPlayersXML(GameEngine.jaxb.schema.generated.Players players)throws XmlNotValidException{}
     public abstract boolean isGameOver();
-    private List<Square> cellsToUpdate = new ArrayList<>();
+    protected List<Square> cellsToUpdate = new ArrayList<>();
 
 public void clearCellsToUpdate(){
      cellsToUpdate.clear();
@@ -283,7 +283,7 @@ public void clearCellsToUpdate(){
                     cellsToUpdate.add(gameBoard.getGameBoard()[i][j]);
 
                 }
-        currentPlayer.setActive(false);
+       // currentPlayer.setActive(false);
         players.remove(currentPlayer);
         numOfPlayers--;
         if(numOfPlayers==1) {

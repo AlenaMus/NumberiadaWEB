@@ -18,7 +18,11 @@ $(function() {
     initilazeGame();
     checkGameStart();
 
- $(window.intervalGameUpdates = setInterval(function () {
+    $("#leaveGame").click(function () {
+        quit();
+    });
+
+    $(window.intervalGameUpdates = setInterval(function () {
             getGameUpdate();
         }, 200)
     );
@@ -46,13 +50,10 @@ $("#SoundButton").click(function () {
 });
 
 
-$("#leaveGame").click(function () {
-    quit();
-});
 
 function quit() {
     window.quited = true;
-    setAction("quit");
+    playerRetire();
 }
 
 
@@ -84,16 +85,22 @@ function checkGameStart() {
         dataType: 'json',
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
+           $('#hiUser').html('Hello '+ data.userName);
             if (data.succeedToStartGame === false) {
                 $('#gameStatus').html(data.message);
             } else {
-                 window.isGameStarted = true;
+                window.isGameStarted = true;
                 $('#gameStatus').html('Game Started!');
                 clearInterval(window.intervalStartGame);
                 if(data.message !== ""){
                     window.alert(data.message);
                 }
                 updateCurrentPlayer(data.currentPlayer);
+                if (data.currentPlayer.playerType.value == 'Computer')
+                {
+                    setAction("computerIteration");
+                }
+
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -105,6 +112,28 @@ function checkGameStart() {
             }
         }
     });
+}
+
+function playerRetire()
+{
+    $.ajax({
+        type: 'POST',
+        data: {actionType: "quit", playerIndex: window.myPlayerIndex},
+        url: "userIteration",
+        timeout: 6000,
+        success: function (data) {
+            window.location.href = 'LobbyPage.html';
+        },
+        error: function (textStatus) {
+            if (textStatus === "timeout") {
+                $("#Error").text("Server Timeout setAction. Try again..").show();
+            }
+            else {
+                $("#Error").text("Something went wrong setAction. Try again..").show();
+            }
+        }
+    });
+    return false;
 }
 
 function setAction(actionType)
@@ -139,6 +168,7 @@ function getGameUpdate()
     dataType: "json",
     timeout: 6000,
     success: function (data, textStatus, jqXHR) {
+       // $('#hiUser').html('Hello'+ data.userName);
     if ((data !== false) && (window.playerGameVersion!== data.latestGameVersion ))
     {
         updateBoardAfterMove(data);
@@ -202,15 +232,24 @@ function updateCurrentPlayer(currPlayer) {
 
 function handelComputerTurn(data) {
 
-    if (data.computerTurn === true ){//&& data.allPlayersAreUpToDate === true) {
+    if((data.computerTurn === true )&& (data.allPlayersAreUpToDate === true)){
         setAction("computerIteration");
-        }
+       }
     $("#endTurnButton").attr("disabled", data.computerTurn);
 }
 
 
 function handelGameOver(data) {
-    $('#gameStatus').html(data.winner);
+
+    var winnerPopup = $(document.createElement('div'));
+    winnerPopup.html(data.winner);
+    winnerPopup.dialog({
+        modal: true,
+        title: "Game Over",
+        height: "auto",
+        width: "auto"
+    });
+   // $('#gameStatus').html(data.winner);
     clearInterval(window.intervalGameUpdates);
 }
 
@@ -360,9 +399,19 @@ function clickedSquare(row,col){
                 timeout: 6000,
                 dataType: 'json',
                 success: function (message) {
-                    console.log("pressed button success" + message);
-                    $('#gameStatus').html(message);
+                    if(message !== null && message !== ""){
+                        var newDiv = $(document.createElement('div'));
+                        newDiv.html(message);
+                        newDiv.dialog({
+                            modal: true,
+                            title: "Move Info",
+                            height: "auto",
+                            width: "auto"
+                        });
+                    }
+                   // $('#gameStatus').html(message);
                 },
+
                 error: function (textStatus) {
                     $("#Error").text("A temporary problem").show();
                 }

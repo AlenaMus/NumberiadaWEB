@@ -33,12 +33,20 @@ public class GameManager {
     private String gameTitle = "";
     private int gameVersion = 0;
     private int gameNumber = 0;
-    private int[] playersVersions;
+    private String winners ="";
+
 
     public GameLogic getGameLogic() {
         return gameLogic;
     }
 
+    public String getWinners() {
+        return winners;
+    }
+
+    public void setWinners(String winners) {
+        this.winners = winners;
+    }
 
     public void setGameNumber(int gameNumber) {
         this.gameNumber = gameNumber;
@@ -292,7 +300,8 @@ public class GameManager {
         //NEED TO UPDATE CLIENTS WITH THOSE STRINGS !
         //clearGameWindow();
         //enableHistoryView();
-        return (winnerMessage + statistics);
+        winners = winnerMessage + statistics;
+        return winners;
     }
 
     private String findPlayerToNextMove() { //return next player who have move
