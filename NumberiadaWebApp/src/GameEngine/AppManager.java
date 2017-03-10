@@ -21,54 +21,53 @@ public final class AppManager {
     public static List<Game> gamesInfo = new ArrayList<>();
     public static UsersManager userManager = new UsersManager();
     public static int numOfGame = 0;
-    public static List<ArrayList<Integer>> playersGameVersion = new ArrayList<>();
 
+   // public static List<ArrayList<Integer>> playersGameVersion = new ArrayList<>();
+//    public static void initPlayersGameVersions(int gameNumber){ //init gameVersion for all players
+//       int version = 0;
+//        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
+//           playersGameVersion.get(gameNumber).set(i,version);
+//        }
+//    }
+//
+//    public static void createPlayersGameVersionList(int gameNumber){ //loadXml
+//        playersGameVersion.add(gameNumber,new ArrayList<Integer>());
+//    }
+//
+//    public static void setPlayersGameVersionList(int gameNumber, List<Player> players){ //start new Game
+//
+//        for(int i=0; i < players.size();i++){
+//            playersGameVersion.get(gameNumber).add(players.get(i).getPlayerVersion());
+//        }
+//    }
+//
+//    public static boolean checkGamePlayersVersionUpToDate(int gameNumber,int gameVersion){
+//
+//        int version;
+//        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
+//            version = playersGameVersion.get(gameNumber).get(i);
+//            if(version != gameVersion){
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
-    public static void initPlayersGameVersions(int gameNumber){ //init gameVersion for all players
-       int version = 0;
-        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
-           playersGameVersion.get(gameNumber).set(i,version);
-        }
-    }
-
-    public static void createPlayersGameVersionList(int gameNumber){ //loadXml
-        playersGameVersion.add(gameNumber,new ArrayList<Integer>());
-    }
-
-    public static void setPlayersGameVersionList(int gameNumber, List<Player> players){ //start new Game
-
-        for(int i=0; i < players.size();i++){
-            playersGameVersion.get(gameNumber).add(players.get(i).getPlayerVersion());
-        }
-    }
-
-    public static boolean checkGamePlayersVersionUpToDate(int gameNumber,int gameVersion){
-        int version;
-        for(int i=0; i < playersGameVersion.get(gameNumber).size();i++){
-            version = playersGameVersion.get(gameNumber).get(i);
-            if(version != gameVersion){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static void updatePlayersVersion(int gameNumber,int index,int gameVersion){
-        if(playersGameVersion.get(gameNumber).size() > index){
-            playersGameVersion.get(gameNumber).set(index,gameVersion);
-        }else{
-            playersGameVersion.get(gameNumber).add(gameVersion);
-        }
-
-    }
-
-
-    public static void initGamesVersion(){
-
-        for(int i = 0;i < playersGameVersion.size();i++){
-            initPlayersGameVersions(i);
-        }
-    }
+//    public static void updatePlayersVersion(int gameNumber,int index,int gameVersion){
+//        if(playersGameVersion.get(gameNumber).size() > index){
+//            playersGameVersion.get(gameNumber).set(index,gameVersion);
+//        }else{
+//            playersGameVersion.get(gameNumber).add(gameVersion);
+//        }
+//
+//    }
+//
+//    public static void initGamesVersion(){
+//
+//        for(int i = 0;i < playersGameVersion.size();i++){
+//            initPlayersGameVersions(i);
+//        }
+//    }
 
 
     private AppManager(){

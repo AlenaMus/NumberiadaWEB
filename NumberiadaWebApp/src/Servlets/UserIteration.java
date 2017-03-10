@@ -45,9 +45,6 @@ public class UserIteration extends HttpServlet
                /* case "endTurn":
                     gameManager.endTurn();
                     break;*/
-                case "quit":
-                     message =  gameManager.AdvanceRetire();
-                    break;
                 default:
                     break;
             }

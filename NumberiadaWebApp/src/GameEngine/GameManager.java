@@ -33,6 +33,7 @@ public class GameManager {
     private String gameTitle = "";
     private int gameVersion = 0;
     private int gameNumber = 0;
+    private int[] playersVersions;
 
     public GameLogic getGameLogic() {
         return gameLogic;
@@ -144,12 +145,36 @@ public class GameManager {
         }
     }
 
+    public void initPlayersGameVersions(){
+
+        int size = gameLogic.getNumOfPlayers();
+        for(int i = 0 ;i < size; i++){
+           gameLogic.getPlayers().get(i).setPlayerIndex(0);
+        }
+    }
+
+
+    public void updatePlayerVersion(int playerIndex){
+        gameLogic.getPlayers().get(playerIndex).setPlayerVersion(this.gameVersion);
+    }
+
+
+    public boolean checkGamePlayersVersionUpToDate(){
+
+        for(int i=0;i< gameLogic.getNumOfPlayers(); i++)
+        {
+            if(gameLogic.getPlayers().get(i).getPlayerVersion() != this.gameVersion){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public String findFirstPlayerToMove() {
         runningGame = true;
         String message = "";
 
-        AppManager.setPlayersGameVersionList(gameNumber, getGameLogic().getPlayers());
+        //AppManager.setPlayersGameVersionList(gameNumber, getGameLogic().getPlayers());
 //        if(GameManager.gameRound > 0){
 //                restartGame();
 //            }else {

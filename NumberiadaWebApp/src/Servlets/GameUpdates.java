@@ -53,7 +53,7 @@ public class GameUpdates extends HttpServlet
           gameManager.getGameLogic().clearCellsToUpdate();
         if (gameManager.getGameLogic().isGameOver())
         {
-            AppManager.initPlayersGameVersions(gameManager.getGameNumber());
+            gameManager.initPlayersGameVersions();
         }
     }
 
@@ -70,7 +70,7 @@ public class GameUpdates extends HttpServlet
         jasonResponse.currentPlayer = gameManager.getGameLogic().getCurrentPlayer();
         jasonResponse.latestGameVersion = gameManager.getGameVersion();
         jasonResponse.computerTurn = gameManager.isComputerTurn();
-        jasonResponse.allPlayersAreUpToDate = AppManager.checkGamePlayersVersionUpToDate(gameManager.getGameNumber(),gameManager.getGameVersion());   //areAllPlayersUpTODate(SessionUtils.getPlayersVersion(getServletContext()), gameManager);
+        jasonResponse.allPlayersAreUpToDate = gameManager.checkGamePlayersVersionUpToDate();
         writeJasonResponse(jasonResponse, response);
         if (jasonResponse.allPlayersAreUpToDate)
         {
@@ -124,9 +124,9 @@ public class GameUpdates extends HttpServlet
     {
         if (gameManager.getGameVersion() > playerVersion)
         {
-           // int index = Integer.parseInt(String.valueOf(SessionUtils.getPlayerIndex(getServletContext())));
             gameManager.getGameLogic().getPlayers().get(playerIndex).setPlayerVersion(gameManager.getGameVersion());
-            AppManager.updatePlayersVersion(gameManager.getGameNumber(),playerIndex,gameManager.getGameVersion());
+            gameManager.updatePlayerVersion(playerIndex);
+           // AppManager.updatePlayersVersion(gameManager.getGameNumber(),playerIndex,gameManager.getGameVersion());
             return true;
         }
         return false;
