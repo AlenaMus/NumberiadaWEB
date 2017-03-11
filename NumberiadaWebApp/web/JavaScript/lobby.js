@@ -269,9 +269,6 @@ function updateGamesTableView(gameNumber,gameTitle,playerName,boardSize,playersN
 
 }
 
-
-
-
 function getFuckingBoard(){
     window.location.href = 'GameRoom.html';
 }

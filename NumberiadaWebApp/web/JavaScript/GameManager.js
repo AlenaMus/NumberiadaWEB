@@ -416,7 +416,7 @@ function clickedSquare(row,col){
                             }
                         }
                     }else {
-                        if (nextPlayerMove.errorMessage === "" || nextPlayerMove.errorMessage === null) {
+                        if (nextPlayerMove === "" || nextPlayerMove === null) {
                         }
                         else {
                             var error = $(document.createElement('div'));

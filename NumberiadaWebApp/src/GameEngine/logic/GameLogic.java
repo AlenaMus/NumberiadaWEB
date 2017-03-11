@@ -25,6 +25,7 @@ public abstract class GameLogic {
     public static final int EMPTY_SQUARE_BASIC=1006;
 
     public boolean isEndOfGame = false;
+    private Board originalBoard;
     protected String gameTitle = "";
     protected IntegerProperty gameMoves = new SimpleIntegerProperty(0);
     public static ValidationResult validationResult  = new ValidationResult();
@@ -89,6 +90,10 @@ public abstract class GameLogic {
  //  protected void checkAndSetPlayersXML(GameEngine.jaxb.schema.generated.Players players)throws XmlNotValidException{}
     public abstract boolean isGameOver();
     protected List<Square> cellsToUpdate = new ArrayList<>();
+
+    public Board getOriginalBoard(){
+        return originalBoard;
+    }
 
 public void clearCellsToUpdate(){
      cellsToUpdate.clear();
@@ -405,6 +410,8 @@ public void clearCellsToUpdate(){
 //                }
                 break;
         }
+
+        originalBoard = new Board(gameBoard);
     }
 
 

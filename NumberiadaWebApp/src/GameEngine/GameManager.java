@@ -215,6 +215,7 @@ public class GameManager {
 
             // returnedString = setGameOver();
             message = "Game Over";
+            runningGame = false;
         }
         return message;
     }
@@ -304,6 +305,7 @@ public class GameManager {
         //clearGameWindow();
         //enableHistoryView();
         winners = winnerMessage + statistics;
+        runningGame = false;
         return winners;
     }
 
