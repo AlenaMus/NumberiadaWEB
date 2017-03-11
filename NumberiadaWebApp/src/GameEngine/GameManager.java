@@ -22,6 +22,8 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameManager {
@@ -33,7 +35,7 @@ public class GameManager {
     private String gameTitle = "";
     private int gameVersion = 0;
     private int gameNumber = 0;
-    private String winners ="";
+    private String winners = "";
 
 
     public GameLogic getGameLogic() {
@@ -153,26 +155,27 @@ public class GameManager {
         }
     }
 
-    public void initPlayersGameVersions(){
+    public void initPlayersGameVersions() {
 
         int size = gameLogic.getNumOfPlayers();
-        for(int i = 0 ;i < size; i++){
-           gameLogic.getPlayers().get(i).setPlayerIndex(0);
+        for (int i = 0; i < size; i++) {
+            gameLogic.getPlayers().get(i).setPlayerIndex(0);
         }
     }
 
 
-    public void updatePlayerVersion(int playerIndex){
+    public void updatePlayerVersion(int playerIndex) {
         gameLogic.getPlayers().get(playerIndex).setPlayerVersion(this.gameVersion);
     }
 
 
-    public boolean checkGamePlayersVersionUpToDate(){
+    public boolean checkGamePlayersVersionUpToDate() {
 
-        for(int i=0;i< gameLogic.getNumOfPlayers(); i++)
-        {
-            if(gameLogic.getPlayers().get(i).getPlayerVersion() != this.gameVersion){
-                return false;
+        for (int i = 0; i < gameLogic.getNumOfPlayers(); i++) {
+            if (gameLogic.getPlayers().get(i).isActive()) {
+                if (gameLogic.getPlayers().get(i).getPlayerVersion() != this.gameVersion) {
+                    return false;
+                }
             }
         }
         return true;
@@ -201,19 +204,19 @@ public class GameManager {
 
 
     public String AdvanceRetire() {
-        String returnedString = "";
-        getGameLogic().playerRetire();
-        if (!GameLogic.isEndOfGame) {
 
-            //NEED TO UPDATE PLAYER LIST IN CLIENTS AND BOARD!
-            //builder.clearPlayersScoreView(PlayerScoreGridPane);
-            //builder.setPlayersScore(PlayerScoreGridPane,logic.getPlayers());
+        List<Player> noMoves = null;
+        boolean isEndOfGame = getGameLogic().playerRetire();
+        String message ="";
+        if (!gameLogic.isEndOfGame) {
+          message = findPlayerToNextMove();
 
-            returnedString = findPlayerToNextMove();
         } else {//Gameover
+
             // returnedString = setGameOver();
+            message = "Game Over";
         }
-        return returnedString;
+        return message;
     }
 
 
@@ -305,15 +308,19 @@ public class GameManager {
     }
 
     private String findPlayerToNextMove() { //return next player who have move
-        String returnedString = " ";
-        if (!getGameLogic().isGameOver()) {
+        String returnedString = "";
+        List<Player> noMoveAvailiable = new ArrayList<>();
+
+        if (!getGameLogic().isGameOver() && !getGameLogic().isEndOfGame) {
             boolean hasMove = getGameLogic().switchPlayer();
             // setCurrentPlayer(logic.getCurrentPlayer());
             while (!hasMove) {
-                returnedString = returnedString + "/n no possible moves for user" + getGameLogic().getCurrentPlayer();
+                noMoveAvailiable.add(getGameLogic().getCurrentPlayer());
+                returnedString = returnedString + " no possible moves for user" + getGameLogic().getCurrentPlayer();
                 hasMove = getGameLogic().switchPlayer();
                 //setCurrentPlayer(logic.getCurrentPlayer());
-            }}
+            }
+        }
            /* if(logic.getCurrentPlayer().getPlayerType().equals(String.valueOf(ePlayerType.Computer))){
                 makeComputerMove(); // I THINK NEED TO SPERATE (THIS IS ANOTHER MOVE) *NEW*THINK WE GET THIS IN INTERVAL
             }*/
@@ -333,11 +340,13 @@ public class GameManager {
     public String MoveAdvanceMove(Point userPoint) //needs to get user point from client
     {
         int pointStatus;
-        String value = "";
+        List<Player> playersNoMove = null;
         String errorString = "";
+        Boolean isGoodPoint = false;
         if (userPoint != null) {
             pointStatus = getGameLogic().isValidPoint(userPoint);
             if (pointStatus == GameLogic.GOOD_POINT) {
+                isGoodPoint = true;
                 getGameLogic().updateDataMove(userPoint); // NEED TO UPDATE CLIENT WITH BOARD CHANGE
                 errorString = findPlayerToNextMove(); //I THINK NEED TO SEPERATE (*new* seems ok china the same)
             } else if (pointStatus == GameLogic.NOT_IN_MARKER_ROW_AND_COLUMN) {
@@ -353,11 +362,23 @@ public class GameManager {
             errorString = ("YOU DIDN'T CHOOSE A SQUARE!");
         }
 
-        return errorString;
+        return errorString;           //new NextPlayerMove(errorString,playersNoMove,isGoodPoint);
     }
+
+
+    public class NextPlayerMove
+    {
+       String errorMessage ="";
+       List<Player> noMoveAvaliable = null;
+        boolean goodPoint = false;
+
+        public NextPlayerMove(String message,List<Player> noMoves,boolean goodPoint){
+            this.errorMessage = message;
+            this.noMoveAvaliable = noMoves;
+            this.goodPoint = goodPoint;
+        }
+
+
+    }
+
 }
-
-
-
-
-

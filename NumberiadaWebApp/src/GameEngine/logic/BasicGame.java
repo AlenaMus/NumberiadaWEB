@@ -56,25 +56,25 @@ public class BasicGame extends GameLogic {
 
 
 
-    public String playerRetire()
-    {
-        String winnerPlayer =" ";
-        isEndOfGame = true;
-       // updateHistory(null);
-        if (currentPlayer.checkPlayerTurn(rowPlayer)) {
-            //row player left
-            winnerPlayer = "Column Player";
-        } else {
-            //col player left
-            winnerPlayer = "Row Player";
-        }
-        players.clear();
-        winners.clear();
-        currentPlayer = null;
-        setNumOfPlayers(0);
-        gameMoves.set(0);
-        return winnerPlayer;
-    }
+//    public String playerRetire()
+//    {
+//        String winnerPlayer =" ";
+//        isEndOfGame = true;
+//       // updateHistory(null);
+//        if (currentPlayer.checkPlayerTurn(rowPlayer)) {
+//            //row player left
+//            winnerPlayer = "Column Player";
+//        } else {
+//            //col player left
+//            winnerPlayer = "Row Player";
+//        }
+//        players.clear();
+//        winners.clear();
+//        currentPlayer = null;
+//        setNumOfPlayers(0);
+//        gameMoves.set(0);
+//        return winnerPlayer;
+//    }
 
 
     public void setBasicPlayers()

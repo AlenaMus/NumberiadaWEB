@@ -13,7 +13,7 @@ public class Player implements Comparable<Player> {
     protected int numOfMoves;
     private IntegerProperty color;
     private StringProperty playerColor;
-    private BooleanProperty IsActive;
+    private Boolean IsActive;
     private StringProperty playerType;
     private StringProperty scoreString;
     private int playerVersion;
@@ -58,6 +58,7 @@ public class Player implements Comparable<Player> {
         numOfMoves = 0;
         playerVersion = 0;
         playerIndex = -1;
+        this.IsActive = true;
 
     }
 
@@ -90,7 +91,7 @@ public class Player implements Comparable<Player> {
 
     public Player(eTurn turn,ePlayerType playerType1,int score)
     {
-        IsActive = new SimpleBooleanProperty(true);
+        IsActive = true;
         this.turn = turn;
         this.score = new SimpleIntegerProperty(score);
         numOfMoves = 0;
@@ -110,7 +111,7 @@ public class Player implements Comparable<Player> {
 
     public Player()
     {
-        IsActive = new SimpleBooleanProperty(true);
+        IsActive = true;
 
         name = new SimpleStringProperty();
         id = new SimpleIntegerProperty();
@@ -136,16 +137,14 @@ public class Player implements Comparable<Player> {
 
 
     public IntegerProperty colorProperty() {return color;}
-
-
-    public IntegerProperty idProperty() {return id;}
+   // public IntegerProperty idProperty() {return id;}
     public IntegerProperty scoreProperty() {return score;}
 
     public boolean isActive() {
-        return IsActive.get();
+        return IsActive;
     }
 
-    public void setActive(boolean active) {IsActive.setValue(active);}
+    public void setActive(boolean active) {IsActive = active;}
 
     public int getId() {
         return id.get();
@@ -190,7 +189,7 @@ public class Player implements Comparable<Player> {
         {
             newPlayer = (Player)player;
             //if(newPlayer.getId() == id.get() || newPlayer.color.get() == this.color.get())
-            if(newPlayer.getName().equals(this.getName()))
+            if(newPlayer.getName().equals(this.getName()) && (newPlayer.isActive() == this.isActive()))
             {
                 isEqual = true;
             }

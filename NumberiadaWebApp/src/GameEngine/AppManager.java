@@ -1,6 +1,7 @@
 package GameEngine;
 
 
+import GameEngine.gameObjects.Board;
 import GameEngine.gameObjects.Game;
 import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.ePlayerType;
@@ -99,8 +100,8 @@ public final class AppManager {
 
     public static UserMessageConfirmation SignToGame(int gameNumber,String gameTitle,String username,Boolean isComputer)
     {
+        int playerIndex = 0;
         boolean signed = false;
-        boolean isEnoughPlayersToGame = false;
         int numOfPlayersToGame;
         String message = "";  // can be 1. Success 2.Failed - the game is already full of players 3.the player is already signed to game 4.game is Running
         ePlayerType type ;
@@ -110,39 +111,50 @@ public final class AppManager {
             type= ePlayerType.Human;
         // isComputer ? ePlayerType.Computer : ePlayerType.Human;
         Player player = new Player(username,type);
-        int playerIndex = 0;
-        GameLogic game = games.get(gameTitle).getGameLogic();
-        int playerColor = game.getNumOfSignedPlayers();
-        player.setColor(playerColor+1);
-        if(!games.get(gameTitle).runningGame) {
 
-            if (game.getPlayers().size() < game.getNumOfPlayers()) {
-                if (!game.getPlayers().contains(player)) {
-                    playerIndex = game.getNumOfSignedPlayers();
-                    player.setPlayerIndex(playerIndex);
-                    game.getPlayers().add(player);
-                    gamesInfo.get(gameNumber-1).updateSignedPlayers();
-                    game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
-                    signedPlayersVersion++;
-                    signed = true;
-                    games.get(gameTitle).runningGame = game.getNumOfSignedPlayers() == game.getNumOfPlayers();
-                    gamesInfo.get(gameNumber-1).setRunningGame(games.get(gameTitle).runningGame);
-
+        if(!IsPlayerAlreadyInGame(player)) {
+            GameLogic game = games.get(gameTitle).getGameLogic();
+            int playerColor = game.getNumOfSignedPlayers();
+            player.setColor(playerColor + 1);
+            if (!games.get(gameTitle).runningGame) {
+                if (game.getPlayers().size() < game.getNumOfPlayers()) {
+                        playerIndex = game.getNumOfSignedPlayers();
+                        player.setPlayerIndex(playerIndex);
+                        game.getPlayers().add(player);
+                        gamesInfo.get(gameNumber - 1).updateSignedPlayers();
+                        game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
+                        signedPlayersVersion++;
+                        signed = true;
+                        games.get(gameTitle).runningGame = game.getNumOfSignedPlayers() == game.getNumOfPlayers();
+                        gamesInfo.get(gameNumber - 1).setRunningGame(games.get(gameTitle).runningGame);
 
                 } else {
 
-                      message = String.format("User %s is already signed to %s game !", username, gameTitle);
+                    message = String.format("Game %s if full of players, try another time !", gameTitle);
                 }
             } else {
-
-                     message = String.format("Game %s if full of players, try another time !", gameTitle);
+                message = String.format("Game %s if already started, try another time !", gameTitle);
             }
         }else{
-                    message = String.format("Game %s if already started, try another time !", gameTitle);
+             message = String.format("Cannot sign in %s game ! The User %s is already playing another game",gameTitle,username);
         }
 
         numOfPlayersToGame = gamesInfo.get(gameNumber-1).getSignedPlayers();
         return new UserMessageConfirmation(signed,message,numOfPlayersToGame,playerIndex,games.get(gameTitle).runningGame);
+    }
+
+
+    public static boolean IsPlayerAlreadyInGame(Player player)
+    {
+        List<Player> gamePlayers;
+        for (Map.Entry<String, GameManager> gameManager : games.entrySet())
+        {
+           gamePlayers = gameManager.getValue().getGameLogic().getPlayers();
+            if(gamePlayers.contains(player)){
+               return true;
+            }
+        }
+        return false;
     }
 
 
@@ -154,10 +166,6 @@ public final class AppManager {
        return exists;
     }
 
-    public void LeaveGame(Player player,String gameTitle)
-    {
-
-    }
 
     public void DeleteGame(String name){
         games.remove(name);

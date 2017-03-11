@@ -37,7 +37,7 @@ public class AdvancedGame extends GameLogic{
         while(i < players.size())
         {
             player = players.get(i);
-            if(!winners.contains(player)){
+            if(!winners.contains(player) && player.isActive()){
                 winnerStatistics += (String.format("player %s : with score %d \n",
                         player.getName(),player.getScore()));
             }
@@ -62,33 +62,39 @@ public class AdvancedGame extends GameLogic{
     {
        boolean isSwitchSucceed = true;
        GameEngine.gameObjects.Player nextPlayer;
-
             currentPlayerIndex++;
             nextPlayer = players.get(currentPlayerIndex % numOfPlayers);
-            super.setCurrentPlayer(nextPlayer);
-        if (!(isPlayerHaveMove(gameBoard.getMarker().getMarkerLocation(),nextPlayer)))
-            isSwitchSucceed = false;
-        else {
-            setGameMoves(getGameMoves()+1);
+
+        while(!nextPlayer.isActive()) {
+            currentPlayerIndex++;
+            nextPlayer = players.get(currentPlayerIndex % numOfPlayers);
         }
+            super.setCurrentPlayer(nextPlayer);
+            if (!(isPlayerHaveMove(gameBoard.getMarker().getMarkerLocation(), nextPlayer)))
+                isSwitchSucceed = false;
+            else {
+                setGameMoves(getGameMoves() + 1);
+            }
+
 
         return isSwitchSucceed;
     }
 
     private boolean isPlayerHaveMove(Point markerLocation, GameEngine.gameObjects.Player player)
     {
-        int MarkerRow = markerLocation.getRow()-1;
-        int MarkerCol = markerLocation.getCol()-1;
-        for (int i=0; i < gameBoard.GetBoardSize();i++)
-            if ((!gameBoard.getGameBoard()[MarkerRow][i].isDisabled()) &&(!gameBoard.getGameBoard()[MarkerRow][i].isEmpty())
-                    && (!gameBoard.getGameBoard()[MarkerRow][i].getValue().equals(Marker.markerSign))
-                    && ((gameBoard.getGameBoard()[MarkerRow][i].getColor()  == (player.getColor()))))
-                return true;
-        for (int i=0; i < gameBoard.GetBoardSize(); i++)
-            if ((!gameBoard.getGameBoard()[i][MarkerCol].isDisabled() )&& (!gameBoard.getGameBoard()[i][MarkerCol].isEmpty() )
-                    && (!gameBoard.getGameBoard()[i][MarkerCol].getValue().equals(Marker.markerSign))
-                    && ((gameBoard.getGameBoard()[i][MarkerCol].getColor()  == (player.getColor()))))
-                return true;
+            int MarkerRow = markerLocation.getRow() - 1;
+            int MarkerCol = markerLocation.getCol() - 1;
+            for (int i = 0; i < gameBoard.GetBoardSize(); i++)
+                if ((!gameBoard.getGameBoard()[MarkerRow][i].isDisabled()) && (!gameBoard.getGameBoard()[MarkerRow][i].isEmpty())
+                        && (!gameBoard.getGameBoard()[MarkerRow][i].getValue().equals(Marker.markerSign))
+                        && ((gameBoard.getGameBoard()[MarkerRow][i].getColor() == (player.getColor()))))
+                    return true;
+            for (int i = 0; i < gameBoard.GetBoardSize(); i++)
+                if ((!gameBoard.getGameBoard()[i][MarkerCol].isDisabled()) && (!gameBoard.getGameBoard()[i][MarkerCol].isEmpty())
+                        && (!gameBoard.getGameBoard()[i][MarkerCol].getValue().equals(Marker.markerSign))
+                        && ((gameBoard.getGameBoard()[i][MarkerCol].getColor() == (player.getColor()))))
+                    return true;
+
         return false;
     }
 
@@ -111,25 +117,6 @@ public class AdvancedGame extends GameLogic{
         return gameOver;
     }
 
-//    public String playerRetire () {
-//        for (int i = 0; i < gameBoard.GetBoardSize(); i++)
-//            for (int j = 0; j < gameBoard.GetBoardSize(); j++)
-//                if (gameBoard.getGameBoard()[i][j].getColor() == currentPlayer.getColor())
-//                {
-//                    gameBoard.getGameBoard()[i][j].setColor(GameColor.GRAY);
-//                    gameBoard.getGameBoard()[i][j].setDisabled(true);
-//                    gameBoard.getGameBoard()[i][j].setValue(" ");
-//                    gameBoard.getGameBoard()[i][j].setEmpty(true);
-//                    cellsToUpdate.add(gameBoard.getGameBoard()[i][j]);
-//                }
-//       // currentPlayer.setActive(false);
-//        players.remove(currentPlayer);
-//        numOfPlayers--;
-//       if(numOfPlayers==1) {
-//           isEndOfGame = true;
-//       }
-//       return "";
-//    }
 
     private static int ComputerMove(int boardSize) {
         return (ThreadLocalRandom.current().nextInt(0, boardSize));
@@ -158,16 +145,6 @@ public class AdvancedGame extends GameLogic{
 
                 return squareLocation;
     }
-
-
-
-
-
-
-
-
-
-
 
 
 //

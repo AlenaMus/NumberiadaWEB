@@ -24,7 +24,7 @@ public abstract class GameLogic {
     public static final int MARKER_SQUARE_BASIC=1005;
     public static final int EMPTY_SQUARE_BASIC=1006;
 
-    public static boolean isEndOfGame = false;
+    public boolean isEndOfGame = false;
     protected String gameTitle = "";
     protected IntegerProperty gameMoves = new SimpleIntegerProperty(0);
     public static ValidationResult validationResult  = new ValidationResult();
@@ -68,7 +68,6 @@ public abstract class GameLogic {
     public void setGameBoard(Board gameBoard) {
         this.gameBoard = gameBoard;
     }
-    public List<Player>  getPlayers(){return players;}
     public int getGameMoves() {
         return gameMoves.get();
     }
@@ -116,6 +115,18 @@ public void clearCellsToUpdate(){
         //currentPlayer.scoreStringProperty().set(String.valueOf(newScore));
     }
 
+    public List<Player> getPlayers(){return players;}
+
+    public List<Player> getActivePlayers(){
+        List<Player> activePlayers = new ArrayList<>();
+        for (Player player:players) {
+            if(player.isActive()){
+                activePlayers.add(player);
+            }
+        }
+        return activePlayers;
+    }
+
 //    public void updateHistory(Point chosenSquare){
 //        GameMove move = new GameMove(gameType,gameBoard,currentPlayer,players,gameMoves.get());
 //        if(chosenSquare!= null){
@@ -135,7 +146,13 @@ public void clearCellsToUpdate(){
 //    }
     public void setFirstPlayer()
     {
-        setCurrentPlayer(players.get(0));
+        int i=0;
+        Player player = players.get(i);
+        while(!player.isActive()){
+            i++;
+            player = players.get(i);
+        }
+        setCurrentPlayer(player);
         currentPlayerIndex = 0;
     }
 
@@ -143,15 +160,15 @@ public void clearCellsToUpdate(){
         String winnerMessage = "";
         setWinners();
         if(winners.size()> 1){
-            winnerMessage = "It's a TIE!\nThe Winners are :\n";
+            winnerMessage = "It's a TIE!\n The Winners are :\n";
             for (Player player:winners) {
-                winnerMessage+=String.format("%s -> score :%d\n",player.getName(),player.getScore());
+                winnerMessage+=String.format(" %s -> score :%d \n",player.getName(),player.getScore());
             }
         }else{
             for (Player player:winners) {
                 if(player!=null){
                     winnerMessage = "The Winner is:\n" +
-                            String.format("%s -> score : %d", player.getName(), player.getScore());
+                            String.format("%s -> score : %d \n", player.getName(), player.getScore());
                     break;
                 }
             }
@@ -174,11 +191,13 @@ public void clearCellsToUpdate(){
     public void setWinners(){
         int maxScore=-10000;
         for (Player player:players) {
-            maxScore = player.getScore();
+            if(player.isActive()){
+                maxScore = player.getScore();
+            }
             break;
         }
         for (Player player:players) {
-            if(player!=null)
+            if(player!=null && player.isActive())
             {
                 if(player.getScore()> maxScore){
                     maxScore = player.getScore();
@@ -186,7 +205,7 @@ public void clearCellsToUpdate(){
             }
         }
         for (Player player:players) {
-            if(player!=null)
+            if(player!=null && player.isActive())
             {
                 if(player.getScore()== maxScore){
                     winners.add(player);
@@ -271,7 +290,7 @@ public void clearCellsToUpdate(){
         return squareValue;
     }
 
-    public String playerRetire () {
+    public boolean playerRetire () {
         for (int i = 0; i < gameBoard.GetBoardSize(); i++)
             for (int j = 0; j < gameBoard.GetBoardSize(); j++)
                 if (gameBoard.getGameBoard()[i][j].getColor() == currentPlayer.getColor())
@@ -283,13 +302,15 @@ public void clearCellsToUpdate(){
                     cellsToUpdate.add(gameBoard.getGameBoard()[i][j]);
 
                 }
-       // currentPlayer.setActive(false);
-        players.remove(currentPlayer);
+        currentPlayer.setActive(false);
+      //  players.remove(currentPlayer);
         numOfPlayers--;
-        if(numOfPlayers==1) {
-            isEndOfGame = true;
+        numOfSignedPlayers--;
+        if(numOfPlayers == 1) {
+             this.isEndOfGame = true;
+            System.out.print("End Of game true !");
         }
-        return "";
+        return isEndOfGame;
     }
 
     protected void checkExplicitBoard(List<GameEngine.jaxb.schema.generated.Square> squares, GameEngine.jaxb.schema.generated.Marker marker, int boardSize) throws XmlNotValidException

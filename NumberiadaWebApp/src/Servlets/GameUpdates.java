@@ -28,8 +28,6 @@ import java.util.List;
         })
 public class GameUpdates extends HttpServlet
 {
-
-
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("application/json");
@@ -38,9 +36,6 @@ public class GameUpdates extends HttpServlet
 
             int playerVersion = Integer.parseInt(request.getParameter(Constants.PLAYER_VERSION));
             int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
-
-
-
             if (isPlayerUpToDate(playerVersion, playerIndex, gameManager))
             {
                 getUpdatesFromGame(gameManager, jasonResponse, response);
@@ -62,7 +57,12 @@ public class GameUpdates extends HttpServlet
 
     private void getUpdatesFromGame(GameManager gameManager, JasonResponse jasonResponse, HttpServletResponse response) throws IOException
     {
-        jasonResponse.gameOver = gameManager.getGameLogic().isGameOver();
+        if(gameManager.getGameLogic().isGameOver() || gameManager.getGameLogic().isEndOfGame){
+            jasonResponse.gameOver = true;
+
+            System.out.print("Game Over From Game Updates !");
+        }
+
         if (jasonResponse.gameOver)
         {
             if(gameManager.getWinners().isEmpty())
@@ -72,7 +72,6 @@ public class GameUpdates extends HttpServlet
 
                 jasonResponse.winner = gameManager.getWinners();
             }
-
         }
 
        // jasonResponse.DeletedPlayerIndex = gameManager.getDeletedPlayerIndex();
@@ -132,11 +131,17 @@ public class GameUpdates extends HttpServlet
 
     private boolean isPlayerUpToDate(int playerVersion, int playerIndex, GameManager gameManager)
     {
+        //nt size =  gameManager.getGameLogic().getPlayers().size();
+       // System.out.println(String.format("players size = %d --- player index %d",size,playerIndex));
+
+        Player player = gameManager.getGameLogic().getPlayers().get(playerIndex);
         if (gameManager.getGameVersion() > playerVersion)
         {
-            gameManager.getGameLogic().getPlayers().get(playerIndex).setPlayerVersion(gameManager.getGameVersion());
-            gameManager.updatePlayerVersion(playerIndex);
-           // AppManager.updatePlayersVersion(gameManager.getGameNumber(),playerIndex,gameManager.getGameVersion());
+            if(player.isActive()){
+                player.setPlayerVersion(gameManager.getGameVersion());
+                gameManager.updatePlayerVersion(playerIndex);
+            }
+
             return true;
         }
         return false;
@@ -162,6 +167,5 @@ public class GameUpdates extends HttpServlet
         public boolean gameOver;
         public boolean computerTurn;
         public List<Square> cellToUpdate;
-        public String userName;
     }
 }

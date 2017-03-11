@@ -52,8 +52,21 @@ $("#SoundButton").click(function () {
 
 
 function quit() {
-    window.quited = true;
-    playerRetire();
+
+    if(window.myPlayerIndex === window.CurrPlayerIndex){
+        window.quited = true;
+        playerRetire();
+    }else{
+        var leaveGameDialog = $(document.createElement('div'));
+        leaveGameDialog.html("Please wait your turn to leave the game !");
+        leaveGameDialog.dialog({
+            modal: true,
+            title: "Cannot leave game",
+            height: "auto",
+            width: "auto"
+        });
+    }
+
 }
 
 
@@ -121,7 +134,9 @@ function playerRetire()
         data: {actionType: "quit", playerIndex: window.myPlayerIndex},
         url: "userIteration",
         timeout: 6000,
-        success: function (data) {
+        success: function (nextPlayerMove) {
+            clearInterval(window.intervalGameUpdates);
+            clearInterval(window.playersUpdates);
             window.location.href = 'LobbyPage.html';
         },
         error: function (textStatus) {
@@ -168,14 +183,13 @@ function getGameUpdate()
     dataType: "json",
     timeout: 6000,
     success: function (data, textStatus, jqXHR) {
-       // $('#hiUser').html('Hello'+ data.userName);
-    if ((data !== false) && (window.playerGameVersion!== data.latestGameVersion ))
+    if ((data !== false) && (window.playerGameVersion !== data.latestGameVersion ))
     {
         updateBoardAfterMove(data);
 
      if (data.gameOver === true)
     {
-        handelGameOver(data);
+          handelGameOver(data);
     }
     else {
           handelComputerTurn(data);
@@ -241,31 +255,19 @@ function handelComputerTurn(data) {
 
 function handelGameOver(data) {
 
+    clearInterval(window.intervalGameUpdates);
     var winnerPopup = $(document.createElement('div'));
     winnerPopup.html(data.winner);
     winnerPopup.dialog({
         modal: true,
         title: "Game Over",
         height: "auto",
-        width: "auto"
+        width: "auto",
+        close: function (event, ui) {
+            window.location.href = 'LobbyPage.html';
+        }
     });
-   // $('#gameStatus').html(data.winner);
-    clearInterval(window.intervalGameUpdates);
 }
-
-//$(function () {
-// $("#BackButton").click(function () {
-//  if (window.quited === false)
-//  {
-//   quit();
-//  }
-//  window.location.href = "mainMenu.html";
-//
-// });
-// $("#Error").hide();
-//
-// initilazeGame();
-//});
 
 function updateGamePlayersList() {
     $.ajax({
@@ -398,18 +400,36 @@ function clickedSquare(row,col){
                 url: "userIteration",
                 timeout: 6000,
                 dataType: 'json',
-                success: function (message) {
-                    if(message !== null && message !== ""){
-                        var newDiv = $(document.createElement('div'));
-                        newDiv.html(message);
-                        newDiv.dialog({
-                            modal: true,
-                            title: "Move Info",
-                            height: "auto",
-                            width: "auto"
-                        });
+                success: function (nextPlayerMove) {
+                    var noMoves = nextPlayerMove.noMoveAvaliable;
+                    if(nextPlayerMove.goodPoint === true){
+                        if(noMoves !== null && noMoves.length > 0){
+                            for(var i = 0;i< noMoves.length; i++){
+                                var newDiv = $(document.createElement('div'));
+                                newDiv.html('no possible moves for user' + noMoves[i].name.value);
+                                newDiv.dialog({
+                                    modal: true,
+                                    title: "Move Info",
+                                    height: "auto",
+                                    width: "auto"
+                                });
+                            }
+                        }
+                    }else {
+                        if (nextPlayerMove.errorMessage === "" || nextPlayerMove.errorMessage === null) {
+                        }
+                        else {
+                            var error = $(document.createElement('div'));
+                            error.html(nextPlayerMove.errorMessage);
+                            error.dialog({
+                                modal: true,
+                                title: "Move Info",
+                                height: "auto",
+                                width: "auto"
+                            });
+                        }
                     }
-                   // $('#gameStatus').html(message);
+
                 },
 
                 error: function (textStatus) {

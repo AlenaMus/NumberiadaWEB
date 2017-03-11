@@ -38,7 +38,7 @@ public class GetGamePlayers extends HttpServlet
         GameManager game = SessionUtils.getGameManager(getServletContext());
 
         if(game != null) {
-            responseVariables.players = game.getGameLogic().getPlayers();
+            responseVariables.players = game.getGameLogic().getActivePlayers();
             responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
             responseVariables.numOfPlayers = responseVariables.players.size();
             responseVariables.myPlayerIndex = SessionUtils.getPlayerIndex(getServletContext());

@@ -6,6 +6,7 @@
 package Servlets;
 
 import GameEngine.GameManager;
+import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.Point;
 import Servlets.Const.Constants;
 import com.google.gson.Gson;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 @WebServlet(name = "UserIteration", urlPatterns =
         {
@@ -29,6 +31,10 @@ public class UserIteration extends HttpServlet
     {
         GameManager gameManager = SessionUtils.getGameManager(getServletContext());
         String message="";
+        GameManager.NextPlayerMove  nextPlayerMove = null;
+        List<Player> noMovePlayers;
+        Gson json = new Gson();
+        PrintWriter out = response.getWriter();
         if (gameManager != null)
         {
             switch (request.getParameter(Constants.ACTION_TYPE))
@@ -39,8 +45,10 @@ public class UserIteration extends HttpServlet
                 case "computerIteration":
                     gameManager.makeComputerMove();
                     break;
+
                 case "quit":
-                    message =  gameManager.AdvanceRetire();
+                    message = gameManager.AdvanceRetire();
+                   // out.print(json.toJson(noMovePlayers));
                     break;
                /* case "endTurn":
                     gameManager.endTurn();
@@ -48,11 +56,10 @@ public class UserIteration extends HttpServlet
                 default:
                     break;
             }
-            gameManager.updateGameVersion();
-        }
 
-        Gson json = new Gson();
-        PrintWriter out = response.getWriter();
+            gameManager.updateGameVersion();
+            System.out.print(gameManager.getGameVersion());
+        }
         out.print(json.toJson(message));
         out.flush();
     }
