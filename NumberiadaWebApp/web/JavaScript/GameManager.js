@@ -7,6 +7,7 @@ window.playersUpdates = 0;
 
 window.intervalStartGame = 0;
 window.intervalGameUpdates=0;
+
 window.quited = false;
 
 
@@ -21,6 +22,8 @@ $(function() {
     $("#leaveGame").click(function () {
         quit();
     });
+
+});
 
     $(window.intervalGameUpdates = setInterval(function () {
             getGameUpdate();
@@ -47,7 +50,7 @@ $("#SoundButton").click(function () {
         window.playSound === true ? mute() : sound();
 });
     $("#BackGroundAudio").trigger("play");
-});
+
 
 
 
@@ -178,12 +181,12 @@ function getGameUpdate()
 {
     $.ajax({
     type: 'POST',
-    data: {myPlayerGameVersion: window.playerGameVersion, playerIndex: window.myPlayerIndex},
+    data: {myPlayerGameVersion: window.playerGameVersion, playerIndex: window.myPlayerIndex,gameState:'gameRunning'},
     url: "gameUpdates",
     dataType: "json",
     timeout: 6000,
     success: function (data, textStatus, jqXHR) {
-    if ((data !== false) && (window.playerGameVersion !== data.latestGameVersion ))
+    if ((data !== false) && (window.playerGameVersion !== data.latestGameVersion))
     {
         updateBoardAfterMove(data);
 
@@ -254,8 +257,6 @@ function handelComputerTurn(data) {
 
 
 function handelGameOver(data) {
-
-    clearInterval(window.intervalGameUpdates);
     var winnerPopup = $(document.createElement('div'));
     winnerPopup.html(data.winner);
     winnerPopup.dialog({
@@ -264,9 +265,36 @@ function handelGameOver(data) {
         height: "auto",
         width: "auto",
         close: function (event, ui) {
-            window.location.href = 'LobbyPage.html';
+            //clearInterval(window.intervalGameUpdates);
+            setGameOver();
+
         }
     });
+}
+
+
+function setGameOver() {
+    $.ajax({
+        type: 'POST',
+        url: "gameUpdates",
+        data: {myPlayerGameVersion: window.playerGameVersion, playerIndex: window.myPlayerIndex, gameState:'gameOver'},
+        dataType: 'json',
+        timeout: 6000,
+        success: function (data, textStatus, jqXHR) {
+            clearInterval(window.intervalGameUpdates);
+            window.location.href = 'LobbyPage.html';
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            if (textStatus === "timeout") {
+                $("#Error").text("Server Timeout setAction. Try again..").show();
+            }
+            else {
+                $("#Error").text("Something went wrong setAction. Try again..").show();
+            }
+        }
+    });
+
+
 }
 
 function updateGamePlayersList() {

@@ -33,6 +33,9 @@ public class Game{
     }
 
     public void updateSignedPlayers(){signedPlayers++;}
+    public void setSignedPlayers(int players){
+        signedPlayers = players;
+    }
 
     public int getSignedPlayers(){return signedPlayers;}
 

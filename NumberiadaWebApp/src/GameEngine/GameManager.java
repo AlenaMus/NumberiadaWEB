@@ -206,16 +206,18 @@ public class GameManager {
     public String AdvanceRetire() {
 
         List<Player> noMoves = null;
+      //  gameLogic.getCurrentPlayer().setActive(false);
         boolean isEndOfGame = getGameLogic().playerRetire();
         String message ="";
-        if (!gameLogic.isEndOfGame) {
-          message = findPlayerToNextMove();
-
-        } else {//Gameover
-
-            // returnedString = setGameOver();
+        if (!isEndOfGame) {
+           message = findPlayerToNextMove();
+        }
+        else
+            {//Gameover
+            // returnedString = setGameStatistics();
             message = "Game Over";
-            runningGame = false;
+             gameLogic.isEndOfGame = true;
+             runningGame = false;
         }
         return message;
     }
@@ -298,7 +300,31 @@ public class GameManager {
 //        }
 //    }
 
-    public String setGameOver() {
+    public void setGameOver(){
+
+        System.out.print("Set Game Over in Logic !!!!!!!!!!!!!!!!!!");
+        gameLogic.gameLogicClear();
+        runningGame = false;
+        gameVersion = 0;
+        gameLogic.initializeBoard();
+        gameLogic.isEndOfGame = false;
+        AppManager.gamesInfo.get(gameNumber).setRunningGame(false);
+        AppManager.gamesInfo.get(gameNumber).setSignedPlayers(0);
+
+    }
+
+
+    public boolean isLastGamePlayer(int playerIndex)
+    {
+        for(int i=0; i < gameLogic.getPlayers().size();i++){
+          if((i != playerIndex) && (gameLogic.getPlayers().get(i).isActive())){
+              return false;
+          }
+        }
+        return true;
+    }
+
+    public String setGameStatistics() {
         String winnerMessage = getGameLogic().getWinner(); //BRING A STRING WITH WINNER NAMES
         String statistics = getGameLogic().gameOver(); //BRING STRING WITH OTHER PLAYER SCORE
         //NEED TO UPDATE CLIENTS WITH THOSE STRINGS !
@@ -327,7 +353,7 @@ public class GameManager {
                 makeComputerMove(); // I THINK NEED TO SPERATE (THIS IS ANOTHER MOVE) *NEW*THINK WE GET THIS IN INTERVAL
             }*/
 //        } else {
-//            returnedString = setGameOver();
+//            returnedString = setGameStatistics();
 //        }
         return returnedString;
     }

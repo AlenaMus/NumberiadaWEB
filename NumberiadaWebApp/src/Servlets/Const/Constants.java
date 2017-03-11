@@ -28,7 +28,7 @@ package Servlets.Const;
         public static final String PLAYERS_VERSION = "myGameVerion";
         public static final String PLAYER_INDEX = "playerIndex";
         public static final String SELECTED_PLAYER_INDEX = "selectedPlayerIndex";
-        public static final String NO_GAME_NOW = "no_game";
+        public static final String GAME_STATE = "gameState";
         public static final String GAME_ALREADY_STARTED = "game_already_started";
         public static final String WAIT_FOR_PLAYERS_LOADED_XML = "waiting_for_players_loaded_xml";
         public static long TIMEOUT_MILISEC = 20 * 1000;

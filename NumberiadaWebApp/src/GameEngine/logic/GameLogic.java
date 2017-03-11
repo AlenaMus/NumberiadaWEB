@@ -95,6 +95,11 @@ public abstract class GameLogic {
         return originalBoard;
     }
 
+    public void initializeBoard(){
+
+        this.gameBoard = new Board(originalBoard);
+    }
+
 public void clearCellsToUpdate(){
      cellsToUpdate.clear();
 }
@@ -105,10 +110,11 @@ public void clearCellsToUpdate(){
     public void gameLogicClear(){
         players.clear();
         winners.clear();
+        cellsToUpdate.clear();
         explicitSquares.clear();
         gameBoard.clearBoard();
         currentPlayer = null;
-        setNumOfPlayers(0);
+        setNumOfSignedPlayers(0);
         setGameMoves(0);
     }
 
@@ -307,15 +313,14 @@ public void clearCellsToUpdate(){
                     cellsToUpdate.add(gameBoard.getGameBoard()[i][j]);
 
                 }
-        currentPlayer.setActive(false);
+        //currentPlayer.setActive(false);
       //  players.remove(currentPlayer);
         numOfPlayers--;
         numOfSignedPlayers--;
         if(numOfPlayers == 1) {
-             this.isEndOfGame = true;
-            System.out.print("End Of game true !");
+             return true;
         }
-        return isEndOfGame;
+        return false;
     }
 
     protected void checkExplicitBoard(List<GameEngine.jaxb.schema.generated.Square> squares, GameEngine.jaxb.schema.generated.Marker marker, int boardSize) throws XmlNotValidException

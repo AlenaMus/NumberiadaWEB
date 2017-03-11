@@ -3,6 +3,10 @@ window.myPlayersListVersion = 0;
 window.myGamesListVersion = 0;
 window.mySignedPlayersVersion = 0;
 
+window.intervalUpdatePlayers;
+window.intervalUpdateGames;
+window.intervalSignedPlayers;
+
 
 $(function () {
     $("#Error").hide();
@@ -12,27 +16,29 @@ $(function () {
     $("#signToGameButton").click(onSignToGameClick);
     $('input[type=file]').bootstrapFileInput();
      initilazeLoadGameForm();
+
 });
 
-$(window.intervalUpdates = setInterval(function ()
+$(window.intervalUpdatePlayers = setInterval(function ()
     {
         updatePlayers();
     }, 200)
 );
 
-$(window.intervalUpdates = setInterval(function ()
+$(window.intervalUpdateGames= setInterval(function ()
     {
         updateGamesTable();
     }, 200)
 );
 
 
-$(window.intervalUpdates = setInterval(function ()
+$(window.intervalSignedPlayers = setInterval(function ()
     {
         updateSignedPlayers();
 
     }, 300)
 );
+
 
 
 function updatePlayers() {
@@ -212,6 +218,7 @@ function updateSignedPlayers() {
                         $('#signIn'+ game.gameNumber).prop("disabled",true);
                         $('#signToGame'+ game.gameNumber).html('Game Running');
                      }else{
+                        $('#signIn'+ game.gameNumber).prop("disabled",false);
                         $('#signToGame' + game.gameNumber).html(game.signedPlayers);
                     }
                 });

@@ -52,7 +52,7 @@ public class Board {
                 gameBoard[i][j] = null;
             }
         }
-        gameBoard=null;
+        gameBoard = null;
     }
     public int GetBoardSize()
     {

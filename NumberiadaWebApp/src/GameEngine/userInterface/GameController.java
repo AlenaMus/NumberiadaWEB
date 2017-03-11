@@ -144,7 +144,7 @@
 //        }else{
 //            if (!logic.InitMoveCheck())
 //            {
-//                setGameOver();
+//                setGameStatistics();
 //            }
 //        }
 //    }
@@ -240,7 +240,7 @@
 //                makeComputerMove();
 //            }
 //        } else {
-//            setGameOver();
+//            setGameStatistics();
 //        }
 //
 //    }
@@ -263,7 +263,7 @@
 //
 //}
 //
-//    private void setGameOver()
+//    private void setGameStatistics()
 //    {
 //        String winnerMessage = logic.getWinner();
 //        String statistics = logic.gameOver();
@@ -410,7 +410,7 @@
 //            builder.setPlayersScore(PlayerScoreGridPane,logic.getPlayers());
 //            findPlayerToNextMove();
 //        }else{
-//            setGameOver();
+//            setGameStatistics();
 //        }
 //    }
 //
@@ -621,7 +621,7 @@
 //                setCurrentPlayerBasic(logic.getCurrentPlayer());
 //                if (!doSwitch)
 //                {
-//                    setGameOver();
+//                    setGameStatistics();
 //                }
 //            }
 //            else if (pointStatus == GameLogic.NOT_IN_MARKER_ROW_BASIC)

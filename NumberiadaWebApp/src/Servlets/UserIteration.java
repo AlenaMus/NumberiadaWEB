@@ -5,6 +5,7 @@
  */
 package Servlets;
 
+import GameEngine.AppManager;
 import GameEngine.GameManager;
 import GameEngine.gameObjects.Player;
 import GameEngine.gameObjects.Point;
@@ -30,8 +31,10 @@ public class UserIteration extends HttpServlet
             throws ServletException, IOException
     {
         GameManager gameManager = SessionUtils.getGameManager(getServletContext());
+      //  int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+
         String message="";
-        GameManager.NextPlayerMove  nextPlayerMove = null;
+        GameManager.NextPlayerMove nextPlayerMove = null;
         List<Player> noMovePlayers;
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
@@ -47,8 +50,9 @@ public class UserIteration extends HttpServlet
                     break;
 
                 case "quit":
+                   gameManager.getGameLogic().getCurrentPlayer().setActive(false);
+                    System.out.print("quit/n");
                     message = gameManager.AdvanceRetire();
-                   // out.print(json.toJson(noMovePlayers));
                     break;
                /* case "endTurn":
                     gameManager.endTurn();

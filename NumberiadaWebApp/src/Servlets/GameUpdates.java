@@ -17,7 +17,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -36,15 +35,28 @@ public class GameUpdates extends HttpServlet
 
             int playerVersion = Integer.parseInt(request.getParameter(Constants.PLAYER_VERSION));
             int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
-            if (isPlayerUpToDate(playerVersion, playerIndex, gameManager))
-            {
-                getUpdatesFromGame(gameManager, jasonResponse, response);
+            String gameState = request.getParameter(Constants.GAME_STATE);
 
-            } else
-            {
+          if(gameState.equals("gameRunning")) {
+              if (isPlayerUpToDate(playerVersion, playerIndex, gameManager)) {
+                  getUpdatesFromGame(gameManager, jasonResponse, response);
+
+             } else {
                 writeJasonResponse(false, response);
             }
-       }
+        }else if(gameState.equals("gameOver")){
+                 System.out.print("Game Over for 2 player");
+                if(gameManager.isLastGamePlayer(playerIndex)){
+                    gameManager.setGameOver();
+
+                }else{
+                    gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
+
+                }
+
+              AppManager.signedPlayersVersion++;
+    }
+    }
 
     private void clearData(GameManager gameManager)
     {
@@ -67,7 +79,7 @@ public class GameUpdates extends HttpServlet
         {
             if(gameManager.getWinners().isEmpty())
             {
-                jasonResponse.winner = gameManager.setGameOver();
+                jasonResponse.winner = gameManager.setGameStatistics();
             }else{
 
                 jasonResponse.winner = gameManager.getWinners();
@@ -129,23 +141,27 @@ public class GameUpdates extends HttpServlet
         return "Short description";
     }// </editor-fold>
 
-    private boolean isPlayerUpToDate(int playerVersion, int playerIndex, GameManager gameManager)
-    {
+    private boolean isPlayerUpToDate(int playerVersion, int playerIndex, GameManager gameManager) {
         //nt size =  gameManager.getGameLogic().getPlayers().size();
-       // System.out.println(String.format("players size = %d --- player index %d",size,playerIndex));
+        // System.out.println(String.format("players size = %d --- player index %d",size,playerIndex));
 
-        Player player = gameManager.getGameLogic().getPlayers().get(playerIndex);
-        if (gameManager.getGameVersion() > playerVersion)
-        {
-            if(player.isActive()){
-                player.setPlayerVersion(gameManager.getGameVersion());
-                gameManager.updatePlayerVersion(playerIndex);
+        if (playerIndex < gameManager.getGameLogic().getPlayers().size()) {
+
+            Player player = gameManager.getGameLogic().getPlayers().get(playerIndex);
+            if (gameManager.getGameVersion() > playerVersion) {
+                if (player.isActive()) {
+                    player.setPlayerVersion(gameManager.getGameVersion());
+                    gameManager.updatePlayerVersion(playerIndex);
+                }
+
+                return true;
             }
-
-            return true;
+            return false;
         }
-        return false;
+
+        return true;
     }
+
 
     private void writeJasonResponse(Object jasonResponse, HttpServletResponse response) throws IOException
     {
