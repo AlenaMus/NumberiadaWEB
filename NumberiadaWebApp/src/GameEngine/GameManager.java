@@ -205,7 +205,7 @@ public class GameManager {
 
     public String AdvanceRetire() {
 
-        List<Player> noMoves = null;
+      //  List<Player> noMoves = null;
       //  gameLogic.getCurrentPlayer().setActive(false);
         boolean isEndOfGame = getGameLogic().playerRetire();
         String message ="";
@@ -215,8 +215,7 @@ public class GameManager {
         else
             {//Gameover
             // returnedString = setGameStatistics();
-            message = "Game Over";
-             gameLogic.isEndOfGame = true;
+             message = "Game Over";
              runningGame = false;
         }
         return message;
@@ -301,27 +300,36 @@ public class GameManager {
 //    }
 
     public void setGameOver(){
-
-        System.out.print("Set Game Over in Logic !!!!!!!!!!!!!!!!!!");
+        System.out.print("Set Game Over in Logic LastPlayer Out !!!!!!!!!!!!!!!!!!\n");
         gameLogic.gameLogicClear();
         runningGame = false;
         gameVersion = 0;
         gameLogic.initializeBoard();
         gameLogic.isEndOfGame = false;
         AppManager.gamesInfo.get(gameNumber).setRunningGame(false);
-        AppManager.gamesInfo.get(gameNumber).setSignedPlayers(0);
 
     }
 
 
     public boolean isLastGamePlayer(int playerIndex)
     {
-        for(int i=0; i < gameLogic.getPlayers().size();i++){
-          if((i != playerIndex) && (gameLogic.getPlayers().get(i).isActive())){
-              return false;
-          }
+        if(gameLogic.getActivePlayers().size() == 1){
+            if(gameLogic.getPlayers().get(playerIndex).isActive()){
+                return true;
+            }
         }
-        return true;
+        return false;
+//        int active = 0;
+//        for(int i=0; i < gameLogic.getPlayers().size();i++){
+//          if(gameLogic.getPlayers().get(i).isActive()){
+//             active++;
+//          }
+//        }
+//
+//        if((active ==  1) && (getGameLogic().getPlayers().get(playerIndex).isActive())){
+//            return true;
+//        }
+//        return false;
     }
 
     public String setGameStatistics() {

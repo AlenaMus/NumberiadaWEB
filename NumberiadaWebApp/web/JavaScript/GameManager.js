@@ -192,7 +192,9 @@ function getGameUpdate()
 
      if (data.gameOver === true)
     {
+          clearInterval(window.intervalGameUpdates);
           handelGameOver(data);
+
     }
     else {
           handelComputerTurn(data);
@@ -257,6 +259,7 @@ function handelComputerTurn(data) {
 
 
 function handelGameOver(data) {
+
     var winnerPopup = $(document.createElement('div'));
     winnerPopup.html(data.winner);
     winnerPopup.dialog({
@@ -265,9 +268,7 @@ function handelGameOver(data) {
         height: "auto",
         width: "auto",
         close: function (event, ui) {
-            //clearInterval(window.intervalGameUpdates);
             setGameOver();
-
         }
     });
 }
@@ -281,7 +282,7 @@ function setGameOver() {
         dataType: 'json',
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
-            clearInterval(window.intervalGameUpdates);
+            //clearInterval(window.intervalGameUpdates);
             window.location.href = 'LobbyPage.html';
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -289,7 +290,7 @@ function setGameOver() {
                 $("#Error").text("Server Timeout setAction. Try again..").show();
             }
             else {
-                $("#Error").text("Something went wrong setAction. Try again..").show();
+                $("#Error").text("Something went wrong in Game Over. Try again..").show();
             }
         }
     });

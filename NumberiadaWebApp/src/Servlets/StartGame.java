@@ -31,8 +31,8 @@ public class StartGame extends HttpServlet
         Player currentPlayer = null;
         String message = "";
         response.setContentType("application/json");
-        HttpSession session = request.getSession(true);
-        GameManager gameManager = SessionUtils.getGameManager(getServletContext());
+        HttpSession session = request.getSession(false);
+        GameManager gameManager = (GameManager)session.getAttribute(Constants.GAME_MANAGER);  // SessionUtils.getGameManager(getServletContext());
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
         int numOfPlayersToStartGame = gameManager.getGameLogic().getNumOfPlayers();

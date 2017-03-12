@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -30,7 +31,8 @@ public class GameUpdates extends HttpServlet
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         response.setContentType("application/json");
-        GameManager gameManager = SessionUtils.getGameManager(getServletContext());
+        HttpSession session = request.getSession(false);
+        GameManager gameManager = (GameManager)session.getAttribute(Constants.GAME_MANAGER);
         JasonResponse jasonResponse = new JasonResponse();
 
             int playerVersion = Integer.parseInt(request.getParameter(Constants.PLAYER_VERSION));
@@ -39,24 +41,28 @@ public class GameUpdates extends HttpServlet
 
           if(gameState.equals("gameRunning")) {
               if (isPlayerUpToDate(playerVersion, playerIndex, gameManager)) {
-                  getUpdatesFromGame(gameManager, jasonResponse, response);
-
+                   getUpdatesFromGame(gameManager, jasonResponse, response);
              } else {
                 writeJasonResponse(false, response);
             }
+
         }else if(gameState.equals("gameOver")){
-                 System.out.print("Game Over for 2 player");
-                if(gameManager.isLastGamePlayer(playerIndex)){
-                    gameManager.setGameOver();
 
-                }else{
-                    gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
-
-                }
+                   if (gameManager.isLastGamePlayer(playerIndex)) {
+                       System.out.print(String.format("go out last player = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
+                           gameManager.setGameOver();
+                  } else {
+                          gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
+                         System.out.print(String.format("I am disabled !! = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
+                  }
 
               AppManager.signedPlayersVersion++;
-    }
-    }
+              writeJasonResponse(false, response);
+          }
+
+  }
+
+
 
     private void clearData(GameManager gameManager)
     {

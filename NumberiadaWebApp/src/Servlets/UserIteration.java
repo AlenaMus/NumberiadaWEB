@@ -17,6 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -30,8 +31,9 @@ public class UserIteration extends HttpServlet
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
     {
-        GameManager gameManager = SessionUtils.getGameManager(getServletContext());
-      //  int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+        HttpSession session = request.getSession(false);
+        GameManager gameManager = (GameManager)session.getAttribute(Constants.GAME_MANAGER);
+
 
         String message="";
         GameManager.NextPlayerMove nextPlayerMove = null;
@@ -50,8 +52,10 @@ public class UserIteration extends HttpServlet
                     break;
 
                 case "quit":
-                   gameManager.getGameLogic().getCurrentPlayer().setActive(false);
-                    System.out.print("quit/n");
+                    int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+                    gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
+                    System.out.print(String.format("Retired Player index = %d name = %s \n",playerIndex, gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
+                    System.out.print(String.format("I am disabled !! = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
                     message = gameManager.AdvanceRetire();
                     break;
                /* case "endTurn":
@@ -62,7 +66,7 @@ public class UserIteration extends HttpServlet
             }
 
             gameManager.updateGameVersion();
-            System.out.print(gameManager.getGameVersion());
+            System.out.print("game Version after Itertation \n=" + gameManager.getGameVersion());
         }
         out.print(json.toJson(message));
         out.flush();

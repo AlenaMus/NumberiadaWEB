@@ -35,13 +35,13 @@ public class GetGamePlayers extends HttpServlet
         response.setContentType("application/json");
         ResponseVariables responseVariables = new ResponseVariables();
         HttpSession session = request.getSession(false);
-        GameManager game = SessionUtils.getGameManager(getServletContext());
+        GameManager game = (GameManager)session.getAttribute(Constants.GAME_MANAGER);                //SessionUtils.getGameManager(getServletContext());
 
         if(game != null) {
             responseVariables.players = game.getGameLogic().getActivePlayers();
             responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
             responseVariables.numOfPlayers = responseVariables.players.size();
-            responseVariables.myPlayerIndex = SessionUtils.getPlayerIndex(getServletContext());
+            responseVariables.myPlayerIndex = (Integer)session.getAttribute(Constants.PLAYER_INDEX);     // SessionUtils.getPlayerIndex(getServletContext());
             //responseVariables.lastJoinedIndex = game.getLastActivateIndexPlayer();
             Gson json = new Gson();
             PrintWriter out = response.getWriter();

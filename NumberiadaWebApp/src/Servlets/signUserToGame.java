@@ -9,6 +9,7 @@ package Servlets;
 import GameEngine.AppManager;
 import GameEngine.GameManager;
 import GameEngine.validation.UserMessageConfirmation;
+import Servlets.Const.Constants;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -35,13 +36,22 @@ public class signUserToGame extends HttpServlet
         String gameNumber = request.getParameter("gameNumber");
         String gameTitle = request.getParameter("gameTitle");
 
-        SessionUtils.setGameNumber(getServletContext(), gameNumber);
+        session.setAttribute(Constants.GAME_TITLE, gameTitle);
+        session.setAttribute(Constants.GAME_NUMBER,gameNumber);
+
+       // SessionUtils.setGameNumber(getServletContext(), gameNumber);
+
         String userName = SessionUtils.getUsername(request);
         Boolean IsComputer = SessionUtils.getIsComputer(request);
-        SessionUtils.setGameManager(getServletContext(), AppManager.games.get(gameTitle));
+
+       // SessionUtils.setGameManager(getServletContext(), AppManager.games.get(gameTitle));
+
+        session.setAttribute(Constants.GAME_MANAGER, AppManager.games.get(gameTitle));
         UserMessageConfirmation messageConfirm = AppManager.SignToGame(Integer.parseInt(gameNumber),gameTitle,userName,IsComputer);
-        String indexOfPlayer = Integer.toString(messageConfirm.getPlayersIndex());
-        SessionUtils.setPlayerIndex(getServletContext(),indexOfPlayer);
+
+          int indexOfPlayer = messageConfirm.getPlayersIndex();
+         session.setAttribute(Constants.PLAYER_INDEX,indexOfPlayer);
+        //SessionUtils.setPlayerIndex(getServletContext(),indexOfPlayer);
 
         Gson json = new Gson();
         PrintWriter out = response.getWriter();

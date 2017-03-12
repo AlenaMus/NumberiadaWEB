@@ -317,7 +317,8 @@ public void clearCellsToUpdate(){
       //  players.remove(currentPlayer);
         numOfPlayers--;
         numOfSignedPlayers--;
-        if(numOfPlayers == 1) {
+        if(getActivePlayers().size() == 1) {
+             isEndOfGame = true;
              return true;
         }
         return false;

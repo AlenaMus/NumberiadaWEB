@@ -30,7 +30,7 @@ public class LoadGameXML extends HttpServlet {
         String userName = SessionUtils.getUsername(request);
         response.setContentType("application/json");
         GameManager gameManager = new GameManager();
-        SessionUtils.setGameManager(getServletContext(), gameManager);
+      //  SessionUtils.setGameManager(getServletContext(), gameManager);
 
             Part filePart = request.getPart(Constants.LOAD_GAME_FILE);
             InputStream loadGameFile = filePart.getInputStream();

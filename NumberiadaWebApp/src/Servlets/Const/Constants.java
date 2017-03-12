@@ -32,6 +32,7 @@ package Servlets.Const;
         public static final String GAME_ALREADY_STARTED = "game_already_started";
         public static final String WAIT_FOR_PLAYERS_LOADED_XML = "waiting_for_players_loaded_xml";
         public static long TIMEOUT_MILISEC = 20 * 1000;
+
     }
 
 

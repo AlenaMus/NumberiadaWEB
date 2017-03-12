@@ -6,7 +6,9 @@ import GameEngine.jaxb.schema.generated.GameDescriptor;
 import GameEngine.jaxb.schema.generated.Range;
 import GameEngine.validation.XmlNotValidException;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -32,11 +34,13 @@ public class AdvancedGame extends GameLogic{
      //   updateHistory(null);
         GameEngine.gameObjects.Player player;
         String winnerStatistics="";
-        Collections.sort(players);
-        Collections.reverse(players);
-        while(i < players.size())
+        List<Player> gamePlayers = copyListPlayers(players);
+
+        Collections.sort(gamePlayers);
+        Collections.reverse(gamePlayers);
+        while(i < gamePlayers.size())
         {
-            player = players.get(i);
+            player = gamePlayers.get(i);
             if(!winners.contains(player) && player.isActive()){
                 winnerStatistics += (String.format("player %s : with score %d \n",
                         player.getName(),player.getScore()));
@@ -44,8 +48,17 @@ public class AdvancedGame extends GameLogic{
             i++;
         }
 
-       //gameLogicClear();
+        gamePlayers.clear();
         return winnerStatistics;
+    }
+
+    private List<Player> copyListPlayers(List<Player> players){
+        List<Player> newPlayers = new ArrayList<>();
+
+        for(int i = 0 ; i < players.size();i++){
+            newPlayers.add(i,players.get(i));
+        }
+        return newPlayers;
     }
 
 
