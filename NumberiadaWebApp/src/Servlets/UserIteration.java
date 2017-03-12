@@ -33,6 +33,7 @@ public class UserIteration extends HttpServlet
     {
         HttpSession session = request.getSession(false);
         GameManager gameManager = (GameManager)session.getAttribute(Constants.GAME_MANAGER);
+        boolean isComputer = (boolean)session.getAttribute(Constants.IS_COMPUTER);
 
 
         String message = "";
@@ -44,21 +45,27 @@ public class UserIteration extends HttpServlet
             {
                 case "userIteration":
                     message = gameManager.MoveAdvanceMove(makePointFromNum(request, gameManager));
+                    out.print(json.toJson(message));
                     break;
                 case "computerIteration":
                     gameManager.makeComputerMove();
+                    out.print(json.toJson(message));
                     break;
 
                 case "quit":
-                     int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
-                     gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
-                     System.out.print(String.format("Retired Player index = %d name = %s \n",playerIndex, gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
-                     System.out.print(String.format("I am disabled !! = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
-                     message = gameManager.AdvanceRetire();
-                     session.removeAttribute(Constants.GAME_MANAGER);
-                     session.removeAttribute(Constants.PLAYER_INDEX);
-                     session.removeAttribute(Constants.GAME_NUMBER);
-                     session.removeAttribute(Constants.GAME_TITLE);
+                    if(isComputer){
+                        out.print(json.toJson(isComputer));
+                    }else {
+                        int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+                        gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
+                        System.out.print(String.format("Retired Player index = %d name = %s \n", playerIndex, gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
+                        System.out.print(String.format("I am disabled !! = %d --%s \n", playerIndex, gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
+                        message = gameManager.AdvanceRetire();
+                        session.removeAttribute(Constants.GAME_MANAGER);
+                        session.removeAttribute(Constants.PLAYER_INDEX);
+                        session.removeAttribute(Constants.GAME_NUMBER);
+                        session.removeAttribute(Constants.GAME_TITLE);
+                    }
                     break;
                 default:
                     break;
@@ -67,7 +74,7 @@ public class UserIteration extends HttpServlet
             gameManager.updateGameVersion();
             System.out.print("game Version after Itertation \n=" + gameManager.getGameVersion());
         }
-        out.print(json.toJson(message));
+
         out.flush();
     }
 

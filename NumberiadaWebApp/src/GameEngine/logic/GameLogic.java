@@ -301,6 +301,26 @@ public void clearCellsToUpdate(){
         return squareValue;
     }
 
+    public void addNewPlayer(Player player){
+        int i=0;
+        int color;
+        if(getActivePlayers().size() < getPlayers().size())  {
+            while(i < players.size()){
+                if(!players.get(i).isActive()){
+                    color = i+1;
+                    player.setColor(color);
+                    players.set(i,player);
+                }
+                i++;
+            }
+        }else{
+             color = numOfSignedPlayers + 1;
+             player.setColor(color);
+             players.add(player);
+        }
+        numOfSignedPlayers++;
+    }
+
     public boolean playerRetire () {
         for (int i = 0; i < gameBoard.GetBoardSize(); i++)
             for (int j = 0; j < gameBoard.GetBoardSize(); j++)

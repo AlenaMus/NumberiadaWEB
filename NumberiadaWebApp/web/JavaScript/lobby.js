@@ -216,7 +216,7 @@ function updateSignedPlayers() {
                 $.each(data.games, function (index, game) {
                     if(game.isRunningGame === true){
                         $('#signIn'+ game.gameNumber).prop("disabled",true);
-                        $('#signToGame'+ game.gameNumber).html('Game Running');
+                        $('#signToGame'+ game.gameNumber).html(game.signedPlayers);
                      }else{
                         $('#signIn'+ game.gameNumber).prop("disabled",false);
                         $('#signToGame' + game.gameNumber).html(game.signedPlayers);

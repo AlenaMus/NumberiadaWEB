@@ -114,18 +114,16 @@ public final class AppManager {
 
         if(!IsPlayerAlreadyInGame(player)) {
             GameLogic game = games.get(gameTitle).getGameLogic();
-            int playerColor = game.getNumOfSignedPlayers();
-            player.setColor(playerColor + 1);
             if (!games.get(gameTitle).runningGame) {
                 if (game.getPlayers().size() < game.getNumOfPlayers()) {
                         playerIndex = game.getNumOfSignedPlayers();
                         player.setPlayerIndex(playerIndex);
-                        game.getPlayers().add(player);
-                        gamesInfo.get(gameNumber - 1).setSignedPlayers(game.getNumOfSignedPlayers() + 1);
-                        game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
+                        game.addNewPlayer(player);
+                        gamesInfo.get(gameNumber - 1).setSignedPlayers(game.numOfSignedPlayers);
+                        game.setNumOfSignedPlayers(game.numOfSignedPlayers);
                         signedPlayersVersion++;
                         signed = true;
-                        games.get(gameTitle).runningGame = game.getNumOfSignedPlayers() == game.getNumOfPlayers();
+                        games.get(gameTitle).runningGame = game.numOfSignedPlayers == game.getNumOfPlayers();
                         gamesInfo.get(gameNumber - 1).setRunningGame(games.get(gameTitle).runningGame);
 
                 } else {

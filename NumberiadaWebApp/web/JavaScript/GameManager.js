@@ -1,6 +1,6 @@
 window.playSound = true;
 window.playerGameVersion = 0;
-
+window.isComputer = false;
 window.myPlayerIndex;
 window.CurrPlayerIndex;
 window.playersUpdates = 0;
@@ -9,8 +9,6 @@ window.intervalStartGame = 0;
 window.intervalGameUpdates=0;
 
 window.quited = false;
-
-
 window.isGameStarted = false;
 
 
@@ -56,20 +54,34 @@ $("#SoundButton").click(function () {
 
 function quit() {
 
-    if(window.myPlayerIndex === window.CurrPlayerIndex){
-        window.quited = true;
-        playerRetire();
-    }else{
-        var leaveGameDialog = $(document.createElement('div'));
-        leaveGameDialog.html("Please wait your turn to leave the game !");
+    var leaveGameDialog = $(document.createElement('div'));
+    if(window.isComputer === true){
+        leaveGameDialog.html("Computer Player Cannot Leave Game till it ends!");
         leaveGameDialog.dialog({
             modal: true,
-            title: "Cannot leave game",
+            title: "ERROR",
             height: "auto",
             width: "auto"
         });
+    }else {
+        if (window.isGameStarted === true) {
+            if (window.myPlayerIndex === window.CurrPlayerIndex) {
+                window.quited = true;
+                playerRetire();
+            } else {
+                leaveGameDialog.html("Please wait your turn to leave the game !");
+                leaveGameDialog.dialog({
+                    modal: true,
+                    title: "Cannot leave game",
+                    height: "auto",
+                    width: "auto"
+                });
+            }
+        } else {
+            window.quited = true;
+            playerRetire();
+        }
     }
-
 }
 
 
@@ -137,10 +149,10 @@ function playerRetire()
         data: {actionType: "quit", playerIndex: window.myPlayerIndex},
         url: "userIteration",
         timeout: 6000,
-        success: function (nextPlayerMove) {
-            clearInterval(window.intervalGameUpdates);
-            clearInterval(window.playersUpdates);
-            window.location.href = 'LobbyPage.html';
+        success: function (message) {
+                clearInterval(window.intervalGameUpdates);
+                clearInterval(window.playersUpdates);
+                window.location.href = 'LobbyPage.html';
         },
         error: function (textStatus) {
             if (textStatus === "timeout") {
@@ -179,40 +191,44 @@ return false;
 
 function getGameUpdate()
 {
-    $.ajax({
-    type: 'POST',
-    data: {myPlayerGameVersion: window.playerGameVersion, playerIndex: window.myPlayerIndex,gameState:'gameRunning'},
-    url: "gameUpdates",
-    dataType: "json",
-    timeout: 6000,
-    success: function (data, textStatus, jqXHR) {
-    if ((data !== false) && (window.playerGameVersion !== data.latestGameVersion))
-    {
-        updateBoardAfterMove(data);
+    if(window.isGameStarted === true) {
+        $.ajax({
+            type: 'POST',
+            data: {
+                myPlayerGameVersion: window.playerGameVersion,
+                playerIndex: window.myPlayerIndex,
+                gameState: 'gameRunning'
+            },
+            url: "gameUpdates",
+            dataType: "json",
+            timeout: 6000,
+            success: function (data, textStatus, jqXHR) {
+                if ((data !== false) && (window.playerGameVersion !== data.latestGameVersion)) {
+                    updateBoardAfterMove(data);
 
-     if (data.gameOver === true)
-    {
-          clearInterval(window.intervalGameUpdates);
-          handelGameOver(data);
+                    if (data.gameOver === true) {
+                        clearInterval(window.intervalGameUpdates);
+                        handelGameOver(data);
 
-    }
-    else {
-          handelComputerTurn(data);
-          updateCurrentPlayer(data.currentPlayer);
-            //showPlayerTurn(data.currentPlayerIndex);
-        }
-     }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-    if (textStatus === "timeout") {
-        $("#Error").text("Server Timeout getGameUpdate. Try again..").show();
-    }
-    else {
-    $("#Error").text("Something went wrong getGameUpdate. Try again..").show();
-    }
-    }
-    });
+                    }
+                    else {
+                        handelComputerTurn(data);
+                        updateCurrentPlayer(data.currentPlayer);
+                        //showPlayerTurn(data.currentPlayerIndex);
+                    }
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (textStatus === "timeout") {
+                    $("#Error").text("Server Timeout getGameUpdate. Try again..").show();
+                }
+                else {
+                    $("#Error").text("Something went wrong getGameUpdate. Try again..").show();
+                }
+            }
+        });
         return false;
+    }
 }
 
 function updateBoardAfterMove(data) {
@@ -332,6 +348,7 @@ function initilazeGame() {
         success: function (playersData, textStatus, jqXHR) {
 
             window.myPlayerIndex = playersData.myPlayerIndex;
+            window.isComputer = playersData.isComputer;
             buildPlayersBar(playersData);
             buildGameBoardStructure();
             //setCellClick();
@@ -419,7 +436,9 @@ function buildGameBoard(board,size) {
 
 
 function clickedSquare(row,col){
-    if(window.isGameStarted == true) {
+
+    var error = $(document.createElement('div'));
+    if(window.isGameStarted === true) {
 
         if (window.myPlayerIndex === window.CurrPlayerIndex) {
 
@@ -432,7 +451,6 @@ function clickedSquare(row,col){
                 success: function (message) {
                     if(message === ""){}
                     else {
-                        var error = $(document.createElement('div'));
                         error.html(message);
                         error.dialog({
                             modal: true,

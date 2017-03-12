@@ -204,19 +204,26 @@ public class GameManager {
 
 
     public String AdvanceRetire() {
-
-      //  List<Player> noMoves = null;
-      //  gameLogic.getCurrentPlayer().setActive(false);
-        boolean isEndOfGame = getGameLogic().playerRetire();
         String message ="";
+
+        if(runningGame){
+
+          boolean isEndOfGame = getGameLogic().playerRetire();
+
         if (!isEndOfGame) {
-           message = findPlayerToNextMove();
+            message = findPlayerToNextMove();
         }
         else
             {//Gameover
             // returnedString = setGameStatistics();
              message = "Game Over";
              runningGame = false;
+        }
+        }
+        else {
+              gameLogic.numOfSignedPlayers--;
+              AppManager.gamesInfo.get(gameNumber).setSignedPlayers(gameLogic.numOfSignedPlayers);
+
         }
         return message;
     }
