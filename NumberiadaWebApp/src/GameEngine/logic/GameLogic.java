@@ -313,9 +313,7 @@ public void clearCellsToUpdate(){
                     cellsToUpdate.add(gameBoard.getGameBoard()[i][j]);
 
                 }
-        //currentPlayer.setActive(false);
-      //  players.remove(currentPlayer);
-        numOfPlayers--;
+
         numOfSignedPlayers--;
         if(getActivePlayers().size() == 1) {
              isEndOfGame = true;

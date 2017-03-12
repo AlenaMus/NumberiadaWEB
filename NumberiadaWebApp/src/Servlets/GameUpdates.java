@@ -56,6 +56,10 @@ public class GameUpdates extends HttpServlet
                          System.out.print(String.format("I am disabled !! = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
                   }
 
+              session.removeAttribute(Constants.GAME_MANAGER);
+              session.removeAttribute(Constants.PLAYER_INDEX);
+              session.removeAttribute(Constants.GAME_NUMBER);
+              session.removeAttribute(Constants.GAME_TITLE);
               AppManager.signedPlayersVersion++;
               writeJasonResponse(false, response);
           }

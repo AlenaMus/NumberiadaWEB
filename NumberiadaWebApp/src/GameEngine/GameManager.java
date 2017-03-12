@@ -307,6 +307,8 @@ public class GameManager {
         gameLogic.initializeBoard();
         gameLogic.isEndOfGame = false;
         AppManager.gamesInfo.get(gameNumber).setRunningGame(false);
+        AppManager.gamesInfo.get(gameNumber).setSignedPlayers(0);
+
 
     }
 

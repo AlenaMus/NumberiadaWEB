@@ -57,6 +57,12 @@ public class UserIteration extends HttpServlet
                     System.out.print(String.format("Retired Player index = %d name = %s \n",playerIndex, gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
                     System.out.print(String.format("I am disabled !! = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
                     message = gameManager.AdvanceRetire();
+                    if(gameManager.getGameLogic().isEndOfGame){
+                        session.removeAttribute(Constants.GAME_MANAGER);
+                        session.removeAttribute(Constants.PLAYER_INDEX);
+                        session.removeAttribute(Constants.GAME_NUMBER);
+                        session.removeAttribute(Constants.GAME_TITLE);
+                    }
                     break;
                /* case "endTurn":
                     gameManager.endTurn();
