@@ -30,13 +30,14 @@ public class getGameBoard extends HttpServlet {
 
         response.setContentType("application/json");
         HttpSession session = request.getSession(false);
+        String gameTitle = (String)session.getAttribute(Constants.GAME_TITLE);
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
         if (session != null) {
            String username = (String)session.getAttribute(Constants.USERNAME);
             Boolean isComp = (boolean)session.getAttribute(Constants.IS_COMPUTER);
             ePlayerType type = isComp ? ePlayerType.Computer:ePlayerType.Human;
-            Board board =  AppManager.getGameForUser(new Player(username,type)).getGameBoard();
+            Board board =  AppManager.games.get(gameTitle).getGameLogic().getGameBoard();    //AppManager.getGameForUser(new Player(username,type)).getGameBoard();
             if(board != null)
             {
                 out.print(json.toJson(board));

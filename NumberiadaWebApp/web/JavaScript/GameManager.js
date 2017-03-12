@@ -1,8 +1,8 @@
 window.playSound = true;
 window.playerGameVersion = 0;
 
-window.myPlayerIndex = 0;
-window.CurrPlayerIndex = 0;
+window.myPlayerIndex;
+window.CurrPlayerIndex;
 window.playersUpdates = 0;
 
 window.intervalStartGame = 0;
@@ -282,7 +282,8 @@ function setGameOver() {
         dataType: 'json',
         timeout: 6000,
         success: function (data, textStatus, jqXHR) {
-            //clearInterval(window.intervalGameUpdates);
+              window.CurrPlayerIndex = 0;
+              window.myPlayerIndex = 0;
             window.location.href = 'LobbyPage.html';
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -331,7 +332,6 @@ function initilazeGame() {
         success: function (playersData, textStatus, jqXHR) {
 
             window.myPlayerIndex = playersData.myPlayerIndex;
-            //updateCurrentPlayer(playersData.currPlayer);
             buildPlayersBar(playersData);
             buildGameBoardStructure();
             //setCellClick();
@@ -429,38 +429,19 @@ function clickedSquare(row,col){
                 url: "userIteration",
                 timeout: 6000,
                 dataType: 'json',
-                success: function (nextPlayerMove) {
-                    var noMoves = nextPlayerMove.noMoveAvaliable;
-                    if(nextPlayerMove.goodPoint === true){
-                        if(noMoves !== null && noMoves.length > 0){
-                            for(var i = 0;i< noMoves.length; i++){
-                                var newDiv = $(document.createElement('div'));
-                                newDiv.html('no possible moves for user' + noMoves[i].name.value);
-                                newDiv.dialog({
-                                    modal: true,
-                                    title: "Move Info",
-                                    height: "auto",
-                                    width: "auto"
-                                });
-                            }
-                        }
-                    }else {
-                        if (nextPlayerMove === "" || nextPlayerMove === null) {
-                        }
-                        else {
-                            var error = $(document.createElement('div'));
-                            error.html(nextPlayerMove.errorMessage);
-                            error.dialog({
-                                modal: true,
-                                title: "Move Info",
-                                height: "auto",
-                                width: "auto"
-                            });
-                        }
+                success: function (message) {
+                    if(message === ""){}
+                    else {
+                        var error = $(document.createElement('div'));
+                        error.html(message);
+                        error.dialog({
+                            modal: true,
+                            title: "Move Info",
+                            height: "auto",
+                            width: "auto"
+                        });
                     }
-
                 },
-
                 error: function (textStatus) {
                     $("#Error").text("A temporary problem").show();
                 }

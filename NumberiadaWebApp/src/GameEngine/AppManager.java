@@ -121,7 +121,7 @@ public final class AppManager {
                         playerIndex = game.getNumOfSignedPlayers();
                         player.setPlayerIndex(playerIndex);
                         game.getPlayers().add(player);
-                        gamesInfo.get(gameNumber - 1).updateSignedPlayers();
+                        gamesInfo.get(gameNumber - 1).setSignedPlayers(game.getNumOfSignedPlayers() + 1);
                         game.setNumOfSignedPlayers(game.getNumOfSignedPlayers() + 1);
                         signedPlayersVersion++;
                         signed = true;

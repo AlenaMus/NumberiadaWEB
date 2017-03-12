@@ -35,9 +35,7 @@ public class UserIteration extends HttpServlet
         GameManager gameManager = (GameManager)session.getAttribute(Constants.GAME_MANAGER);
 
 
-        String message="";
-        GameManager.NextPlayerMove nextPlayerMove = null;
-        List<Player> noMovePlayers;
+        String message = "";
         Gson json = new Gson();
         PrintWriter out = response.getWriter();
         if (gameManager != null)
@@ -52,21 +50,16 @@ public class UserIteration extends HttpServlet
                     break;
 
                 case "quit":
-                    int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
-                    gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
-                    System.out.print(String.format("Retired Player index = %d name = %s \n",playerIndex, gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
-                    System.out.print(String.format("I am disabled !! = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
-                    message = gameManager.AdvanceRetire();
-                    if(gameManager.getGameLogic().isEndOfGame){
-                        session.removeAttribute(Constants.GAME_MANAGER);
-                        session.removeAttribute(Constants.PLAYER_INDEX);
-                        session.removeAttribute(Constants.GAME_NUMBER);
-                        session.removeAttribute(Constants.GAME_TITLE);
-                    }
+                     int playerIndex = Integer.parseInt(request.getParameter(Constants.PLAYER_INDEX));
+                     gameManager.getGameLogic().getPlayers().get(playerIndex).setActive(false);
+                     System.out.print(String.format("Retired Player index = %d name = %s \n",playerIndex, gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
+                     System.out.print(String.format("I am disabled !! = %d --%s \n",playerIndex,gameManager.getGameLogic().getPlayers().get(playerIndex).getName()));
+                     message = gameManager.AdvanceRetire();
+                     session.removeAttribute(Constants.GAME_MANAGER);
+                     session.removeAttribute(Constants.PLAYER_INDEX);
+                     session.removeAttribute(Constants.GAME_NUMBER);
+                     session.removeAttribute(Constants.GAME_TITLE);
                     break;
-               /* case "endTurn":
-                    gameManager.endTurn();
-                    break;*/
                 default:
                     break;
             }

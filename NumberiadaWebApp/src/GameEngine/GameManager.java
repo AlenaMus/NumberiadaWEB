@@ -309,7 +309,6 @@ public class GameManager {
         AppManager.gamesInfo.get(gameNumber).setRunningGame(false);
         AppManager.gamesInfo.get(gameNumber).setSignedPlayers(0);
 
-
     }
 
 
@@ -354,7 +353,7 @@ public class GameManager {
             // setCurrentPlayer(logic.getCurrentPlayer());
             while (!hasMove) {
                 noMoveAvailiable.add(getGameLogic().getCurrentPlayer());
-                returnedString = returnedString + " no possible moves for user" + getGameLogic().getCurrentPlayer();
+                returnedString = returnedString + String.format("No possible moves for user %s \n",getGameLogic().getCurrentPlayer().getName());
                 hasMove = getGameLogic().switchPlayer();
                 //setCurrentPlayer(logic.getCurrentPlayer());
             }
@@ -378,29 +377,26 @@ public class GameManager {
     public String MoveAdvanceMove(Point userPoint) //needs to get user point from client
     {
         int pointStatus;
-        List<Player> playersNoMove = null;
         String errorString = "";
-        Boolean isGoodPoint = false;
         if (userPoint != null) {
             pointStatus = getGameLogic().isValidPoint(userPoint);
             if (pointStatus == GameLogic.GOOD_POINT) {
-                isGoodPoint = true;
                 getGameLogic().updateDataMove(userPoint); // NEED TO UPDATE CLIENT WITH BOARD CHANGE
                 errorString = findPlayerToNextMove(); //I THINK NEED TO SEPERATE (*new* seems ok china the same)
             } else if (pointStatus == GameLogic.NOT_IN_MARKER_ROW_AND_COLUMN) {
                 // value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
                 // logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
-                errorString = "You choose illegal square -the square needs to be in the marker raw or column";
+                errorString = "You choose illegal square - the square needs to be in the marker raw or column!\n";
             } else if (pointStatus == GameLogic.NOT_PLAYER_COLOR) {
                 //value = logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].getValue();
                 //logic.getGameBoard().getGameBoard()[userPoint.getRow()][userPoint.getCol()].setValue(value);
-                errorString = ("You choose illegal square - the square is not in your color!");
+                errorString = "You choose illegal square - the square is not in your color!\n";
             }
         } else {
-            errorString = ("YOU DIDN'T CHOOSE A SQUARE!");
+            errorString = "YOU DIDN'T CHOOSE A SQUARE!";
         }
 
-        return errorString;           //new NextPlayerMove(errorString,playersNoMove,isGoodPoint);
+        return errorString;
     }
 
 

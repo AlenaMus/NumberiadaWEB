@@ -42,7 +42,6 @@ public class GetGamePlayers extends HttpServlet
             responseVariables.currPlayer = game.getGameLogic().getCurrentPlayer();
             responseVariables.numOfPlayers = responseVariables.players.size();
             responseVariables.myPlayerIndex = (Integer)session.getAttribute(Constants.PLAYER_INDEX);     // SessionUtils.getPlayerIndex(getServletContext());
-            //responseVariables.lastJoinedIndex = game.getLastActivateIndexPlayer();
             Gson json = new Gson();
             PrintWriter out = response.getWriter();
             out.print(json.toJson(responseVariables));
@@ -53,12 +52,9 @@ public class GetGamePlayers extends HttpServlet
     private class ResponseVariables
     {
         public List<Player> players = null;
-       // public int numOfHumans;
         public Player currPlayer = null;
         public int numOfPlayers;
         public int myPlayerIndex;
-       // public int numOfHumansToStart;
-       // public int lastJoinedIndex;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
